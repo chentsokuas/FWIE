@@ -47,30 +47,58 @@
     <div id="menuTut" class="myMenu">
       <div class="w3-container w3-padding-top">
         <form action="index.php">
-          <h3>經緯度查詢</h3>
-          <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
-          <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
-
+         <?php
+         $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-C9371CA5-B4C3-4C97-8F34-2B4AC9357E61") or die("Error: Cannot create object");
+         $i=0;
+         foreach($xml->children() as $books) { 
+          if($books->locationName !="")
+            { ?>
+          <locationName id="<?php echo "locationName".$i;?>" style="display: none;"><?php echo $books->locationName;?></locationName>
+          <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $books->lat;?></lat>
+          <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $books->lon;?></lon>
+          <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->time->obsTime;?></time>
+          <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[3]->elementValue->value;?></temp>
           <?php
-          $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-C9371CA5-B4C3-4C97-8F34-2B4AC9357E61") or die("Error: Cannot create object");
-          $i=0;
-          foreach($xml->children() as $books) { 
-            if($books->locationName !="")
-              { ?>
-            <locationName id="<?php echo "locationName".$i;?>" style="display: none;"><?php echo $books->locationName;?></locationName>
-            <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $books->lat;?></lat>
-            <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $books->lon;?></lon>
-            <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[3]->elementValue->value;?></temp>
+          $i++;
+        }
+      } 
+      ?>
+      <div id="time">time</div>
+      <script type="text/javascript">
+        function　startTime(){
+          var nntime = document.getElementsByTagName("time");
+          var today=new Date();
+          var year=today.getFullYear();
+          var month=today.getMonth()+1;
+          var date=today.getDate();
+          var hour=today.getHours();
+          var minute=today.getMinutes();
+          var second=today.getSeconds();
+          month=checkTime(month);
+          date=checkTime(date);
+          hour=checkTime(hour);
+          minute=checkTime(minute);
+          second=checkTime(second);
+          var currentTime="";
+          currentTime = year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
+          document.getElementById("time").innerHTML="現在時間:</br>"+currentTime +"</br>最後更新:</br>"+nntime[0].innerHTML;
+          setInterval('startTime()',1000);
+        }
+        startTime();
+        function checkTime(t){
+          return t<10?"0"+t:t;
+        }
 
-            <?php
-            $i++;
-          }
-        } 
-        ?>
-      </form>
-    </div>
+      </script>
+      <h3>經緯度查詢</h3>
+      <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
+      <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
 
+
+    </form>
   </div>
+
+</div>
 </nav>
 
 <!-- Overlay effect when opening sidenav on small screens -->
