@@ -109,12 +109,14 @@
   var nnlat = document.getElementsByTagName("lat");
   var nnlon = document.getElementsByTagName("lon");
   var nntemp = document.getElementsByTagName("temp");
+  var myArray = [];
+  var wellCircle;
   for (var s=0; s <nnlocationName.length; s++) {
-    if(parseFloat(nnlat[s].innerHTML) >25)
+    if(parseFloat(nntemp[s].innerHTML) >25)
     {
-      var wellCircle = new google.maps.Circle({ 
-        strokeColor: '#000DFF', 
-        fillColor: '#000DFF',
+      wellCircle = new google.maps.Circle({ 
+        strokeColor: '#FF0000', 
+        fillColor: '#FF0000',
         strokeOpacity: 0.5,
         strokeWeight: 2,
         fillOpacity: 0.35,
@@ -125,9 +127,9 @@
     }
     else
     {
-     var wellCircle = new google.maps.Circle({
-      strokeColor: '#FF0000', 
-      fillColor: '#FF0000',
+     wellCircle = new google.maps.Circle({ 
+      strokeColor: '#002AFF', 
+      fillColor: '#002AFF',
       strokeOpacity: 0.5,
       strokeWeight: 2,
       fillOpacity: 0.35,
@@ -135,13 +137,20 @@
       center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
       radius: 5000
     });
-
    }
-
-
-
+   var infoWindow = new google.maps.InfoWindow({
+    content: "<div>"+nnlocationName[s].innerHTML+"</br>溫度:"+nntemp[s].innerHTML+"</div>",
+    maxWidth: 500
+  });
+   myArray.push(infoWindow);
+   fn1(s);
  };
-
+ function fn1(a){
+   google.maps.event.addListener(wellCircle, 'click', function(ev) {
+     myArray[a].setPosition(ev.latLng);
+     myArray[a].open(map);
+   });
+ }
 
 }
 
