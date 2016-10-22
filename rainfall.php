@@ -93,8 +93,7 @@
    <div id="map" style="width:100%;height:450px"></div>
 
    
-   <script>
-
+  <script>
     function initMap() {
   // Create the map.
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -112,34 +111,21 @@
   var myArray = [];
   var wellCircle;
   for (var s=0; s <nnlocationName.length; s++) {
-    if(parseFloat(nntemp[s].innerHTML) >0.5)
-    {
+     var Color = 180 - Math.round((360 * (parseFloat(nntemp[s].innerHTML)/-99)));
+  
       wellCircle = new google.maps.Circle({ 
-        strokeColor: '#FF0000', 
-        fillColor: '#FF0000',
-        strokeOpacity: 0.5,
+        strokeColor: "hsl(" + Color + ", 100%, 50%)", 
+        fillColor: "hsl(" + Color + ", 100%, 50%)",
+        strokeOpacity: 0.8,
         strokeWeight: 2,
         fillOpacity: 0.35,
         map: map,
         center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
         radius: 3000
       });
-    }
-    else
-    {
-     wellCircle = new google.maps.Circle({ 
-      strokeColor: '#002AFF', 
-      fillColor: '#002AFF',
-      strokeOpacity: 0.5,
-      strokeWeight: 2,
-      fillOpacity: 0.35,
-      map: map,
-      center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
-      radius: 3000
-    });
-   }
+  
    var infoWindow = new google.maps.InfoWindow({
-    content: "<div>"+nnlocationName[s].innerHTML+"</br>日累積雨量:"+nntemp[s].innerHTML+"毫米</div>",
+    content: "<div>"+nnlocationName[s].innerHTML+"</br>雨量:"+nntemp[s].innerHTML+"</div>",
     maxWidth: 500
   });
    myArray.push(infoWindow);
@@ -151,9 +137,7 @@
      myArray[a].open(map);
    });
  }
-
 }
-
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"
 async defer></script>

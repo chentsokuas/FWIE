@@ -75,7 +75,7 @@
       <h3>經緯度查詢</h3>
       <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
       <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
-      <input class="w3-red w3-large w3-center" type ="button" onclick="javascript:location.href='temperature.php'" value="一小時版本"></input>
+      <input class="w3-red w3-large w3-center" type ="button" onclick="javascript:location.href='temperature.php'" value="1小時版本"></input>
 
     </form>
   </div>
@@ -112,32 +112,19 @@
   var myArray = [];
   var wellCircle;
   for (var s=0; s <nnlocationName.length; s++) {
-    if(parseFloat(nntemp[s].innerHTML) >25)
-    {
+     var Color = 360 - Math.round((360 * (parseFloat(nntemp[s].innerHTML)/27)));
+  
       wellCircle = new google.maps.Circle({ 
-        strokeColor: '#FF0000', 
-        fillColor: '#FF0000',
-        strokeOpacity: 0.5,
+        strokeColor: "hsl(" + Color + ", 100%, 50%)", 
+        fillColor: "hsl(" + Color + ", 100%, 50%)",
+        strokeOpacity: 0.8,
         strokeWeight: 2,
         fillOpacity: 0.35,
         map: map,
         center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
-        radius: 5000
+        radius: 3000
       });
-    }
-    else
-    {
-     wellCircle = new google.maps.Circle({ 
-      strokeColor: '#002AFF', 
-      fillColor: '#002AFF',
-      strokeOpacity: 0.5,
-      strokeWeight: 2,
-      fillOpacity: 0.35,
-      map: map,
-      center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
-      radius: 5000
-    });
-   }
+  
    var infoWindow = new google.maps.InfoWindow({
     content: "<div>"+nnlocationName[s].innerHTML+"</br>溫度:"+nntemp[s].innerHTML+"</div>",
     maxWidth: 500
