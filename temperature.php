@@ -67,6 +67,7 @@
       <script type="text/javascript">
         function　startTime(){
           var nntime = document.getElementsByTagName("time");
+          var NewString = nntime[0].innerHTML;
           var today=new Date();
           var year=today.getFullYear();
           var month=today.getMonth()+1;
@@ -81,7 +82,7 @@
           second=checkTime(second);
           var currentTime="";
           currentTime = year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
-          document.getElementById("time").innerHTML="現在時間:</br>"+currentTime +"</br>最後更新:</br>"+nntime[0].innerHTML;
+          document.getElementById("time").innerHTML="現在時間:</br>"+currentTime +"</br>最後更新:</br>"+NewString.split("T")[0]+" "+(NewString.split("T")[1]).split("+08:00")[0];
           setInterval('startTime()',1000);
         }
         startTime();
