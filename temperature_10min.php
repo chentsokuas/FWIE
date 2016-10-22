@@ -48,7 +48,7 @@
       <div class="w3-container w3-padding-top">
         <form action="index.php">
          <?php
-         $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+         $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0003-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
          $i=0;
          foreach($xml->children() as $books) { 
           if($books->locationName !="")
@@ -57,14 +57,14 @@
           <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $books->lat;?></lat>
           <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $books->lon;?></lon>
           <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->time->obsTime;?></time>
-          <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[3]->elementValue->value;?></temp>
+          <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[4]->elementValue->value;?></temp>
           <?php
           $i++;
         }
       } 
       ?>
       <div id="time">time</div>
-       <script type="text/javascript">
+      <script type="text/javascript">
         function　Time(){
           var nntime = document.getElementsByTagName("time");
           var NewString = nntime[0].innerHTML;
@@ -75,7 +75,7 @@
       <h3>經緯度查詢</h3>
       <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
       <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
-      <input class="w3-red w3-large w3-center" type ="button" onclick="javascript:location.href='temperature_10min.php'" value="10分鐘版本"></input>
+      <input class="w3-red w3-large w3-center" type ="button" onclick="javascript:location.href='temperature.php'" value="一小時版本"></input>
 
     </form>
   </div>
@@ -120,7 +120,7 @@
         fillOpacity: 0.35,
         map: map,
         center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
-        radius: 3000
+        radius: 5000
       });
     }
     else
@@ -133,7 +133,7 @@
       fillOpacity: 0.35,
       map: map,
       center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
-      radius: 3000
+      radius: 5000
     });
 
    }
