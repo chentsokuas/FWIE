@@ -46,43 +46,117 @@
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hide-large" title="close menu">×</a>
     <div id="menuTut" class="myMenu">
       <div class="w3-container w3-padding-top">
-        <form action="home.php" method="get">
-          <h3>經緯度查詢</h3>
-          <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
-          <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
-        </form>
-      </div>
+        <form action="index.php">
+         <?php
+         $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+         $i=0;
+         foreach($xml->children() as $books) { 
+          if($books->locationName !="")
+            { ?>
+          <locationName id="<?php echo "locationName".$i;?>" style="display: none;"><?php echo $books->locationName;?></locationName>
+          <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $books->lat;?></lat>
+          <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $books->lon;?></lon>
+          <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->time->obsTime;?></time>
+          <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[5]->elementValue->value;?></temp>
+          <?php
+          $i++;
+        }
+      } 
+      ?>
+      <div id="time">time</div>
+      <script type="text/javascript">
+        function　Time(){
+          var nntime = document.getElementsByTagName("time");
+          var NewString = nntime[0].innerHTML;
+          document.getElementById("time").innerHTML="最後更新:</br>"+NewString.split("T")[0]+" "+(NewString.split("T")[1]).split("+08:00")[0];
+        }
+        Time();
+      </script>
+      <h3>經緯度查詢</h3>
+      <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
+      <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
+      
 
-    </div>
-  </nav>
+    </form>
+  </div>
 
-  <!-- Overlay effect when opening sidenav on small screens -->
-  <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+</div>
+</nav>
 
-  <!-- Main content: shift it to the right by 270 pixels when the sidenav is visible -->
-  <div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;">
+<!-- Overlay effect when opening sidenav on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
-    <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
-     <div id="map" style="width:100%;height:450px"></div>
-     <script>
-      var map;
-      var infowindow = new google.maps.InfoWindow();
-      var markersToRemove = [];
-      var TempRectangle = [];
+<!-- Main content: shift it to the right by 270 pixels when the sidenav is visible -->
+<div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;">
 
-      function initMap() {
-        map = new google.maps.Map(document.getElementById("map"),{
-          center: new google.maps.LatLng(23.7, 120.9082103),
-          zoom: 7,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
+  <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
+   <div id="map" style="width:100%;height:450px"></div>
 
-      }  
-    </script>
+   
+   <script>
 
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"
-  async defer></script>
+    function initMap() {
+  // Create the map.
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 7,
+    center: {lat: 23.7, lng: 120.9082103},
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+
+  // Construct the circle for each value in citymap.
+  // Note: We scale the area of the circle based on the population.
+  var nnlocationName = document.getElementsByTagName("locationName");
+  var nnlat = document.getElementsByTagName("lat");
+  var nnlon = document.getElementsByTagName("lon");
+  var nntemp = document.getElementsByTagName("temp");
+  var myArray = [];
+  var wellCircle;
+  for (var s=0; s <nnlocationName.length; s++) {
+    if(parseFloat(nntemp[s].innerHTML) >900)
+    {
+      wellCircle = new google.maps.Circle({ 
+        strokeColor: '#FF0000', 
+        fillColor: '#FF0000',
+        strokeOpacity: 0.5,
+        strokeWeight: 2,
+        fillOpacity: 0.35,
+        map: map,
+        center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
+        radius: 3000
+      });
+    }
+    else
+    {
+     wellCircle = new google.maps.Circle({ 
+      strokeColor: '#002AFF', 
+      fillColor: '#002AFF',
+      strokeOpacity: 0.5,
+      strokeWeight: 2,
+      fillOpacity: 0.35,
+      map: map,
+      center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
+      radius: 3000
+    });
+   }
+   var infoWindow = new google.maps.InfoWindow({
+    content: "<div>"+nnlocationName[s].innerHTML+"</br>氣壓:"+nntemp[s].innerHTML+"百帕</div>",
+    maxWidth: 500
+  });
+   myArray.push(infoWindow);
+   fn1(s);
+ };
+ function fn1(a){
+   google.maps.event.addListener(wellCircle, 'click', function(ev) {
+     myArray[a].setPosition(ev.latLng);
+     myArray[a].open(map);
+   });
+ }
+
+}
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"
+async defer></script>
 
 </div>
 <footer class="w3-container w3-section w3-padding-32 w3-card-4 w3-light-grey w3-center w3-opacity">
