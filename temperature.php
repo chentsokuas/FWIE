@@ -64,32 +64,13 @@
       } 
       ?>
       <div id="time">time</div>
-      <script type="text/javascript">
-        function　startTime(){
+       <script type="text/javascript">
+        function　Time(){
           var nntime = document.getElementsByTagName("time");
           var NewString = nntime[0].innerHTML;
-          var today=new Date();
-          var year=today.getFullYear();
-          var month=today.getMonth()+1;
-          var date=today.getDate();
-          var hour=today.getHours();
-          var minute=today.getMinutes();
-          var second=today.getSeconds();
-          month=checkTime(month);
-          date=checkTime(date);
-          hour=checkTime(hour);
-          minute=checkTime(minute);
-          second=checkTime(second);
-          var currentTime="";
-          currentTime = year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
-          document.getElementById("time").innerHTML="現在時間:</br>"+currentTime +"</br>最後更新:</br>"+NewString.split("T")[0]+" "+(NewString.split("T")[1]).split("+08:00")[0];
-          setInterval('startTime()',1000);
+          document.getElementById("time").innerHTML="最後更新:</br>"+NewString.split("T")[0]+" "+(NewString.split("T")[1]).split("+08:00")[0];
         }
-        startTime();
-        function checkTime(t){
-          return t<10?"0"+t:t;
-        }
-
+        Time();
       </script>
       <h3>經緯度查詢</h3>
       <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
