@@ -112,7 +112,7 @@
   var myArray = [];
   var wellCircle;
   for (var s=0; s <nnlocationName.length; s++) {
-     var Color = 360 - Math.round((360 * (parseFloat(nntemp[s].innerHTML)/27)));
+     var Color = 360 - Math.round((360 * (parseFloat(nntemp[s].innerHTML)/30)));
   
       wellCircle = new google.maps.Circle({ 
         strokeColor: "hsl(" + Color + ", 100%, 50%)", 
