@@ -79,6 +79,7 @@
       <input class="w3-red w3-large w3-center" type ="button" onclick="javascript:location.href='temperature.php'" value="1小時版本"></input>
       <p>網格大小:<input name="long" id="long" class="w3-input" value="10"></input></p>
       <input id="btnst" class="w3-blue w3-large w3-center" type ="button"  value="推估"></input>
+      <input id="btnst1" class="w3-blue w3-large w3-center" type ="button"  value="清除網格"></input>
 
     </form>
   </div>
@@ -107,8 +108,20 @@
   var nnlon = document.getElementsByTagName("lon");
   var nntemp = document.getElementsByTagName("temp");
   var btnst = document.getElementById('btnst');
+ var btnst1 = document.getElementById('btnst1');
 //以下網格
+/*
+      north: 25.34,
+      south: 21.871,
+      east: 122.03,
+      west: 120.03322005271912
+*/
+btnst1.onclick =function(){
+  window.location.reload();
+  }
 btnst.onclick =function(){
+  var SN = (25.34-21.871)*55/document.getElementById('long').value;
+  var ES = (122.03-120.03322005271912)*55/document.getElementById('long').value;
   var dis = document.getElementById('long').value/110;
   var Map_Lat=25.34;
   var Map_lng = 120.03322005271912;
@@ -117,9 +130,9 @@ btnst.onclick =function(){
     strokeOpacity: 0.1,
     fillColor: "hsl(126, 100%, 50%)"
   };
-  for (var i = 0; i < 240; i++) {
+  for (var i = 0; i < Math.ceil(SN)*(Math.ceil(ES)+1); i++) {
     count++;
-    if(count!=21)
+    if(count!=Math.ceil(SN)+1)
     {
    // Map_lng = Map_lng + 1;
    var P1 = new google.maps.LatLng(Map_Lat + dis, Map_lng - dis);

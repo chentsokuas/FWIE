@@ -13,6 +13,7 @@
     html { height: 100% }
     body { height: 100%; margin: 0; padding: 0 }
   </style>
+
 </head>
 
 <body>
@@ -76,6 +77,9 @@
       <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
       <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
       <input class="w3-red w3-large w3-center" type ="button" onclick="javascript:location.href='temperature_10min.php'" value="10分鐘版本"></input>
+      <p>網格大小:<input name="long" id="long" class="w3-input" value="10"></input></p>
+      <input id="btnst" class="w3-blue w3-large w3-center" type ="button"  value="推估"></input>
+      <input id="btnst1" class="w3-blue w3-large w3-center" type ="button"  value="清除網格"></input>
 
     </form>
   </div>
@@ -91,10 +95,7 @@
 
   <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
    <div id="map" style="width:100%;height:450px"></div>
-
-   
-   <script>
-
+   <script type="text/javascript">
     function initMap() {
   // Create the map.
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -102,45 +103,94 @@
     center: {lat: 23.7, lng: 120.9082103},
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
-
-  // Construct the circle for each value in citymap.
-  // Note: We scale the area of the circle based on the population.
   var nnlocationName = document.getElementsByTagName("locationName");
   var nnlat = document.getElementsByTagName("lat");
   var nnlon = document.getElementsByTagName("lon");
   var nntemp = document.getElementsByTagName("temp");
-  var myArray = [];
-  var wellCircle;
-  for (var s=0; s <nnlocationName.length; s++) {
-     var Color = 360 - Math.round((360 * (parseFloat(nntemp[s].innerHTML)/30)));
-  
-      wellCircle = new google.maps.Circle({ 
-        strokeColor: "hsl(" + Color + ", 100%, 50%)", 
-        fillColor: "hsl(" + Color + ", 100%, 50%)",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillOpacity: 0.35,
-        map: map,
-        center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
-        radius: 3000
-      });
-  
-   var infoWindow = new google.maps.InfoWindow({
-    content: "<div>"+nnlocationName[s].innerHTML+"</br>溫度:"+nntemp[s].innerHTML+"</div>",
-    maxWidth: 500
-  });
-   myArray.push(infoWindow);
-   fn1(s);
- };
- function fn1(a){
-   google.maps.event.addListener(wellCircle, 'click', function(ev) {
-     myArray[a].setPosition(ev.latLng);
-     myArray[a].open(map);
-   });
+  var btnst = document.getElementById('btnst');
+ var btnst1 = document.getElementById('btnst1');
+//以下網格
+/*
+      north: 25.34,
+      south: 21.871,
+      east: 122.03,
+      west: 120.03322005271912
+*/
+btnst1.onclick =function(){
+  window.location.reload();
+  }
+btnst.onclick =function(){
+  var SN = (25.34-21.871)*55/document.getElementById('long').value;
+  var ES = (122.03-120.03322005271912)*55/document.getElementById('long').value;
+  var dis = document.getElementById('long').value/110;
+  var Map_Lat=25.34;
+  var Map_lng = 120.03322005271912;
+  var count =1;
+  var rectangleOptions = {
+    strokeOpacity: 0.1,
+    fillColor: "hsl(126, 100%, 50%)"
+  };
+  for (var i = 0; i < Math.ceil(SN)*(Math.ceil(ES)+1); i++) {
+    count++;
+    if(count!=Math.ceil(SN)+1)
+    {
+   // Map_lng = Map_lng + 1;
+   var P1 = new google.maps.LatLng(Map_Lat + dis, Map_lng - dis);
+   var P2 = new google.maps.LatLng(Map_Lat - dis, Map_lng + dis);
+   var latLngBounds = new google.maps.LatLngBounds(P1, P2);
+   var rectangle = new google.maps.Rectangle(rectangleOptions);
+   rectangle.setOptions({ fillColor: "hsl(240, 100%, 50%)" });
+   rectangle.setMap(map);
+   rectangle.setBounds(latLngBounds);
+   Map_Lat = Map_Lat - (dis*2);
+ }
+ else
+ {
+   var P1 = new google.maps.LatLng(Map_Lat + dis, Map_lng - dis);
+   var P2 = new google.maps.LatLng(Map_Lat - dis, Map_lng + dis);
+   var latLngBounds = new google.maps.LatLngBounds(P1, P2);
+   var rectangle = new google.maps.Rectangle(rectangleOptions);
+   rectangle.setOptions({ fillColor: "hsl(240, 100%, 50%)" });
+   rectangle.setMap(map);
+   rectangle.setBounds(latLngBounds);
+   count =1;
+   Map_Lat=25.34;
+   Map_lng = Map_lng  + (dis*2);
  }
 
 }
+}
+//以下圓圈
+var myArray = [];
+var wellCircle;
+for (var s=0; s <nnlocationName.length; s++) {
+ var Color = 360 - Math.round((360 * (parseFloat(nntemp[s].innerHTML)/30)));
+ wellCircle = new google.maps.Circle({ 
+  strokeColor: "hsl(" + Color + ", 100%, 50%)", 
+  fillColor: "hsl(" + Color + ", 100%, 50%)",
+  strokeOpacity: 0.8,
+  strokeWeight: 2,
+  fillOpacity: 0.35,
+  map: map,
+  center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
+  radius: 3000,
+  zIndex:99999
+});
 
+ var infoWindow = new google.maps.InfoWindow({
+  content: "<div>"+nnlocationName[s].innerHTML+"</br>溫度:"+nntemp[s].innerHTML+"</div>",
+  maxWidth: 500
+});
+ myArray.push(infoWindow);
+ fn1(s);
+};
+function fn1(a){
+ google.maps.event.addListener(wellCircle, 'click', function(ev) {
+   myArray[a].setPosition(ev.latLng);
+   myArray[a].open(map);
+ });
+}
+}
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"
 async defer></script>
