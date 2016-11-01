@@ -32,6 +32,8 @@
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="rainfall.php">雨量</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="humidity.php">濕度</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="Barometric_pressure.php">氣壓</a></li>
+       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
+
     </ul>
   </div>
 
@@ -42,6 +44,7 @@
       <a href="rainfall.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">雨量</a>
       <a href="humidity.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">濕度</a>
       <a href="Barometric_pressure.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">氣壓</a>
+       <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
     </div>
     <div class="w3-clear"></div>
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hide-large" title="close menu">×</a>
@@ -58,6 +61,7 @@
           <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $books->lat;?></lat>
           <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $books->lon;?></lon>
           <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->time->obsTime;?></time>
+          <elev id="<?php echo "elev".$i;?>" style="display: none;"><?php echo $books->weatherElement[0]->elementValue->value;?></elev>
           <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[3]->elementValue->value;?></temp>
           <?php
           $i++;
@@ -106,6 +110,7 @@
   var nnlocationName = document.getElementsByTagName("locationName");
   var nnlat = document.getElementsByTagName("lat");
   var nnlon = document.getElementsByTagName("lon");
+  var nnelev = document.getElementsByTagName("elev");
   var nntemp = document.getElementsByTagName("temp");
   var btnst = document.getElementById('btnst');
  var btnst1 = document.getElementById('btnst1');
@@ -178,7 +183,7 @@ for (var s=0; s <nnlocationName.length; s++) {
 });
 
  var infoWindow = new google.maps.InfoWindow({
-  content: "<div>"+nnlocationName[s].innerHTML+"</br>溫度:"+nntemp[s].innerHTML+"</div>",
+  content: "<div>"+nnlocationName[s].innerHTML+"</br>溫度:"+nntemp[s].innerHTML+"</br>高度:"+nnelev[s].innerHTML+"</div>",
   maxWidth: 500
 });
  myArray.push(infoWindow);
