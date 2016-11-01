@@ -31,8 +31,8 @@
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="rainfall.php">雨量</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="humidity.php">濕度</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="Barometric_pressure.php">氣壓</a></li>
-       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
-        <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">空氣品質</a></li>
+      <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
+      <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">空氣品質</a></li>
     </ul>
   </div>
 
@@ -43,8 +43,8 @@
       <a href="rainfall.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">雨量</a>
       <a href="humidity.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">濕度</a>
       <a href="Barometric_pressure.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">氣壓</a>
-       <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
-         <a href="airquality.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">空氣品質</a>
+      <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
+        <a href="airquality.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">空氣品質</a>
     </div>
     <div class="w3-clear"></div>
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hide-large" title="close menu">×</a>
@@ -52,39 +52,52 @@
       <div class="w3-container w3-padding-top">
         <form action="index.php">
          <?php
-         $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0002-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+         include("connect.php");
+         //http://data.gov.tw/node/6350
+         $xml=simplexml_load_file("http://opendata.epa.gov.tw/ws/Data/AQXDaily/?format=xml") or die("目前opendata資料出現問題");
          $i=0;
+
+
          foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->weatherElement[6]->elementValue->value > 0)
-            { ?>
-          <locationName id="<?php echo "locationName".$i;?>" style="display: none;"><?php echo $books->locationName;?></locationName>
-          <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $books->lat;?></lat>
-          <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $books->lon;?></lon>
-          <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->time->obsTime;?></time>
-          <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[6]->elementValue->value;?></temp>
-          <?php
-          $i++;
-        }
-      } 
-      ?>
-      <div id="time">time</div>
-      <script type="text/javascript">
-        function　Time(){
-          var nntime = document.getElementsByTagName("time");
-          var NewString = nntime[0].innerHTML;
-          document.getElementById("time").innerHTML="最後更新:</br>"+NewString.split("T")[0]+" "+(NewString.split("T")[1]).split("+08:00")[0];
-        }
-        Time();
-      </script>
-      <h3>經緯度查詢</h3>
-      <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
-      <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
-      
+          if($books->SiteName!="")
+          {
+            $sql_basic = "SELECT * FROM `airquality_station` where  `st_name`='$books->SiteName'";
+            $result_basic = mysql_query($sql_basic);
+            $row_basic = mysql_fetch_array($result_basic);
+            ?>
+            <locationName id="<?php echo "locationName".$i;?>" style="display: none;"><?php echo $books->SiteName;?></locationName>
+            <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $row_basic['GPS_Latitude'];?></lat>
+            <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $row_basic['GPS_Longitude'];?></lon>
+            <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->MonitorDate;?></time>
+            <temp id="<?php echo "temp_".$i;?>" style="display: none;"><?php echo $books->PSI;?></temp>
+            <temp1 id="<?php echo "temp1_".$i;?>" style="display: none;"><?php echo$books->SO2SubIndex;?></temp1>
+            <temp2 id="<?php echo "temp2_".$i;?>" style="display: none;"><?php echo $books->COSubIndex;?></temp2>
+            <temp3 id="<?php echo "temp3_".$i;?>" style="display: none;"><?php echo $books->O3SubIndex;?></temp3>
+            <temp4 id="<?php echo "temp4_".$i;?>" style="display: none;"><?php echo $books->PM10SubIndex;?></temp4>
+            <temp5 id="<?php echo "temp5_".$i;?>" style="display: none;"><?php echo $books->NO2SubIndex;?></temp5>
+            <?php
+            $i++;
+          }
+        } 
+        ?>
+        <div id="time">time</div>
+        <script type="text/javascript">
+          function　Time(){
+            var nntime = document.getElementsByTagName("time");
+            var NewString = nntime[0].innerHTML;
+            document.getElementById("time").innerHTML="最後更新:</br>"+nntime[0].innerHTML;
+          }
+          Time();
+        </script>
+        <h3>經緯度查詢</h3>
+        <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
+        <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
 
-    </form>
+
+      </form>
+    </div>
+
   </div>
-
-</div>
 </nav>
 
 <!-- Overlay effect when opening sidenav on small screens -->
@@ -97,7 +110,7 @@
    <div id="map" style="width:100%;height:450px"></div>
 
    
-  <script>
+   <script>
     function initMap() {
   // Create the map.
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -112,24 +125,40 @@
   var nnlat = document.getElementsByTagName("lat");
   var nnlon = document.getElementsByTagName("lon");
   var nntemp = document.getElementsByTagName("temp");
+  var nntemp1 = document.getElementsByTagName("temp1");
+  var nntemp2 = document.getElementsByTagName("temp2");
+  var nntemp3 = document.getElementsByTagName("temp3");
+  var nntemp4 = document.getElementsByTagName("temp4");
+  var nntemp5 = document.getElementsByTagName("temp5");
   var myArray = [];
   var wellCircle;
   for (var s=0; s <nnlocationName.length; s++) {
-     var Color = 180 - Math.round((360 * (parseFloat(nntemp[s].innerHTML)/-99)));
-  
-      wellCircle = new google.maps.Circle({ 
-        strokeColor: "hsl(" + Color + ", 100%, 50%)", 
-        fillColor: "hsl(" + Color + ", 100%, 50%)",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillOpacity: 0.35,
-        map: map,
-        center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
-        radius: 3000
-      });
-  
+   var Color = 360 - Math.round((360 * (parseFloat(nntemp[s].innerHTML)/4)));
+
+   wellCircle = new google.maps.Circle({ 
+    strokeColor: "hsl(" + Color + ", 100%, 50%)", 
+    fillColor: "hsl(" + Color + ", 100%, 50%)",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillOpacity: 0.35,
+    map: map,
+    center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
+    radius: 3000
+  });
+/*
+ echo "地點:".$books->SiteName."</br>";
+     echo "經度:".$row_basic['GPS_Longitude']."</br>";
+     echo "緯度:".$row_basic['GPS_Latitude']."</br>";
+     echo "監測日期:".$books->MonitorDate."</br>";
+     echo "空氣污染指標PSI:".$books->PSI."</br>";
+     echo "二氧化硫PSI副指標:".$books->SO2SubIndex."</br>";
+     echo "一氧化碳PSI副指標:".$books->COSubIndex."</br>";
+     echo "臭氧PSI副指標:".$books->O3SubIndex."</br>";
+     echo "懸浮微粒PSI副指標:".$books->PM10SubIndex."</br>";
+     echo "二氧化氮PSI副指標:".$books->NO2SubIndex."</br>";
+*/
    var infoWindow = new google.maps.InfoWindow({
-    content: "<div>"+nnlocationName[s].innerHTML+"</br>雨量:"+nntemp[s].innerHTML+"</div>",
+    content: "<div>"+nnlocationName[s].innerHTML+"</br>空氣污染指標PSI:"+nntemp[s].innerHTML+"</br>二氧化硫PSI副指標:"+nntemp1[s].innerHTML+"</br>一氧化碳PSI副指標:"+nntemp2[s].innerHTML+"</br>臭氧PSI副指標:"+nntemp3[s].innerHTML+"</br>懸浮微粒PSI副指標:"+nntemp4[s].innerHTML+"</br>二氧化氮PSI副指標:"+nntemp5[s].innerHTML+"</div>",
     maxWidth: 500
   });
    myArray.push(infoWindow);

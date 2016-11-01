@@ -32,6 +32,7 @@
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="humidity.php">濕度</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="Barometric_pressure.php">氣壓</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
+      <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">空氣品質</a></li>
     </ul>
   </div>
 
@@ -42,7 +43,8 @@
       <a href="rainfall.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">雨量</a>
       <a href="humidity.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">濕度</a>
       <a href="Barometric_pressure.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">氣壓</a>
-        <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
+      <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
+      <a href="airquality.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">空氣品質</a>
     </div>
     <div class="w3-clear"></div>
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hide-large" title="close menu">×</a>
@@ -96,7 +98,7 @@
    <div id="map" style="width:100%;height:450px"></div>
 
    
-  <script>
+   <script>
     function initMap() {
   // Create the map.
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -115,19 +117,19 @@
   var myArray = [];
   var wellCircle;
   for (var s=0; s <nnlocationName.length; s++) {
-     var Color = 360 - Math.round((360 * (parseFloat(nntemp1[s].innerHTML)/4)));
-  
-      wellCircle = new google.maps.Circle({ 
-        strokeColor: "hsl(" + Color + ", 100%, 50%)", 
-        fillColor: "hsl(" + Color + ", 100%, 50%)",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillOpacity: 0.35,
-        map: map,
-        center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
-        radius: 3000
-      });
-  
+   var Color = 360 - Math.round((360 * (parseFloat(nntemp1[s].innerHTML)/4)));
+   
+   wellCircle = new google.maps.Circle({ 
+    strokeColor: "hsl(" + Color + ", 100%, 50%)", 
+    fillColor: "hsl(" + Color + ", 100%, 50%)",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillOpacity: 0.35,
+    map: map,
+    center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
+    radius: 3000
+  });
+   
    var infoWindow = new google.maps.InfoWindow({
     content: "<div>"+nnlocationName[s].innerHTML+"</br>風向:"+nntemp[s].innerHTML+"</br>風速:"+nntemp1[s].innerHTML+"</div>",
     maxWidth: 500
