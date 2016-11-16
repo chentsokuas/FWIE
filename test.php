@@ -29,7 +29,7 @@
 ?>
 <p>網格大小:<input name="long" id="long" class="w3-input" value="10"></input></p>
 <input id="btnst" class="w3-blue w3-large w3-center" type ="button"  value="推估"></input>
-<input id="btnst1" class="w3-blue w3-large w3-center" type ="button"  value="清除網格"></input>
+<input id="btnst1" class="w3-blue w3-large w3-center" type ="button"  value="test"></input>
 
 <div id="map" style="width:100%;height:450px"></div>
 <script type="text/javascript" src="./src/gmaps-heatmap.js"></script>
