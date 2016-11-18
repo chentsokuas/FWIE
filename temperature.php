@@ -174,7 +174,7 @@
         {
             // radius should be small ONLY if scaleRadius is true (or small radius is intended)
             "radius": 0.1,
-            "maxOpacity": 0.3, 
+            "maxOpacity": 0.7, 
             // scales the radius based on map zoom
             "scaleRadius": true, 
             // if set to false the heatmap uses the global maximum for colorization
