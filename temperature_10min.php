@@ -13,7 +13,7 @@
     html { height: 100% }
     body { height: 100%; margin: 0; padding: 0 }
   </style>
-
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"></script>
 </head>
 
 <body>
@@ -99,74 +99,63 @@
 
   <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
    <div id="map" style="width:100%;height:450px"></div>
+   <script src="./src/kriging.js" type="text/javascript"></script>
   <script type="text/javascript">
-  function initMap() {
-  // Create the map.
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 7,
-    center: {lat: 23.7, lng: 120.9082103},
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  });
-  var nnlocationName = document.getElementsByTagName("locationName");
-  var nnlat = document.getElementsByTagName("lat");
-  var nnlon = document.getElementsByTagName("lon");
-  var nntemp = document.getElementsByTagName("temp");
-  var btnst = document.getElementById('btnst');
-  var btnst1 = document.getElementById('btnst1');
-  var array_locationName =[];
-  var array_temp =[];
-  var array_lat =[];
-  var array_lon =[];
-  var array_newcenter =[];
-  var array_newlat =[];
-  var array_newlon =[];
-  var cities = [];
-  var new_cities = [];
-  var iii=0;
-  var coloralp="50%";
-
-  for (var i=0;i<nnlocationName.length;i++)
-  {
-   array_locationName.push(nnlocationName[i].innerHTML);
-   array_lat.push(parseFloat(nnlat[i].innerHTML));
-   array_lon.push(parseFloat(nnlon[i].innerHTML));
-   array_temp.push(parseFloat(nntemp[i].innerHTML));
-   cities.push([array_locationName[i],array_lat[i],array_lon[i],array_temp[i]]);
- }
- function Deg2Rad(deg) {
-  return deg * Math.PI / 180;
-}
-
-function PythagorasEquirectangular(lat1, lon1, lat2, lon2) {
-  lat1 = Deg2Rad(lat1);
-  lat2 = Deg2Rad(lat2);
-  lon1 = Deg2Rad(lon1);
-  lon2 = Deg2Rad(lon2);
-  var R = 6371; // km
-  var x = (lon2 - lon1) * Math.cos((lat1 + lat2) / 2);
-  var y = (lat2 - lat1);
-  var d = Math.sqrt(x * x + y * y) * R;
-  return d;
-}
+  var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
+        // map options,
+        var myOptions = {
+          zoom: 7,
+          center: myLatlng
+        };
+        // standard map
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
 
 
-function closest(latitude, longitude) {
-  var mindif = 99999;
-  var closest;
 
-  for (index = 0; index < cities.length; ++index) {
-    var dif = PythagorasEquirectangular(latitude, longitude, cities[index][1], cities[index][2]);
-    if (dif < mindif) {
-      closest = index;
-      mindif = dif;
-    }
-  }
 
-  // echo the nearest city
-  //alert(cities[closest]);
-  new_cities[iii]=cities[closest];
-  iii++;
-}
+        var nnlocationName = document.getElementsByTagName("locationName");
+        var nnlat = document.getElementsByTagName("lat");
+        var nnlon = document.getElementsByTagName("lon");
+        var nntemp = document.getElementsByTagName("temp");
+        var btnst = document.getElementById('btnst');
+        var btnst1 = document.getElementById('btnst1');
+        var array_locationName =[];
+        var array_temp =[];
+        var array_lat =[];
+        var array_lon =[];
+        var array_newcenter =[];
+        var array_newlat =[];
+        var array_newlon =[];
+        var cities = [];
+        var new_cities = [];
+        var new_test=[];
+        var iii=0;
+        var coloralp="50%";
+
+
+        for (var i=0;i<nnlocationName.length;i++)
+        {
+         array_locationName.push(nnlocationName[i].innerHTML);
+         array_lat.push(parseFloat(nnlat[i].innerHTML));
+         array_lon.push(parseFloat(nnlon[i].innerHTML));
+         array_temp.push(parseFloat(nntemp[i].innerHTML));
+         cities.push([array_locationName[i],array_lat[i],array_lon[i],array_temp[i]]);
+         new_test[i]="{lat:"+ array_lat[i]+", lng:"+array_lon[i]+", count:"+array_temp[i]+"}";
+       }
+
+
+      //---------------------------------------------
+    var t = array_temp;
+    var x = array_lat;
+    var y = array_lon;
+    var model = "exponential";
+    var sigma2 = 0, alpha = 100;
+    var variogram = kriging.train(t, x, y, model, sigma2, alpha);
+
+
+     //---------------------------------------------
+
+
 
 
 
@@ -178,7 +167,7 @@ function closest(latitude, longitude) {
       west: 120.03322005271912
       */
       btnst1.onclick =function(){
-        window.location.reload();
+       alert('sdf');
       }
       btnst.onclick =function(){
        var myArray0 = [];
@@ -203,32 +192,32 @@ function closest(latitude, longitude) {
         array_newlat.push(P_center.lat());
         array_newlon.push(P_center.lng());
 
- closest(array_newlat[i],array_newlon[i]);
-var rectangle = new google.maps.Rectangle(rectangleOptions);
- var Color = 360 - Math.round((360 * new_cities[i][3]/30));
-rectangle.setOptions({ fillColor: "hsl(" + Color + ", 100%, 50%)" });
-rectangle.setMap(map);
-rectangle.setBounds(latLngBounds);
-if(count!=Math.ceil(SN)+1)
-{
-  Map_Lat = Map_Lat - (dis*2);
-}
-else
-{
- count =1;
- Map_Lat=25.34;
- Map_lng = Map_lng  + (dis*2);
-}
+      //  closest(array_newlat[i],array_newlon[i]);
+        var rectangle = new google.maps.Rectangle(rectangleOptions);
+        var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/30));
+        rectangle.setOptions({ fillColor: "hsl(" + Color + ", 100%, 50%)" });
+        rectangle.setMap(map);
+        rectangle.setBounds(latLngBounds);
+        if(count!=Math.ceil(SN)+1)
+        {
+          Map_Lat = Map_Lat - (dis*2);
+        }
+        else
+        {
+         count =1;
+         Map_Lat=25.34;
+         Map_lng = Map_lng  + (dis*2);
+       }
 
 
-var infoWindow0 = new google.maps.InfoWindow({
-  content: "<div>"+"中心點:"+P_center+"</Br>溫度:"+new_cities[i][3]+"</div>",
-  maxWidth: 500
-});
-myArray0.push(infoWindow0);
-fn0(i);
+       var infoWindow0 = new google.maps.InfoWindow({
+        content: "<div>"+"中心點:"+P_center+"</Br>溫度:"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
+        maxWidth: 500
+      });
+       myArray0.push(infoWindow0);
+       fn0(i);
 
-}
+     }
 //alert(array_newcenter[0]);
 function fn0(a){
 
@@ -280,11 +269,12 @@ function fn1(a){
   myArray[a].setPosition(ev.latLng);
   myArray[a].open(map);
 });
+
 }
-}
+
+
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"
-async defer></script>
+
 
 </div>
 <footer class="w3-container w3-section w3-padding-32 w3-card-4 w3-light-grey w3-center w3-opacity">
