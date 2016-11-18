@@ -13,6 +13,8 @@
     html { height: 100% }
     body { height: 100%; margin: 0; padding: 0 }
   </style>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"></script>
+  <script src="./src/kriging.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -31,8 +33,8 @@
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="rainfall.php">雨量</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="humidity.php">濕度</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="Barometric_pressure.php">氣壓</a></li>
-      <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
-      <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">空氣品質</a></li>
+       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
+        <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">空氣品質</a></li>
     </ul>
   </div>
 
@@ -43,44 +45,36 @@
       <a href="rainfall.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">雨量</a>
       <a href="humidity.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">濕度</a>
       <a href="Barometric_pressure.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">氣壓</a>
-      <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
-        <a href="airquality.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">空氣品質</a>
+       <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
+         <a href="airquality.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">空氣品質</a>
     </div>
     <div class="w3-clear"></div>
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hide-large" title="close menu">×</a>
     <div id="menuTut" class="myMenu">
       <div class="w3-container w3-padding-top">
         <form action="index.php">
-         <?php
+           <?php
          include("connect.php");
          //http://data.gov.tw/node/6350
-         $xml=simplexml_load_file("http://opendata.epa.gov.tw/ws/Data/AQXDaily/?format=xml") or die("目前opendata資料出現問題");
-         $i=0;
-
-
+         $xml=simplexml_load_file("http://opendata2.epa.gov.tw/AQX.xml") or die("目前opendata資料出現問題");
+          //$xml=simplexml_load_file("./opendata/AQX.xml") or die("目前opendata資料出現問題");
          foreach($xml->children() as $books) { 
           if($books->SiteName!="")
           {
-            $sql_basic = "SELECT * FROM `airquality_station` where  `st_name`='$books->SiteName'";
+            $sql_basic = "SELECT st_name,GPS_Longitude,GPS_Latitude FROM `airquality_station` where  `st_name`='$books->SiteName'";
             $result_basic = mysql_query($sql_basic);
             $row_basic = mysql_fetch_array($result_basic);
             ?>
             <locationName id="<?php echo "locationName".$i;?>" style="display: none;"><?php echo $books->SiteName;?></locationName>
-            <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $row_basic['GPS_Latitude'];?></lat>
-            <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $row_basic['GPS_Longitude'];?></lon>
-            <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->MonitorDate;?></time>
-            <temp id="<?php echo "temp_".$i;?>" style="display: none;"><?php echo $books->PSI;?></temp>
-            <temp1 id="<?php echo "temp1_".$i;?>" style="display: none;"><?php echo$books->SO2SubIndex;?></temp1>
-            <temp2 id="<?php echo "temp2_".$i;?>" style="display: none;"><?php echo $books->COSubIndex;?></temp2>
-            <temp3 id="<?php echo "temp3_".$i;?>" style="display: none;"><?php echo $books->O3SubIndex;?></temp3>
-            <temp4 id="<?php echo "temp4_".$i;?>" style="display: none;"><?php echo $books->PM10SubIndex;?></temp4>
-            <temp5 id="<?php echo "temp5_".$i;?>" style="display: none;"><?php echo $books->NO2SubIndex;?></temp5>
+            <lat style="display: none;"><?php echo $row_basic['GPS_Latitude'];?></lat>
+            <lon style="display: none;"><?php echo $row_basic['GPS_Longitude'];?></lon>
+            <time style="display: none;"><?php echo $books->PublishTime;?></time>
+            <temp style="display: none;"><?php echo $books->PSI;?></temp>
             <?php
-            $i++;
           }
         } 
         ?>
-        <div id="time">time</div>
+      <div id="time">time</div>
         <script type="text/javascript">
           function　Time(){
             var nntime = document.getElementsByTagName("time");
@@ -89,15 +83,17 @@
           }
           Time();
         </script>
-        <h3>經緯度查詢</h3>
-        <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
-        <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
 
+       <h3>經緯度查詢</h3>
+      <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
+      <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
+      <p>網格大小:<input name="long" id="long" class="w3-input" value="5"></input></p>
+      <input id="btnst" class="w3-blue w3-large w3-center" type ="button"  value="推估"></input>
 
-      </form>
-    </div>
-
+    </form>
   </div>
+
+</div>
 </nav>
 
 <!-- Overlay effect when opening sidenav on small screens -->
@@ -108,72 +104,171 @@
 
   <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
    <div id="map" style="width:100%;height:450px"></div>
+ <script type="text/javascript">
+    var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
+        // map options,
+        var myOptions = {
+          zoom: 7,
+          center: myLatlng
+        };
+        // standard map
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-   
-   <script>
-    function initMap() {
-  // Create the map.
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 7,
-    center: {lat: 23.7, lng: 120.9082103},
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  });
 
-  // Construct the circle for each value in citymap.
-  // Note: We scale the area of the circle based on the population.
-  var nnlocationName = document.getElementsByTagName("locationName");
-  var nnlat = document.getElementsByTagName("lat");
-  var nnlon = document.getElementsByTagName("lon");
-  var nntemp = document.getElementsByTagName("temp");
-  var nntemp1 = document.getElementsByTagName("temp1");
-  var nntemp2 = document.getElementsByTagName("temp2");
-  var nntemp3 = document.getElementsByTagName("temp3");
-  var nntemp4 = document.getElementsByTagName("temp4");
-  var nntemp5 = document.getElementsByTagName("temp5");
-  var myArray = [];
-  var wellCircle;
-  for (var s=0; s <nnlocationName.length; s++) {
-   var Color = 360 - Math.round((360 * (parseFloat(nntemp[s].innerHTML)/4)));
 
-   wellCircle = new google.maps.Circle({ 
-    strokeColor: "hsl(" + Color + ", 100%, 50%)", 
-    fillColor: "hsl(" + Color + ", 100%, 50%)",
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillOpacity: 0.35,
-    map: map,
-    center: new google.maps.LatLng(parseFloat(nnlat[s].innerHTML),parseFloat(nnlon[s].innerHTML)),
-    radius: 3000
-  });
+        var nnlocationName = document.getElementsByTagName("locationName");
+        var nnlat = document.getElementsByTagName("lat");
+        var nnlon = document.getElementsByTagName("lon");
+        var nntemp = document.getElementsByTagName("temp");
+        var btnst = document.getElementById('btnst');
+        var array_locationName =[];
+        var array_temp =[];
+        var array_lat =[];
+        var array_lon =[];
+        var array_newcenter =[];
+        var array_newlat =[];
+        var array_newlon =[];
+     
+
+
+
+        for (var i=0;i<nnlocationName.length;i++)
+        {
+         array_locationName.push(nnlocationName[i].innerHTML);
+         array_lat.push(parseFloat(nnlat[i].innerHTML));
+         array_lon.push(parseFloat(nnlon[i].innerHTML));
+         array_temp.push(parseFloat(nntemp[i].innerHTML));
+        
+       }
+
+
+      //---------------------------------------------
+      var t = array_temp;
+      var x = array_lat;
+      var y = array_lon;
+      var model = "exponential";
+      var sigma2 = 0, alpha = 100;
+      var variogram = kriging.train(t, x, y, model, sigma2, alpha);
+
+
+     //---------------------------------------------
+
+
+
+
+
+//以下網格
 /*
- echo "地點:".$books->SiteName."</br>";
-     echo "經度:".$row_basic['GPS_Longitude']."</br>";
-     echo "緯度:".$row_basic['GPS_Latitude']."</br>";
-     echo "監測日期:".$books->MonitorDate."</br>";
-     echo "空氣污染指標PSI:".$books->PSI."</br>";
-     echo "二氧化硫PSI副指標:".$books->SO2SubIndex."</br>";
-     echo "一氧化碳PSI副指標:".$books->COSubIndex."</br>";
-     echo "臭氧PSI副指標:".$books->O3SubIndex."</br>";
-     echo "懸浮微粒PSI副指標:".$books->PM10SubIndex."</br>";
-     echo "二氧化氮PSI副指標:".$books->NO2SubIndex."</br>";
-*/
-   var infoWindow = new google.maps.InfoWindow({
-    content: "<div>"+nnlocationName[s].innerHTML+"</br>空氣污染指標PSI:"+nntemp[s].innerHTML+"</br>二氧化硫PSI副指標:"+nntemp1[s].innerHTML+"</br>一氧化碳PSI副指標:"+nntemp2[s].innerHTML+"</br>臭氧PSI副指標:"+nntemp3[s].innerHTML+"</br>懸浮微粒PSI副指標:"+nntemp4[s].innerHTML+"</br>二氧化氮PSI副指標:"+nntemp5[s].innerHTML+"</div>",
-    maxWidth: 500
-  });
-   myArray.push(infoWindow);
-   fn1(s);
- };
- function fn1(a){
-   google.maps.event.addListener(wellCircle, 'click', function(ev) {
-     myArray[a].setPosition(ev.latLng);
-     myArray[a].open(map);
-   });
- }
+      north: 25.34,
+      south: 21.871,
+      east: 122.03,
+      west: 120.03322005271912
+      */
+      btnst.onclick =function(){
+       var myArray0 = [];
+       var SN = (25.34-21.871)*55/document.getElementById('long').value;
+       var ES = (122.03-120.03322005271912)*55/document.getElementById('long').value;
+       var dis = document.getElementById('long').value/110;
+       var Map_Lat=25.34;
+       var Map_lng = 120.03322005271912;
+       var count =1;
+       var rectangleOptions = {
+        strokeOpacity: 0.1,
+        fillColor: "hsl(126, 100%, 50%)"
+      };
+      for (var i = 0; i < Math.ceil(SN)*(Math.ceil(ES)+1); i++) {
+        count++;
+
+        var P1 = new google.maps.LatLng(Map_Lat + dis, Map_lng - dis);
+        var P2 = new google.maps.LatLng(Map_Lat - dis, Map_lng + dis);
+        var P_center = new google.maps.LatLng(Map_Lat, Map_lng);
+        var latLngBounds = new google.maps.LatLngBounds(P1, P2);
+        array_newcenter.push(P_center);
+        array_newlat.push(P_center.lat());
+        array_newlon.push(P_center.lng());
+
+      //  closest(array_newlat[i],array_newlon[i]);
+      var rectangle = new google.maps.Rectangle(rectangleOptions);
+      var Color =  360-Math.round(360*(kriging.predict(array_newlat[i],array_newlon[i], variogram)/100));
+      rectangle.setOptions({  fillColor: "hsl(" + Color + ", 100%, 50%)" });
+      rectangle.setMap(map);
+      rectangle.setBounds(latLngBounds);
+      if(count!=Math.ceil(SN)+1)
+      {
+        Map_Lat = Map_Lat - (dis*2);
+      }
+      else
+      {
+       count =1;
+       Map_Lat=25.34;
+       Map_lng = Map_lng  + (dis*2);
+     }
+
+
+     var infoWindow0 = new google.maps.InfoWindow({
+      content: "<div>"+"中心點:"+P_center+"</Br>PSI:"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
+      maxWidth: 500
+    });
+     myArray0.push(infoWindow0);
+     fn0(i);
+
+   }
+
+function fn0(a){
+
+ google.maps.event.addListener(rectangle, 'click', function(ev) {
+  for(var hz=0;hz<myArray0.length;hz++)
+  {
+    myArray0[hz].close();
+  }
+
+  myArray0[a].setPosition(ev.latLng);
+  myArray0[a].open(map);
+});
 }
+
+
+
+}
+//以下圓圈
+var myArray = [];
+var wellCircle;
+for (var s=0; s <nnlocationName.length; s++) {
+ var Color = 360 - Math.round((360 * array_temp[s]/100));
+ wellCircle = new google.maps.Circle({ 
+  strokeColor: "hsl(" + Color + ", 100%, 50%)", 
+  fillColor: "hsl(" + Color + ", 100%, 50%)",
+  strokeOpacity: 0.8,
+  strokeWeight: 2,
+  fillOpacity: 0.35,
+  map: map,
+  center: new google.maps.LatLng(array_lat[s],array_lon[s]),
+  radius: 3000,
+  zIndex:99999
+});
+
+ var infoWindow = new google.maps.InfoWindow({
+  content: "<div>"+nnlocationName[s].innerHTML+"</br>PSI:"+nntemp[s].innerHTML+"</div>",
+  maxWidth: 500
+});
+ myArray.push(infoWindow);
+ fn1(s);
+};
+function fn1(a){
+ google.maps.event.addListener(wellCircle, 'click', function(ev) {
+  for(var h=0;h<myArray.length;h++)
+  {
+    myArray[h].close();
+  }
+
+  myArray[a].setPosition(ev.latLng);
+  myArray[a].open(map);
+});
+
+}
+
+
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"
-async defer></script>
 
 </div>
 <footer class="w3-container w3-section w3-padding-32 w3-card-4 w3-light-grey w3-center w3-opacity">
