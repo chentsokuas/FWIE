@@ -13,7 +13,7 @@
     html { height: 100% }
     body { height: 100%; margin: 0; padding: 0 }
   </style>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"></script>
   <script src="./src/kriging.js" type="text/javascript"></script>
 </head>
 
@@ -33,8 +33,8 @@
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="rainfall.php">雨量</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="humidity.php">濕度</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="Barometric_pressure.php">氣壓</a></li>
-       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
-        <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">空氣品質</a></li>
+      <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
+      <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">空氣品質</a></li>
     </ul>
   </div>
 
@@ -45,22 +45,22 @@
       <a href="rainfall.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">雨量</a>
       <a href="humidity.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">濕度</a>
       <a href="Barometric_pressure.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">氣壓</a>
-       <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
-         <a href="airquality.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">空氣品質</a>
+      <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
+      <a href="airquality.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">空氣品質</a>
     </div>
     <div class="w3-clear"></div>
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hide-large" title="close menu">×</a>
     <div id="menuTut" class="myMenu">
       <div class="w3-container w3-padding-top">
         <form action="index.php">
-           <?php
+         <?php
          include("connect.php");
          //http://data.gov.tw/node/6350
          $xml=simplexml_load_file("http://opendata2.epa.gov.tw/AQX.xml") or die("目前opendata資料出現問題");
           //$xml=simplexml_load_file("./opendata/AQX.xml") or die("目前opendata資料出現問題");
-         $PSI = 'PSI';
+         $co = 'CO';
          foreach($xml->children() as $books) { 
-          if($books->SiteName!="" && $books->$PSI!="")
+          if($books->SiteName!="" && $books->$co!="")
           {
             $sql_basic = "SELECT st_name,GPS_Longitude,GPS_Latitude FROM `airquality_station` where  `st_name`='$books->SiteName'";
             $result_basic = mysql_query($sql_basic);
@@ -70,12 +70,12 @@
             <lat style="display: none;"><?php echo $row_basic['GPS_Latitude'];?></lat>
             <lon style="display: none;"><?php echo $row_basic['GPS_Longitude'];?></lon>
             <time style="display: none;"><?php echo $books->PublishTime;?></time>
-            <temp style="display: none;"><?php echo $books->$PSI;?></temp>
+            <temp style="display: none;"><?php echo $books->$co;?></temp>
             <?php
           }
         } 
         ?>
-      <div id="time">time</div>
+        <div id="time">time</div>
         <script type="text/javascript">
           function　Time(){
             var nntime = document.getElementsByTagName("time");
@@ -85,16 +85,16 @@
           Time();
         </script>
 
-       <h3>經緯度查詢</h3>
-      <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
-      <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
-      <p>網格大小:<input name="long" id="long" class="w3-input" value="5"></input></p>
-      <input id="btnst" class="w3-blue w3-large w3-center" type ="button"  value="推估"></input>
+        <h3>經緯度查詢</h3>
+        <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
+        <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
+        <p>網格大小:<input name="long" id="long" class="w3-input" value="5"></input></p>
+        <input id="btnst" class="w3-blue w3-large w3-center" type ="button"  value="推估"></input>
 
-    </form>
+      </form>
+    </div>
+
   </div>
-
-</div>
 </nav>
 
 <!-- Overlay effect when opening sidenav on small screens -->
@@ -102,20 +102,19 @@
 
 <!-- Main content: shift it to the right by 270 pixels when the sidenav is visible -->
 <div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;">
+
   <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
     <ul class="w3-navbar w3-container w3-section w3-topbar w3-bottombar w3-border-red w3-pale-red w3-center " style="z-index:4;">
-      <li class="w3-red"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">污染指標(PSI)</a></li>
-      <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_co.php">一氧化碳(CO)</a></li>
+      <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">污染指標(PSI)</a></li>
+      <li class="w3-red"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_co.php">一氧化碳(CO)</a></li>
       <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_no2.php">二氧化氮(NO2)</a></li>
       <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_o3.php">臭氧(O3)</a></li>
       <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_pm10.php">懸浮微粒(PM10)</a></li>
       <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_pm25.php">細懸浮微粒(PM2.5)</a></li>
       <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_so2.php">二氧化硫(SO2)</a></li>
     </ul>
-  
-    
    <div id="map" style="width:100%;height:450px"></div>
- <script type="text/javascript">
+   <script type="text/javascript">
     var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
         // map options,
         var myOptions = {
@@ -139,7 +138,7 @@
         var array_newcenter =[];
         var array_newlat =[];
         var array_newlon =[];
-     
+
 
 
 
@@ -149,7 +148,7 @@
          array_lat.push(parseFloat(nnlat[i].innerHTML));
          array_lon.push(parseFloat(nnlon[i].innerHTML));
          array_temp.push(parseFloat(nntemp[i].innerHTML));
-        
+
        }
 
 
@@ -200,7 +199,7 @@
 
       //  closest(array_newlat[i],array_newlon[i]);
       var rectangle = new google.maps.Rectangle(rectangleOptions);
-      var Color =  360-Math.round(360*(kriging.predict(array_newlat[i],array_newlon[i], variogram)/100));
+      var Color =  100-Math.round(180*(kriging.predict(array_newlat[i],array_newlon[i], variogram)/0.5));
       rectangle.setOptions({  fillColor: "hsl(" + Color + ", 100%, 50%)" });
       rectangle.setMap(map);
       rectangle.setBounds(latLngBounds);
@@ -217,7 +216,7 @@
 
 
      var infoWindow0 = new google.maps.InfoWindow({
-      content: "<div>"+"中心點:"+P_center+"</Br>污染指標(PSI):"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
+      content: "<div>"+"中心點:"+P_center+"</Br>一氧化碳(CO):"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
       maxWidth: 500
     });
      myArray0.push(infoWindow0);
@@ -225,27 +224,27 @@
 
    }
 
-function fn0(a){
+   function fn0(a){
 
- google.maps.event.addListener(rectangle, 'click', function(ev) {
-  for(var hz=0;hz<myArray0.length;hz++)
-  {
-    myArray0[hz].close();
-  }
+     google.maps.event.addListener(rectangle, 'click', function(ev) {
+      for(var hz=0;hz<myArray0.length;hz++)
+      {
+        myArray0[hz].close();
+      }
 
-  myArray0[a].setPosition(ev.latLng);
-  myArray0[a].open(map);
-});
-}
+      myArray0[a].setPosition(ev.latLng);
+      myArray0[a].open(map);
+    });
+   }
 
 
 
-}
+ }
 //以下圓圈
 var myArray = [];
 var wellCircle;
 for (var s=0; s <nnlocationName.length; s++) {
- var Color = 360 - Math.round((360 * array_temp[s]/100));
+ var Color = 100 - Math.round((180 * array_temp[s]/0.5));
  wellCircle = new google.maps.Circle({ 
   strokeColor: "hsl(" + Color + ", 100%, 50%)", 
   fillColor: "hsl(" + Color + ", 100%, 50%)",
@@ -259,7 +258,7 @@ for (var s=0; s <nnlocationName.length; s++) {
 });
 
  var infoWindow = new google.maps.InfoWindow({
-  content: "<div>"+nnlocationName[s].innerHTML+"</br>污染指標(PSI):"+nntemp[s].innerHTML+"</div>",
+  content: "<div>"+nnlocationName[s].innerHTML+"</br>一氧化碳(CO):"+nntemp[s].innerHTML+"</div>",
   maxWidth: 500
 });
  myArray.push(infoWindow);

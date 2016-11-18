@@ -58,9 +58,9 @@
          //http://data.gov.tw/node/6350
          $xml=simplexml_load_file("http://opendata2.epa.gov.tw/AQX.xml") or die("目前opendata資料出現問題");
           //$xml=simplexml_load_file("./opendata/AQX.xml") or die("目前opendata資料出現問題");
-         $PSI = 'PSI';
+         $pm10 = 'PM10';
          foreach($xml->children() as $books) { 
-          if($books->SiteName!="" && $books->$PSI!="")
+          if($books->SiteName!="" && $books->$pm10!="")
           {
             $sql_basic = "SELECT st_name,GPS_Longitude,GPS_Latitude FROM `airquality_station` where  `st_name`='$books->SiteName'";
             $result_basic = mysql_query($sql_basic);
@@ -70,7 +70,7 @@
             <lat style="display: none;"><?php echo $row_basic['GPS_Latitude'];?></lat>
             <lon style="display: none;"><?php echo $row_basic['GPS_Longitude'];?></lon>
             <time style="display: none;"><?php echo $books->PublishTime;?></time>
-            <temp style="display: none;"><?php echo $books->$PSI;?></temp>
+            <temp style="display: none;"><?php echo $books->$pm10;?></temp>
             <?php
           }
         } 
@@ -102,18 +102,17 @@
 
 <!-- Main content: shift it to the right by 270 pixels when the sidenav is visible -->
 <div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;">
+
   <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
     <ul class="w3-navbar w3-container w3-section w3-topbar w3-bottombar w3-border-red w3-pale-red w3-center " style="z-index:4;">
-      <li class="w3-red"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">污染指標(PSI)</a></li>
+      <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">污染指標(PSI)</a></li>
       <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_co.php">一氧化碳(CO)</a></li>
       <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_no2.php">二氧化氮(NO2)</a></li>
       <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_o3.php">臭氧(O3)</a></li>
-      <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_pm10.php">懸浮微粒(PM10)</a></li>
+      <li class="w3-red"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_pm10.php">懸浮微粒(PM10)</a></li>
       <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_pm25.php">細懸浮微粒(PM2.5)</a></li>
       <li><a class="w3-hover-white w3-padding-16 w3-center" href="airquality_so2.php">二氧化硫(SO2)</a></li>
     </ul>
-  
-    
    <div id="map" style="width:100%;height:450px"></div>
  <script type="text/javascript">
     var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
@@ -217,7 +216,7 @@
 
 
      var infoWindow0 = new google.maps.InfoWindow({
-      content: "<div>"+"中心點:"+P_center+"</Br>污染指標(PSI):"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
+      content: "<div>"+"中心點:"+P_center+"</Br>懸浮微粒(PM10):"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
       maxWidth: 500
     });
      myArray0.push(infoWindow0);
@@ -259,7 +258,7 @@ for (var s=0; s <nnlocationName.length; s++) {
 });
 
  var infoWindow = new google.maps.InfoWindow({
-  content: "<div>"+nnlocationName[s].innerHTML+"</br>污染指標(PSI):"+nntemp[s].innerHTML+"</div>",
+  content: "<div>"+nnlocationName[s].innerHTML+"</br>懸浮微粒(PM10):"+nntemp[s].innerHTML+"</div>",
   maxWidth: 500
 });
  myArray.push(infoWindow);
