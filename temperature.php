@@ -37,6 +37,7 @@
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="Barometric_pressure.php">氣壓</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">空氣品質</a></li>
+            <li class="w3-hide-medium w3-hide-small w3-right w3-pale-green"><a class="w3-hover-white w3-padding-16 w3-center" href="information.php">農地資訊</a></li>
 
 
     </ul>
@@ -51,6 +52,7 @@
       <a href="Barometric_pressure.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">氣壓</a>
       <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
       <a href="airquality.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">空氣品質</a>
+        <a href="information.php" class="w3-left w3-hover-white w3-padding-16 w3-large w3-center w3-pale-green" style="width:100%">農地資訊</a>
     </div>
     <div class="w3-clear"></div>
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hide-large" title="close menu">×</a>
@@ -237,7 +239,7 @@
 
 
         var rectangle = new google.maps.Rectangle(rectangleOptions);
-        var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/35));
+        var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/30));
         rectangle.setOptions({ fillColor: "hsl(" + Color + ", 100%, 50%)" });
         rectangle.setMap(map);
         rectangle.setBounds(latLngBounds);
@@ -282,7 +284,7 @@
 var myArray = [];
 var wellCircle;
 for (var s=0; s <nnlocationName.length; s++) {
- var Color = 360 - Math.round((360 * array_temp[s]/35));
+ var Color = 360 - Math.round((360 * array_temp[s]/30));
  wellCircle = new google.maps.Circle({ 
   strokeColor: "hsl(" + Color + ", 100%, 50%)", 
   fillColor: "hsl(" + Color + ", 100%, 50%)",
