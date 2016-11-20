@@ -15,6 +15,7 @@
   </style>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"></script>
   <script src="./src/kriging.js" type="text/javascript"></script>
+
 </head>
 
 <body>
@@ -35,8 +36,7 @@
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="Barometric_pressure.php">氣壓</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">空氣品質</a></li>
-
-
+            <li class="w3-hide-medium w3-hide-small w3-right w3-pale-green"><a class="w3-hover-white w3-padding-16 w3-center" href="information.php">農地資訊</a></li>
     </ul>
   </div>
 
@@ -49,13 +49,14 @@
       <a href="Barometric_pressure.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">氣壓</a>
       <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
       <a href="airquality.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">空氣品質</a>
+        <a href="information.php" class="w3-left w3-hover-white w3-padding-16 w3-large w3-center w3-pale-green" style="width:100%">農地資訊</a>
     </div>
     <div class="w3-clear"></div>
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hide-large" title="close menu">×</a>
     <div id="menuTut" class="myMenu">
       <div class="w3-container w3-padding-top">
-       
-         <?php
+        <form action="index.php">
+        <?php
          $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
          //$xml=simplexml_load_file("./opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
          $i=0;
@@ -82,17 +83,14 @@
         }
         Time();
       </script>
-      <form action="information1.php" method="post">
       <h3>經緯度查詢</h3>
       <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
       <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
-      <input id="btnst" class="w3-blue w3-large w3-center" type ="button"  value="推估"></input>
-       <input type="text" name="a1" id="a1" value="">
-   <input type="text" name="a2" id="a2" value="">
-      <button type="submit">存入資料庫</button>
+      <input class="w3-red w3-large w3-center" type ="button" onclick="javascript:location.href='temperature.php'" value="1小時版本"></input>
+      <p>網格大小:<input name="long" id="long" class="w3-input" value="5"></input></p>
 
 
-    
+    </form>
   </div>
 
 </div>
@@ -105,8 +103,11 @@
 <div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;">
 
   <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
-  
    <div id="map" style="width:100%;height:450px"></div>
+   <form name="myform3" action="" method="post">
+<input type="hidden" name="temperature" value="">
+</form>
+
 
    <script type="text/javascript">
     var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
@@ -117,13 +118,15 @@
         };
         // standard map
         map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+
+
+
         var nnlocationName = document.getElementsByTagName("locationName");
         var nnlat = document.getElementsByTagName("lat");
         var nnlon = document.getElementsByTagName("lon");
         var nntemp = document.getElementsByTagName("temp");
-        var btnst = document.getElementById('btnst');
-        var a1 = document.getElementById('a1');
-        var a2 = document.getElementById('a2');
+
         var array_locationName =[];
         var array_temp =[];
         var array_lat =[];
@@ -140,6 +143,7 @@
          array_lat.push(parseFloat(nnlat[i].innerHTML));
          array_lon.push(parseFloat(nnlon[i].innerHTML));
          array_temp.push(parseFloat(nntemp[i].innerHTML));
+       
        }
 
 
@@ -151,19 +155,33 @@
       var sigma2 = 0, alpha = 100;
       var variogram = kriging.train(t, x, y, model, sigma2, alpha);
 
+
      //---------------------------------------------
 
 
-     btnst.onclick =function(){
 
-       var SN = (25.34-21.871)*55/5;
-       var ES = (122.03-120.03322005271912)*55/5;
-       var dis = 5/110;
+
+
+//以下網格
+/*
+      north: 25.34,
+      south: 21.871,
+      east: 122.03,
+      west: 120.03322005271912
+      */
+
+       var myArray0 = [];
+       var SN = (25.34-21.871)*55/document.getElementById('long').value;
+       var ES = (122.03-120.03322005271912)*55/document.getElementById('long').value;
+       var dis = document.getElementById('long').value/110;
        var Map_Lat=25.34;
        var Map_lng = 120.03322005271912;
        var count =1;
-
-       for (var i = 0; i < Math.ceil(SN)*(Math.ceil(ES)+1); i++) {
+       var rectangleOptions = {
+        strokeOpacity: 0.1,
+        fillColor: "hsl(126, 100%, 50%)"
+      };
+      for (var i = 0; i < Math.ceil(SN)*(Math.ceil(ES)+1); i++) {
         count++;
 
         var P1 = new google.maps.LatLng(Map_Lat + dis, Map_lng - dis);
@@ -173,39 +191,51 @@
         array_newcenter.push(P_center);
         array_newlat.push(P_center.lat());
         array_newlon.push(P_center.lng());
-     
 
-
-        if(count!=Math.ceil(SN)+1)
-        {
-          Map_Lat = Map_Lat - (dis*2);
-        }
-        else
-        {
-         count =1;
-         Map_Lat=25.34;
-         Map_lng = Map_lng  + (dis*2);
-       }
-
+   
+      var rectangle = new google.maps.Rectangle(rectangleOptions);
+      var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/30));
+      rectangle.setOptions({ fillColor: "hsl(" + Color + ", 100%, 50%)" });
+      rectangle.setMap(map);
+      rectangle.setBounds(latLngBounds);
+      if(count!=Math.ceil(SN)+1)
+      {
+        Map_Lat = Map_Lat - (dis*2);
+      }
+      else
+      {
+       count =1;
+       Map_Lat=25.34;
+       Map_lng = Map_lng  + (dis*2);
      }
 
-     for(var y=0;y<array_newlat.length;y++)
-       {
-        
 
-            a1.value += array_newlat[y]+",";
-            a2.value += array_newlon[y]+",";
-          
-       }
+document.myform3.temperature.value += kriging.predict(array_newlat[i],array_newlon[i], variogram)+",";
 
-      
+
    }
 
 
+setTimeout("document.myform3.submit()",3600000);
+</script>
+
+<?php
+if(isset($_POST["temperature"])){
+  $temperature = $_POST["temperature"];
+  echo $temperature;
+  include("connect.php");
+$NewString = split ('[,]', $temperature);
+date_default_timezone_set("Asia/Taipei");
+$datetime =  date("Y-m-d H:i:s") ; 
+for($y=0;$y<sizeof($NewString)-1;$y++){
+  $zz=$y+1;
+  $query="INSERT INTO `onehour`(`gps_id`, `temperature`, `time`) VALUES ('".$zz."','".$NewString[$y]."','".$datetime."')";
+  mysql_query($query);
+}
 
 
- </script>
-</form>
+}
+?>
 
 </div>
 <footer class="w3-container w3-section w3-padding-32 w3-card-4 w3-light-grey w3-center w3-opacity">

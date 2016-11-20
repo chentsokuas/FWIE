@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主機: 127.0.0.1
--- 產生時間： 2016-11-20 16:49:39
+-- 產生時間： 2016-11-20 20:12:19
 -- 伺服器版本: 10.1.16-MariaDB
 -- PHP 版本： 5.6.24
 
@@ -160,11 +160,13 @@ INSERT INTO `crop_waring` (`id`, `user_id`, `crop_id`, `temperature_warning`, `h
 (1, 1, 1, '18.5 ~ 32.5', '0.4 ~ 0.85'),
 (2, 1, 2, '16.5 ~ 30', '0.5 ~ 0.75'),
 (3, 1, 3, '16.5 ~ 28.5', '0.3 ~ 0.85'),
-(4, 2, 1, '0', '0'),
-(5, 2, 3, '10~20', '0'),
 (6, 2, 4, '20.5 ~ 32.5', '0'),
 (7, 3, 2, '10 ~ 23', '0.1 ~ 0.9'),
-(8, 3, 4, '0', '0');
+(8, 3, 4, '0', '0'),
+(9, 4, 3, '23 ~ 25', '0.5 ~0.8'),
+(10, 4, 2, '0', '0'),
+(11, 2, 1, '16.5 ~ 30', '0.1 ~ 0.9'),
+(12, 0, 0, '21.955798560408304,22.13483330239137,22.31020583104635,22.48192107632248,22.65058744406962,22.817488936289507,22.98448487809309,23.153670237201894,23.326796385203334,23.504565555552645,23.686041469807535,23.86849324679633,24.04789726756341,24.219961876540', '');
 
 -- --------------------------------------------------------
 
@@ -1084,6 +1086,19 @@ INSERT INTO `gps_grid` (`id`, `GPS_Longitude`, `GPS_Latitude`) VALUES
 -- --------------------------------------------------------
 
 --
+-- 資料表結構 `onehour`
+--
+
+CREATE TABLE `onehour` (
+  `id` int(11) NOT NULL,
+  `gps_id` int(11) NOT NULL,
+  `temperature` float NOT NULL,
+  `time` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 資料表結構 `user`
 --
 
@@ -1104,7 +1119,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `login`, `password`, `GPS_Longitude`, `GPS_Latitude`, `user_name`, `user_email`) VALUES
 (1, 'jescal0001', 'c037631438', 120.48776550726461, 22.6127272727273, '林阿柚', 'jescal0001@gmail.com'),
 (2, 'test', 'test', 100, 23, 'test', 'jescal0001@gmail.com'),
-(3, 'test1', 'test1', 120, 23.5, '宥豪', 'jescal0001@gmail.com');
+(3, 'test1', 'test1', 120, 23.5, '宥豪', 'jescal0001@gmail.com'),
+(4, 'test2', 'test2', 120.23559686, 23.856786, '測試員2號', 'jescal0001@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -1184,6 +1200,12 @@ ALTER TABLE `gps_grid`
   ADD PRIMARY KEY (`id`);
 
 --
+-- 資料表索引 `onehour`
+--
+ALTER TABLE `onehour`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- 資料表索引 `user`
 --
 ALTER TABLE `user`
@@ -1208,17 +1230,22 @@ ALTER TABLE `crop`
 -- 使用資料表 AUTO_INCREMENT `crop_waring`
 --
 ALTER TABLE `crop_waring`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- 使用資料表 AUTO_INCREMENT `gps_grid`
 --
 ALTER TABLE `gps_grid`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=898;
 --
+-- 使用資料表 AUTO_INCREMENT `onehour`
+--
+ALTER TABLE `onehour`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- 使用資料表 AUTO_INCREMENT `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
