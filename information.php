@@ -223,7 +223,7 @@
    </form>
      <form action="corp_delete.php" method="post">
         <input id="id_d" name="id_d" value="<?php echo $row_crop_waring[id];?>" style="display: none">
-         <button class="w3-btn-block  w3-grey w3-section w3-padding" type="submit">刪除作物</button>
+         <button class="w3-btn-block  w3-red w3-section w3-padding" type="submit">刪除作物</button>
         </form>
  </div>
 </div>
