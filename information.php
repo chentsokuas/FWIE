@@ -221,6 +221,10 @@
        </tr>
      </table>
    </form>
+     <form action="corp_delete.php" method="post">
+        <input id="id_d" name="id_d" value="<?php echo $row_crop_waring[id];?>" style="display: none">
+         <button class="w3-btn-block  w3-grey w3-section w3-padding" type="submit">刪除作物</button>
+        </form>
  </div>
 </div>
 <?php
@@ -245,7 +249,7 @@
         <?php }?>
       </select>
       
-      
+
       <table class="w3-table">
         <tr>
           <td>
@@ -264,7 +268,7 @@
            <input class="w3-input w3-border w3-center" type="text"  name="temperature1" value="0" disabled>
            <p class="w3-center"><b>濕度範圍</b></p>
            <input class="w3-input w3-border w3-center" type="text"  name="humidity1" value="0" disabled>
-           
+
          </div>
        </td>
      </tr>
