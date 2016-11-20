@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>以台灣氣象站為基礎之農地氣象資訊推估系統</title>
-  <meta name="viewport" content="initial-scale=1.0">
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-  <style>
+  <?php session_start(); ?>
+  <?php
+  if($_SESSION['username'] != null && $_SESSION['passowrd'] != null)
+  {
+   ?>
+
+
+   <title>以台灣氣象站為基礎之農地氣象資訊推估系統</title>
+   <meta name="viewport" content="initial-scale=1.0">
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+   <style>
     .w3-theme {color:#fff !important;background-color:#4CAF50 !important}
     .w3-btn {background-color:#4CAF50;margin-bottom:4px}
     .w3-code{border-left:4px solid #4CAF50}
@@ -105,153 +112,167 @@
    <div class="w3-col m4 s12 w3-section" id="map" style="height:450px"></div>
    <div class="w3-col m1 s12  w3-section w3-light-grey"></div>
    <div class="w3-col m7 s12  w3-section w3-pale-yellow" style="height:450px">
-    <div class="w3-col m7 s12  w3-section w3-pale-yellow" style="height:50px"></div>
+
+
+
+    <?php 
+    include("connect.php");
+    $log =$_SESSION['username'];
+    $pws =$_SESSION['passowrd'];
+    $user_id =$_SESSION['user_id'];
+   //$log ="test";
+   //$pws ="test";
+    $sql_user = "SELECT * FROM `user` WHERE `login` =  '".$log."' and `password` = '".$pws."'";
+    $result_user = mysql_query($sql_user);
+    $row_user = mysql_fetch_array($result_user);
+
+    ?>
     <table class="w3-table">
       <tr>
         <td>姓名：</td>
-        <td> <input class="w3-input w3-border w3-round-large w3-center" value="阿土伯"  disabled>
+        <td> <input class="w3-input w3-border w3-round-large w3-center" value="<?php echo $row_user["user_name"]; ?>"  disabled>
         </td>
       </tr>
       <tr>
         <td>經度：</td>
-        <td> <input name="s1" id="s1" class="w3-input w3-border w3-round-large" value="120.48776550726461"></td>
+        <td> <input name="s1" id="s1" class="w3-input w3-border w3-round-large" value="<?php echo $row_user["GPS_Longitude"]; ?>" ></td>
 
       </tr>
       <tr>
         <td>緯度：</td>
-        <td><input name="s2" id="s2" class="w3-input w3-border w3-round-large" value="22.79454545454548"></td> 
+        <td><input name="s2" id="s2" class="w3-input w3-border w3-round-large" value="<?php echo $row_user["GPS_Latitude"]; ?>" ></td> 
       </tr>
       <tr>
         <td>異常提醒Email：</td>
-        <td><input name="s2" id="s2" class="w3-input w3-border w3-round-large" value="Jescal0001@gmail.com"></td> 
+        <td><input name="s2" id="s2" class="w3-input w3-border w3-round-large" value="<?php echo $row_user["user_email"]; ?>" ></td> 
       </tr>
       <tr>
         <td>作物</td>
         <td>
-          <img onclick="document.getElementById('id01').style.display='block'" src="./img/RICE-64.png">
-          <img onclick="document.getElementById('id02').style.display='block'" src="./img/CORN-64.png">
-          <img onclick="document.getElementById('id03').style.display='block'" src="./img/BAMBOO_SHOT-64.png">
-        </td>
-      </tr>
+          <?php
+          $sql_crop_waring = "SELECT * FROM `crop_waring` WHERE `user_id` = '$row_user[id]'";
+          $result_crop_waring = mysql_query($sql_crop_waring);
+          while( $row_crop_waring = mysql_fetch_array($result_crop_waring))
+          {
 
-    </table>
+           $sql_crop = "SELECT * FROM `crop` WHERE `id` = '$row_crop_waring[crop_id]'";
+           $result_crop = mysql_query($sql_crop);
+           $row_crop = mysql_fetch_array($result_crop);
+
+           ?>
+           <img onclick="document.getElementById('<?php echo $row_crop_waring["crop_id"];?>').style.display='block'" src="<?php echo $row_crop["crop_icon"];?>">
+           <?php
+         }
+         ?>
+         <img onclick="document.getElementById('add').style.display='block'" src="./img/add.png">
 
 
 
+       </td>
+     </tr>
+   </table>
+ </br>
+ <input class="w3-btn-block  w3-red w3-section w3-padding" type="button" value="登出" onclick="location.href='logout.php'">
+
+ <?php
+ $sql_crop_waring = "SELECT * FROM `crop_waring` WHERE `user_id` = '$row_user[id]'";
+ $result_crop_waring = mysql_query($sql_crop_waring);
+ while( $row_crop_waring = mysql_fetch_array($result_crop_waring))
+ {
+
+   $sql_crop = "SELECT * FROM `crop` WHERE `id` = '$row_crop_waring[crop_id]'";
+   $result_crop = mysql_query($sql_crop);
+   $row_crop = mysql_fetch_array($result_crop);
+
+   ?>
 
 
-    <div id="id01" class="w3-modal">
-      <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-        <div class="w3-center"><br>
-          <span onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn w3-hover-red w3-container w3-padding-8 w3-display-topright" title="Close Modal">×</span>
-          <img src="./img/rice.png" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
-          <form action="information.php" method="post">
-          </div>
-               <p class="w3-center"><b>設定0為 不提醒</b></p>
-          <table class="w3-table">
-            <tr>
-              <td>
-               <div class="w3-container w3-section w3-border w3-border-blue">
-                 <p class="w3-center"><b>氣象局推估</b></p>
-                 <p class="w3-center"><b>溫度範圍</b></p>
-                 <input class="w3-input w3-border w3-center" type="text"  name="usrname" value="16.5 ~ 32.5">
-                 <p class="w3-center"><b>濕度範圍</b></p>
-                 <input class="w3-input w3-border w3-center" type="text"  name="psw" value="0.5 ~ 0.85">
-                 <button class="w3-btn-block w3-green w3-section w3-padding" type="submit">確定</button>
-               </div>
-             </td>
-             <td> 
-              <div class="w3-container w3-section w3-border w3-border-red">
-               <p class="w3-center"><b>感測器數值</b></p>
+   <div id="<?php echo $row_crop_waring["crop_id"];?>" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+      <div class="w3-center"><br>
+        <span onclick="document.getElementById('<?php echo $row_crop_waring["crop_id"];?>').style.display='none'" class="w3-closebtn w3-hover-red w3-container w3-padding-8 w3-display-topright" title="Close Modal">×</span>
+        <img src="<?php echo $row_crop["crop_img"];?>" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
+        <form action="information_update.php" method="post">
+        </div>
+        <input id="id_s" name="id_s" value="<?php echo $row_crop_waring[id];?>" style="display: none">
+        <p class="w3-center"><b>設定0為 不提醒</b></p>
+        <table class="w3-table">
+          <tr>
+            <td>
+             <div class="w3-container w3-section w3-border w3-border-blue">
+               <p class="w3-center"><b>氣象局推估</b></p>
                <p class="w3-center"><b>溫度範圍</b></p>
-               <input class="w3-input w3-border w3-center" type="text"  name="usrname" value="20.5 ~ 32.5">
+               <input class="w3-input w3-border w3-center" type="text"  name="temperature" value="<?php echo $row_crop_waring[temperature_warning];?>">
                <p class="w3-center"><b>濕度範圍</b></p>
-               <input class="w3-input w3-border w3-center" type="text"  name="psw" value="0.5 ~ 0.75">
-               <button class="w3-btn-block  w3-grey w3-section w3-padding" type="submit" disabled>確定</button>
+               <input class="w3-input w3-border w3-center" type="text"  name="humidity" value="<?php echo $row_crop_waring[humidity_waring];?>">
+               <button class="w3-btn-block w3-green w3-section w3-padding" type="submit">確定</button>
              </div>
            </td>
-         </tr>
-         </table>
-     </form>
-   </div>
+           <td> 
+            <div class="w3-container w3-section w3-border w3-border-red">
+             <p class="w3-center"><b>感測器數值</b></p>
+             <p class="w3-center"><b>溫度範圍</b></p>
+             <input class="w3-input w3-border w3-center" type="text"  name="usrname" value="20.5 ~ 32.5">
+             <p class="w3-center"><b>濕度範圍</b></p>
+             <input class="w3-input w3-border w3-center" type="text"  name="psw" value="0.5 ~ 0.75">
+             <button class="w3-btn-block  w3-grey w3-section w3-padding" type="submit" disabled>確定</button>
+           </div>
+         </td>
+       </tr>
+     </table>
+   </form>
  </div>
+</div>
+<?php
+}
+?>
 
-
-
- 
-    <div id="id02" class="w3-modal">
-      <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-        <div class="w3-center"><br>
-          <span onclick="document.getElementById('id02').style.display='none'" class="w3-closebtn w3-hover-red w3-container w3-padding-8 w3-display-topright" title="Close Modal">×</span>
-          <img src="./img/corn.jpg" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
-          <form action="information.php" method="post">
-          </div>
-               <p class="w3-center"><b>設定0為 不提醒</b></p>
-          <table class="w3-table">
-            <tr>
-              <td>
-               <div class="w3-container w3-section w3-border w3-border-blue">
-                 <p class="w3-center"><b>氣象局推估</b></p>
-                 <p class="w3-center"><b>溫度範圍</b></p>
-                 <input class="w3-input w3-border w3-center" type="text"  name="usrname" value="16.5 ~ 32.5">
-                 <p class="w3-center"><b>濕度範圍</b></p>
-                 <input class="w3-input w3-border w3-center" type="text"  name="psw" value="0.5 ~ 0.85">
-                 <button class="w3-btn-block w3-green w3-section w3-padding" type="submit">確定</button>
-               </div>
-             </td>
-             <td> 
-              <div class="w3-container w3-section w3-border w3-border-red">
-               <p class="w3-center"><b>感測器數值</b></p>
-               <p class="w3-center"><b>溫度範圍</b></p>
-               <input class="w3-input w3-border w3-center" type="text"  name="usrname" value="15.5 ~ 32.5">
-               <p class="w3-center"><b>濕度範圍</b></p>
-               <input class="w3-input w3-border w3-center" type="text"  name="psw" value="0.5 ~ 0.85">
-               <button class="w3-btn-block w3-grey w3-section w3-padding" type="submit" disabled>確定</button>
-             </div>
-           </td>
-         </tr>
-         </table>
-     </form>
-   </div>
- </div>
-
-
-
-    <div id="id03" class="w3-modal">
-      <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-        <div class="w3-center"><br>
-          <span onclick="document.getElementById('id03').style.display='none'" class="w3-closebtn w3-hover-red w3-container w3-padding-8 w3-display-topright" title="Close Modal">×</span>
-          <img src="./img/bamboo.png" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
-          <form action="information.php" method="post">
-          </div>
-               <p class="w3-center"><b>設定0為 不提醒</b></p>
-          <table class="w3-table">
-            <tr>
-              <td>
-               <div class="w3-container w3-section w3-border w3-border-blue">
-                 <p class="w3-center"><b>氣象局推估</b></p>
-                 <p class="w3-center"><b>溫度範圍</b></p>
-                 <input class="w3-input w3-border w3-center" type="text"  name="usrname" value="16.5 ~ 32.5">
-                 <p class="w3-center"><b>濕度範圍</b></p>
-                 <input class="w3-input w3-border w3-center" type="text"  name="psw" value="0.5 ~ 0.85">
-                 <button class="w3-btn-block w3-green w3-section w3-padding" type="submit">確定</button>
-               </div>
-             </td>
-             <td> 
-              <div class="w3-container w3-section w3-border w3-border-red">
-               <p class="w3-center"><b>感測器數值</b></p>
-               <p class="w3-center"><b>溫度範圍</b></p>
-               <input class="w3-input w3-border w3-center" type="text"  name="usrname" value="16.5 ~ 32.5">
-               <p class="w3-center"><b>濕度範圍</b></p>
-               <input class="w3-input w3-border w3-center" type="text"  name="psw" value="0.5 ~ 0.85">
-               <button class="w3-btn-block  w3-grey w3-section w3-padding" type="submit" disabled>確定</button>
-             </div>
-           </td>
-         </tr>
-         </table>
-     </form>
-   </div>
- </div>
+<div id="add" class="w3-modal">
+  <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px;padding: 10px;">
+    <div class="w3-center"><br>
+      <span onclick="document.getElementById('add').style.display='none'" class="w3-closebtn w3-hover-red w3-container w3-padding-8 w3-display-topright " title="Close Modal">×</span>
+      <form action="corp_insert.php" method="post">
+      </div>
+      <input id="user_id" name="user_id" value="<?php echo $user_id;?>" style="display: none">
+      <p class="w3-center"><b>作物</b></p>
+      <select class="w3-select w3-border w3-center" name="option">
+       <?php
+       $sql_cropadd = "SELECT * FROM `crop`;";
+       $result_cropadd = mysql_query($sql_cropadd);
+       while( $row_cropadd = mysql_fetch_array($result_cropadd)){
+        ?>
+        <option value="<?php echo $row_cropadd['id']; ?>"><?php echo $row_cropadd['crop_name']; ?></option>
+        <?php }?>
+      </select>
+      
+      
+      <table class="w3-table">
+        <tr>
+          <td>
+           <div class="w3-container w3-section w3-border w3-border-blue">
+             <p class="w3-center"><b>氣象局推估</b></p>
+             <p class="w3-center"><b>溫度範圍</b></p>
+             <input class="w3-input w3-border w3-center" type="text"  name="temperature" value="">
+             <p class="w3-center"><b>濕度範圍</b></p>
+             <input class="w3-input w3-border w3-center" type="text"  name="humidity" value="">
+           </div>
+         </td>
+         <td> 
+          <div class="w3-container w3-section w3-border w3-border-red">
+           <p class="w3-center"><b>感測器數值</b></p>
+           <p class="w3-center"><b>溫度範圍</b></p>
+           <input class="w3-input w3-border w3-center" type="text"  name="temperature1" value="0" disabled>
+           <p class="w3-center"><b>濕度範圍</b></p>
+           <input class="w3-input w3-border w3-center" type="text"  name="humidity1" value="0" disabled>
+           
+         </div>
+       </td>
+     </tr>
+   </table>
+   <button class="w3-btn-block w3-green w3-section w3-padding" type="submit">確定</button>
+ </form>
+</div>
+</div>
 
 
 
@@ -456,5 +477,13 @@ function w3_show_nav(name) {
 <script src="http://www.w3schools.com/lib/w3codecolors.js"></script>
 
 </body>
+<?php
+}
+else
+{
+  echo '請先登入';
+  echo '<meta http-equiv=REFRESH CONTENT=0.5;url=login.php>';
+}
+?>
 </html>
 
