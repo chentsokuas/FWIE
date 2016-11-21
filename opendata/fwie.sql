@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主機: 127.0.0.1
--- 產生時間： 2016-11-20 20:12:19
+-- 產生時間： 2016-11-21 05:43:27
 -- 伺服器版本: 10.1.16-MariaDB
 -- PHP 版本： 5.6.24
 
@@ -151,22 +151,6 @@ CREATE TABLE `crop_waring` (
   `temperature_warning` varchar(255) NOT NULL,
   `humidity_waring` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- 資料表的匯出資料 `crop_waring`
---
-
-INSERT INTO `crop_waring` (`id`, `user_id`, `crop_id`, `temperature_warning`, `humidity_waring`) VALUES
-(1, 1, 1, '18.5 ~ 32.5', '0.4 ~ 0.85'),
-(2, 1, 2, '16.5 ~ 30', '0.5 ~ 0.75'),
-(3, 1, 3, '16.5 ~ 28.5', '0.3 ~ 0.85'),
-(6, 2, 4, '20.5 ~ 32.5', '0'),
-(7, 3, 2, '10 ~ 23', '0.1 ~ 0.9'),
-(8, 3, 4, '0', '0'),
-(9, 4, 3, '23 ~ 25', '0.5 ~0.8'),
-(10, 4, 2, '0', '0'),
-(11, 2, 1, '16.5 ~ 30', '0.1 ~ 0.9'),
-(12, 0, 0, '21.955798560408304,22.13483330239137,22.31020583104635,22.48192107632248,22.65058744406962,22.817488936289507,22.98448487809309,23.153670237201894,23.326796385203334,23.504565555552645,23.686041469807535,23.86849324679633,24.04789726756341,24.219961876540', '');
 
 -- --------------------------------------------------------
 
@@ -1099,6 +1083,24 @@ CREATE TABLE `onehour` (
 -- --------------------------------------------------------
 
 --
+-- 資料表結構 `time`
+--
+
+CREATE TABLE `time` (
+  `id` int(11) NOT NULL,
+  `time_l` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- 資料表的匯出資料 `time`
+--
+
+INSERT INTO `time` (`id`, `time_l`) VALUES
+(1, 0);
+
+-- --------------------------------------------------------
+
+--
 -- 資料表結構 `user`
 --
 
@@ -1206,6 +1208,12 @@ ALTER TABLE `onehour`
   ADD PRIMARY KEY (`id`);
 
 --
+-- 資料表索引 `time`
+--
+ALTER TABLE `time`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- 資料表索引 `user`
 --
 ALTER TABLE `user`
@@ -1230,7 +1238,7 @@ ALTER TABLE `crop`
 -- 使用資料表 AUTO_INCREMENT `crop_waring`
 --
 ALTER TABLE `crop_waring`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- 使用資料表 AUTO_INCREMENT `gps_grid`
 --
@@ -1241,6 +1249,11 @@ ALTER TABLE `gps_grid`
 --
 ALTER TABLE `onehour`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- 使用資料表 AUTO_INCREMENT `time`
+--
+ALTER TABLE `time`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- 使用資料表 AUTO_INCREMENT `user`
 --
