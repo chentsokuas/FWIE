@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <?php session_start(); ?>
   <title>以台灣氣象站為基礎之農地氣象資訊推估系統</title>
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
@@ -37,7 +36,7 @@
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="Barometric_pressure.php">氣壓</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="wind.php">風速風向</a></li>
       <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="airquality.php">空氣品質</a></li>
-      <li class="w3-hide-medium w3-hide-small w3-right w3-pale-green"><a class="w3-hover-white w3-padding-16 w3-center" href="information.php">農地資訊</a></li>
+            <li class="w3-hide-medium w3-hide-small w3-right w3-pale-green"><a class="w3-hover-white w3-padding-16 w3-center" href="information.php">農地資訊</a></li>
     </ul>
   </div>
 
@@ -50,51 +49,51 @@
       <a href="Barometric_pressure.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">氣壓</a>
       <a href="wind.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">風速風向</a>
       <a href="airquality.php" class="w3-left w3-theme w3-hover-white w3-padding-16 w3-large w3-center" style="width:50%">空氣品質</a>
-      <a href="information.php" class="w3-left w3-hover-white w3-padding-16 w3-large w3-center w3-pale-green" style="width:100%">農地資訊</a>
+        <a href="information.php" class="w3-left w3-hover-white w3-padding-16 w3-large w3-center w3-pale-green" style="width:100%">農地資訊</a>
     </div>
     <div class="w3-clear"></div>
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hide-large" title="close menu">×</a>
     <div id="menuTut" class="myMenu">
       <div class="w3-container w3-padding-top">
         <form action="index.php">
-          <?php
-          $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+        <?php
+         $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
          //$xml=simplexml_load_file("./opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
-          $i=0;
-          foreach($xml->children() as $books) { 
-            if($books->locationName !="" && $books->weatherElement[3]->elementValue->value > -20)
-              { ?>
-            <locationName id="<?php echo "locationName".$i;?>" style="display: none;"><?php echo $books->locationName;?></locationName>
-            <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $books->lat;?></lat>
-            <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $books->lon;?></lon>
-            <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->time->obsTime;?></time>
-            <elev id="<?php echo "elev".$i;?>" style="display: none;"><?php echo $books->weatherElement[0]->elementValue->value;?></elev>
-            <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[3]->elementValue->value;?></temp>
-            <?php
-            $i++;
-          }
-        } 
-        ?>
-        <div id="time">time</div>
-        <script type="text/javascript">
-          function　Time(){
-            var nntime = document.getElementsByTagName("time");
-            var NewString = nntime[0].innerHTML;
-            document.getElementById("time").innerHTML="最後更新:</br>"+NewString.split("T")[0]+" "+(NewString.split("T")[1]).split("+08:00")[0];
-          }
-          Time();
-        </script>
-        <h3>經緯度查詢</h3>
-        <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
-        <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
-        <input class="w3-red w3-large w3-center" type ="button" onclick="javascript:location.href='temperature.php'" value="1小時版本"></input>
-        <p>網格大小:<input name="long" id="long" class="w3-input" value="5"></input></p>
+         $i=0;
+         foreach($xml->children() as $books) { 
+          if($books->locationName !="" && $books->weatherElement[3]->elementValue->value > -20)
+            { ?>
+          <locationName id="<?php echo "locationName".$i;?>" style="display: none;"><?php echo $books->locationName;?></locationName>
+          <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $books->lat;?></lat>
+          <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $books->lon;?></lon>
+          <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->time->obsTime;?></time>
+          <elev id="<?php echo "elev".$i;?>" style="display: none;"><?php echo $books->weatherElement[0]->elementValue->value;?></elev>
+          <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[3]->elementValue->value;?></temp>
+          <?php
+          $i++;
+        }
+      } 
+      ?>
+      <div id="time">time</div>
+      <script type="text/javascript">
+        function　Time(){
+          var nntime = document.getElementsByTagName("time");
+          var NewString = nntime[0].innerHTML;
+          document.getElementById("time").innerHTML="最後更新:</br>"+NewString.split("T")[0]+" "+(NewString.split("T")[1]).split("+08:00")[0];
+        }
+        Time();
+      </script>
+      <h3>經緯度查詢</h3>
+      <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
+      <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
+      <input class="w3-red w3-large w3-center" type ="button" onclick="javascript:location.href='temperature.php'" value="1小時版本"></input>
+      <p>網格大小:<input name="long" id="long" class="w3-input" value="5"></input></p>
 
 
-      </form>
-    </div>
-
+    </form>
   </div>
+
+</div>
 </nav>
 
 <!-- Overlay effect when opening sidenav on small screens -->
@@ -106,11 +105,11 @@
   <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
    <div id="map" style="width:100%;height:450px"></div>
    <form name="myform3" action="" method="post">
-    <input type="hidden" name="temperature" value="">
-  </form>
+<input type="hidden" name="temperature" value="">
+</form>
 
 
-  <script type="text/javascript">
+   <script type="text/javascript">
     var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
         // map options,
         var myOptions = {
@@ -144,7 +143,7 @@
          array_lat.push(parseFloat(nnlat[i].innerHTML));
          array_lon.push(parseFloat(nnlon[i].innerHTML));
          array_temp.push(parseFloat(nntemp[i].innerHTML));
-         
+       
        }
 
 
@@ -171,14 +170,14 @@
       west: 120.03322005271912
       */
 
-      var myArray0 = [];
-      var SN = (25.34-21.871)*55/document.getElementById('long').value;
-      var ES = (122.03-120.03322005271912)*55/document.getElementById('long').value;
-      var dis = document.getElementById('long').value/110;
-      var Map_Lat=25.34;
-      var Map_lng = 120.03322005271912;
-      var count =1;
-      var rectangleOptions = {
+       var myArray0 = [];
+       var SN = (25.34-21.871)*55/document.getElementById('long').value;
+       var ES = (122.03-120.03322005271912)*55/document.getElementById('long').value;
+       var dis = document.getElementById('long').value/110;
+       var Map_Lat=25.34;
+       var Map_lng = 120.03322005271912;
+       var count =1;
+       var rectangleOptions = {
         strokeOpacity: 0.1,
         fillColor: "hsl(126, 100%, 50%)"
       };
@@ -193,81 +192,62 @@
         array_newlat.push(P_center.lat());
         array_newlon.push(P_center.lng());
 
-        
-        var rectangle = new google.maps.Rectangle(rectangleOptions);
-        var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/30));
-        rectangle.setOptions({ fillColor: "hsl(" + Color + ", 100%, 50%)" });
-        rectangle.setMap(map);
-        rectangle.setBounds(latLngBounds);
-        if(count!=Math.ceil(SN)+1)
-        {
-          Map_Lat = Map_Lat - (dis*2);
-        }
-        else
-        {
-         count =1;
-         Map_Lat=25.34;
-         Map_lng = Map_lng  + (dis*2);
-       }
-
-
-       document.myform3.temperature.value += kriging.predict(array_newlat[i],array_newlon[i], variogram)+",";
-
-
+   
+      var rectangle = new google.maps.Rectangle(rectangleOptions);
+      var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/30));
+      rectangle.setOptions({ fillColor: "hsl(" + Color + ", 100%, 50%)" });
+      rectangle.setMap(map);
+      rectangle.setBounds(latLngBounds);
+      if(count!=Math.ceil(SN)+1)
+      {
+        Map_Lat = Map_Lat - (dis*2);
+      }
+      else
+      {
+       count =1;
+       Map_Lat=25.34;
+       Map_lng = Map_lng  + (dis*2);
      }
 
 
-   </script>
-   <?php
+document.myform3.temperature.value += kriging.predict(array_newlat[i],array_newlon[i], variogram)+",";
 
-   include("connect.php");
 
-  $sql_time = "SELECT * FROM `time` where id='1';";
-  $result_time = mysql_query($sql_time);
-  $row_time = mysql_fetch_array($result_time);
+   }
 
-  if($row_time[1] == 1) {
-    if(isset($_POST["temperature"])){
-      $temperature = $_POST["temperature"];
-      echo $temperature;
 
-      $NewString = split ('[,]', $temperature);
-      date_default_timezone_set("Asia/Taipei");
-      $datetime =  date("Y-m-d H:i:s") ; 
-      for($y=0;$y<sizeof($NewString)-1;$y++){
-        $zz=$y+1;
-        $query="INSERT INTO `onehour`(`gps_id`, `temperature`, `time`) VALUES ('".$zz."','".$NewString[$y]."','".$datetime."')";
-        mysql_query($query);
-      }
+setTimeout("document.myform3.submit()",3600000);
+</script>
 
-    }
-    
-  }else {
-        $query="UPDATE `time` SET
-`time_l` = '1' WHERE `id` = '1';";
+<?php
+if(isset($_POST["temperature"])){
+  $temperature = $_POST["temperature"];
+  echo $temperature;
+  include("connect.php");
+$NewString = split ('[,]', $temperature);
+date_default_timezone_set("Asia/Taipei");
+$datetime =  date("Y-m-d H:i:s") ; 
+for($y=0;$y<sizeof($NewString)-1;$y++){
+  $zz=$y+1;
+  $query="INSERT INTO `onehour`(`gps_id`, `temperature`, `time`) VALUES ('".$zz."','".$NewString[$y]."','".$datetime."')";
   mysql_query($query);
-   echo '<script>' ;
-   echo 'document.myform3.submit();' ;
-   echo '</script>' ;
-
- }
-
-    
-
-      ?>
+}
 
 
-    </div>
-    <footer class="w3-container w3-section w3-padding-32 w3-card-4 w3-light-grey w3-center w3-opacity">
-      <p><nav>
-       An Intelligent Agriculture Platform for Estimating Agrometeorological and Mining Plant Diseases and Pests Features: Design and Implementation
-     </nav></p>
-   </footer>
+}
+?>
 
-   <!-- END MAIN -->
- </div>
+</div>
+<footer class="w3-container w3-section w3-padding-32 w3-card-4 w3-light-grey w3-center w3-opacity">
+  <p><nav>
+   An Intelligent Agriculture Platform for Estimating Agrometeorological and Mining Plant Diseases and Pests Features: Design and Implementation
+ </nav></p>
+</footer>
 
- <script>
+<!-- END MAIN -->
+</div>
+
+<script>
 // Script to open and close the sidenav
 function w3_open() {
   document.getElementById("mySidenav").style.display = "block";
