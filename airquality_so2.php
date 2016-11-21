@@ -201,7 +201,7 @@
 
       //  closest(array_newlat[i],array_newlon[i]);
       var rectangle = new google.maps.Rectangle(rectangleOptions);
-      var Color =  240-Math.round(100*(kriging.predict(array_newlat[i],array_newlon[i], variogram)));
+      var Color =  240-Math.round(360*(kriging.predict(array_newlat[i],array_newlon[i], variogram))/10);
       rectangle.setOptions({  fillColor: "hsl(" + Color + ", 100%, 50%)" });
       rectangle.setMap(map);
       rectangle.setBounds(latLngBounds);
@@ -246,7 +246,7 @@ function fn0(a){
 var myArray = [];
 var wellCircle;
 for (var s=0; s <nnlocationName.length; s++) {
- var Color = 240 - Math.round((100 * array_temp[s]));
+ var Color = 240 - Math.round((360 * array_temp[s])/10);
  wellCircle = new google.maps.Circle({ 
   strokeColor: "hsl(" + Color + ", 100%, 50%)", 
   fillColor: "hsl(" + Color + ", 100%, 50%)",
