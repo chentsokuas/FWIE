@@ -57,17 +57,17 @@
       <div class="w3-container w3-padding-top">
         <form action="index.php">
          <?php
-         $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0002-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
-          //$xml=simplexml_load_file("./opendata/O-A0002-001.xml") or die("目前opendata資料出現問題");
+         $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+          //$xml=simplexml_load_file("./opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
          $i=0;
          foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->weatherElement[6]->elementValue->value > 0)
+          if($books->locationName !="" && $books->weatherElement[7]->elementValue->value > 0)
             { ?>
           <locationName id="<?php echo "locationName".$i;?>" style="display: none;"><?php echo $books->locationName;?></locationName>
           <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $books->lat;?></lat>
           <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $books->lon;?></lon>
           <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->time->obsTime;?></time>
-          <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[6]->elementValue->value;?></temp>
+          <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[7]->elementValue->value;?></temp>
           <?php
           $i++;
         }
@@ -188,7 +188,7 @@
 
       //  closest(array_newlat[i],array_newlon[i]);
       var rectangle = new google.maps.Rectangle(rectangleOptions);
-      var Color =  240-Math.round((kriging.predict(array_newlat[i],array_newlon[i], variogram)*35));
+      var Color =  180-Math.round(360 * (kriging.predict(array_newlat[i],array_newlon[i], variogram)/30));
       rectangle.setOptions({ fillColor: "hsl(" + Color + ", 100%, 50%)" });
       rectangle.setMap(map);
       rectangle.setBounds(latLngBounds);
@@ -233,7 +233,7 @@ function fn0(a){
 var myArray = [];
 var wellCircle;
 for (var s=0; s <nnlocationName.length; s++) {
- var Color = 180 - Math.round((360 * array_temp[s]/99));
+ var Color = 180 - Math.round((360 * array_temp[s]/30));
  wellCircle = new google.maps.Circle({ 
   strokeColor: "hsl(" + Color + ", 100%, 50%)", 
   fillColor: "hsl(" + Color + ", 100%, 50%)",
