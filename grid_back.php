@@ -5,7 +5,7 @@
   <meta name="viewport" content="initial-scale=1.0">
      <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
   <meta charset="utf-8">
-<meta http-equiv="refresh" content="8" />
+<meta http-equiv="refresh" content="3600" />
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"></script>
   <script src="./src/kriging.js" type="text/javascript"></script>
 
