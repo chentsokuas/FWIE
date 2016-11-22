@@ -5,7 +5,7 @@
   <meta name="viewport" content="initial-scale=1.0">
      <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
   <meta charset="utf-8">
-<meta http-equiv="refresh" content="3600" />
+<meta http-equiv="refresh" content="8" />
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDQ2OAc23JPD1J470b2zfddyy-PrDIrZag&callback=initMap"></script>
   <script src="./src/kriging.js" type="text/javascript"></script>
 
@@ -164,7 +164,7 @@ document.myform3.temperature.value += kriging.predict(array_newlat[i],array_newl
   <?php session_start(); 
   if( $_SESSION['flag'] == 1)
   {
-    sleep(900);
+    sleep(3);
     unset($_SESSION['flag']);
   }
   else
@@ -189,7 +189,7 @@ date_default_timezone_set("Asia/Taipei");
 $datetime =  date("Y-m-d H:i:s") ; 
 for($y=0;$y<sizeof($NewString)-1;$y++){
   $zz=$y+1;
-  $query="INSERT INTO `onehour1`(`gps_id`, `time`, `temperature`) VALUES ('".$zz."','".$datetime."','".$NewString[$y]."')";
+  $query="INSERT INTO `kriging`(`gps_id`, `time`, `temperature`) VALUES ('".$zz."','".$datetime."','".$NewString[$y]."')";
   mysql_query($query);
 }
 
