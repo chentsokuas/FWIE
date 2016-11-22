@@ -89,13 +89,11 @@
         }
         Time();
       </script>
-      <h3>經緯度查詢</h3>
-      <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
-      <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
+
       <p>網格大小:<input name="long" id="long" class="w3-input" value="5"></input></p>
-      <input id="btnst" class="w3-blue w3-large w3-center" type ="button"  value="推估"></input>
 
 
+  
     </form>
   </div>
 
@@ -135,13 +133,41 @@
       </tr>
       <tr>
         <td>經度：</td>
-        <td> <input name="s1" id="s1" class="w3-input w3-border w3-round-large" value="<?php echo $row_user["GPS_Longitude"]; ?>" ></td>
+        <td> <input name="lng" id="lng"  type="text" class="w3-input w3-border w3-round-large" value="<?php echo $row_user["GPS_Longitude"]; ?>" ></td>
 
       </tr>
       <tr>
         <td>緯度：</td>
-        <td><input name="s2" id="s2" class="w3-input w3-border w3-round-large" value="<?php echo $row_user["GPS_Latitude"]; ?>" ></td> 
+        <td><input name="lat" id="lat" type="text" class="w3-input w3-border w3-round-large" value="<?php echo $row_user["GPS_Latitude"]; ?>" ></td> 
+           <td> <input  class="w3-btn-block  w3-blue" id="Button1" type="button" value="查詢" onclick="Button1_onclick()" /></td> 
       </tr>
+      <script language="javascript" type="text/javascript">
+                 function Button1_onclick() {
+                    var lat = document.getElementById('lat').value;
+                    var lng = document.getElementById('lng').value;
+                    if (lat > -90 && lat < 90) {
+                        var location = new google.maps.LatLng(lat, lng);
+
+                        // 加上marker和點擊時的訊息視窗
+                        var marker = new google.maps.Marker({
+                            position: location,
+                            map: map
+                        });
+                        markersToRemove.push(marker);
+
+                        google.maps.event.addListener(marker, 'click', function () {
+                            if (infowindow) { infowindow.close(); }
+                            infowindow.setContent(InfoContent(marker));
+                            infowindow.open(map, marker);
+                        });
+
+                        map.setCenter(location);
+
+                    } else { alert("請輸入正確之經緯度"); }
+                }
+
+                                 
+            </script>
       <tr>
         <td>異常提醒Email：</td>
         <td><input name="s2" id="s2" class="w3-input w3-border w3-round-large" value="<?php echo $row_user["user_email"]; ?>" ></td> 
@@ -343,7 +369,7 @@
       east: 122.03,
       west: 120.03322005271912
       */
-      btnst.onclick =function(){
+
        var myArray0 = [];
        var SN = (25.34-21.871)*55/document.getElementById('long').value;
        var ES = (122.03-120.03322005271912)*55/document.getElementById('long').value;
@@ -368,7 +394,7 @@
 
 
         var rectangle = new google.maps.Rectangle(rectangleOptions);
-        var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/35));
+        var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/30));
         rectangle.setOptions({ fillColor: "hsl(" + Color + ", 100%, 50%)" });
         rectangle.setMap(map);
         rectangle.setBounds(latLngBounds);
@@ -407,44 +433,6 @@
      }
 
 
-//alert(new_cities[i][3]);
-}
-//以下圓圈
-var myArray = [];
-var wellCircle;
-for (var s=0; s <nnlocationName.length; s++) {
- var Color = 360 - Math.round((360 * array_temp[s]/35));
- wellCircle = new google.maps.Circle({ 
-  strokeColor: "hsl(" + Color + ", 100%, 50%)", 
-  fillColor: "hsl(" + Color + ", 100%, 50%)",
-  strokeOpacity: 0.8,
-  strokeWeight: 2,
-  fillOpacity: 0.35,
-  map: map,
-  center: new google.maps.LatLng(array_lat[s],array_lon[s]),
-  radius: 3000,
-  zIndex:99999
-});
-
- var infoWindow = new google.maps.InfoWindow({
-  content: "<div>"+nnlocationName[s].innerHTML+"</br>溫度:"+nntemp[s].innerHTML+"</div>",
-  maxWidth: 500
-});
- myArray.push(infoWindow);
- fn1(s);
-};
-function fn1(a){
- google.maps.event.addListener(wellCircle, 'click', function(ev) {
-  for(var h=0;h<myArray.length;h++)
-  {
-    myArray[h].close();
-  }
-
-  myArray[a].setPosition(ev.latLng);
-  myArray[a].open(map);
-});
-
-}
 
 
 </script>

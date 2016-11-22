@@ -87,9 +87,7 @@
           Time();
         </script>
 
-       <h3>經緯度查詢</h3>
-      <p>緯度:<input name="lat" id="lat" class="w3-input" value=""></input></p>
-      <p>經度:<input name="lng" id="lng" class="w3-input" value=""></input></p>
+     
       <p>網格大小:<input name="long" id="long" class="w3-input" value="5"></input></p>
       <input id="btnst" class="w3-blue w3-large w3-center" type ="button"  value="推估"></input>
 
