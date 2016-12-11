@@ -200,7 +200,7 @@
 
 
      var infoWindow0 = new google.maps.InfoWindow({
-      content: "<div>"+"中心點:"+P_center+"</Br>濕度:"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
+       content: "<div>"+(i+1)+"</br>中心點:"+P_center+"</Br>濕度:"+kriging.predict(array_newlat[i],array_newlon[i], variogram)*100+"</div>",
       maxWidth: 500
     });
      myArray0.push(infoWindow0);

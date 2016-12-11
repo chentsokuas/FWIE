@@ -64,17 +64,17 @@
       <div class="w3-container w3-padding-top">
         <form action="index.php">
          <?php
-         $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0003-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+         $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
           //$xml=simplexml_load_file("./opendata/O-A0003-001.xml") or die("目前opendata資料出現問題");
          $i=0;
          foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->weatherElement[4]->elementValue->value > -20)
+          if($books->locationName !="" && $books->weatherElement[3]->elementValue->value > -20)
             { ?>
           <locationName id="<?php echo "locationName".$i;?>" style="display: none;"><?php echo $books->locationName;?></locationName>
           <lat id="<?php echo "lat".$i;?>" style="display: none;"><?php echo $books->lat;?></lat>
           <lon id="<?php echo "lon".$i;?>" style="display: none;"><?php echo $books->lon;?></lon>
           <time id="<?php echo "time".$i;?>" style="display: none;"><?php echo $books->time->obsTime;?></time>
-          <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[4]->elementValue->value;?></temp>
+          <temp id="<?php echo "temp".$i;?>" style="display: none;"><?php echo $books->weatherElement[3]->elementValue->value;?></temp>
           <?php
           $i++;
         }
@@ -124,7 +124,15 @@
     $result_user = mysql_query($sql_user);
     $row_user = mysql_fetch_array($result_user);
 
+    $sql_crop_waring1 = "SELECT * FROM `kriging` WHERE `gps_id` =223 ORDER BY `gps_id`,`time` DESC";
+  $result_crop_waring1 = mysql_query($sql_crop_waring1);
+  $row_crop_waring1 = mysql_fetch_array($result_crop_waring1);
+
+  $temp = $row_crop_waring1[3];
+   $hum = $row_crop_waring1[4];
+
     ?>
+<p><?php echo "目前溫度:".$temp."　目前濕度:".$hum; ?></p>
     <table class="w3-table">
       <tr>
         <td>姓名：</td>
@@ -221,16 +229,21 @@
         <form action="information_update.php" method="post">
         </div>
         <input id="id_s" name="id_s" value="<?php echo $row_crop_waring[id];?>" style="display: none">
-        <p class="w3-center"><b>設定0為 不提醒</b></p>
         <table class="w3-table">
           <tr>
             <td>
              <div class="w3-container w3-section w3-border w3-border-blue">
                <p class="w3-center"><b>氣象局推估</b></p>
                <p class="w3-center"><b>溫度範圍</b></p>
-               <input class="w3-input w3-border w3-center" type="text"  name="temperature" value="<?php echo $row_crop_waring[temperature_warning];?>">
+               <div class="w3-center">
+               <input class="w3-border w3-center" type="text"  name="temperature" value="<?php echo $row_crop_waring[3];?>" style="width: 30%">　~　
+                <input class="w3-border w3-center" type="text"  name="temperature1" value="<?php echo $row_crop_waring[4];?>" style="width: 30%">
+                </div>
                <p class="w3-center"><b>濕度範圍</b></p>
-               <input class="w3-input w3-border w3-center" type="text"  name="humidity" value="<?php echo $row_crop_waring[humidity_waring];?>">
+                 <div class="w3-center">
+               <input class="w3-border w3-center" type="text"  name="humidity" value="<?php echo $row_crop_waring[5];?>" style="width: 30%">　~　
+               <input class="w3-border w3-center" type="text"  name="humidity1" value="<?php echo $row_crop_waring[6];?>" style="width: 30%">
+               </div>
                <button class="w3-btn-block w3-green w3-section w3-padding" type="submit">確定</button>
              </div>
            </td>
@@ -238,9 +251,15 @@
             <div class="w3-container w3-section w3-border w3-border-red">
              <p class="w3-center"><b>感測器數值</b></p>
              <p class="w3-center"><b>溫度範圍</b></p>
-             <input class="w3-input w3-border w3-center" type="text"  name="usrname" value="20.5 ~ 32.5">
+                <div class="w3-center">
+             <input class="w3-border w3-center" type="text"  name="iot_temperature" value="0" style="width: 30%">　~　
+              <input class="w3-border w3-center" type="text"  name="iot_temperature1" value="0" style="width: 30%">
+              </div>
              <p class="w3-center"><b>濕度範圍</b></p>
-             <input class="w3-input w3-border w3-center" type="text"  name="psw" value="0.5 ~ 0.75">
+                <div class="w3-center">
+             <input class="w3-border w3-center" type="text"  name="iot_humidity" value="0" style="width: 30%">　~　
+             <input class="w3-border w3-center" type="text"  name="iot_humidity" value="0" style="width: 30%">
+             </div>
              <button class="w3-btn-block  w3-grey w3-section w3-padding" type="submit" disabled>確定</button>
            </div>
          </td>
@@ -281,19 +300,31 @@
           <td>
            <div class="w3-container w3-section w3-border w3-border-blue">
              <p class="w3-center"><b>氣象局推估</b></p>
-             <p class="w3-center"><b>溫度範圍</b></p>
-             <input class="w3-input w3-border w3-center" type="text"  name="temperature" value="">
+                 <p class="w3-center"><b>溫度範圍</b></p>
+           <div class="w3-center">
+               <input class="w3-border w3-center" type="text"  name="temperature" value="" style="width: 30%">　~　
+                <input class="w3-border w3-center" type="text"  name="temperature1" value="" style="width: 30%">
+                </div>
              <p class="w3-center"><b>濕度範圍</b></p>
-             <input class="w3-input w3-border w3-center" type="text"  name="humidity" value="">
+               <div class="w3-center">
+               <input class="w3-border w3-center" type="text"  name="humidity" value="" style="width: 30%">　~　
+               <input class="w3-border w3-center" type="text"  name="humidity1" value="" style="width: 30%">
+               </div>
            </div>
          </td>
          <td> 
           <div class="w3-container w3-section w3-border w3-border-red">
            <p class="w3-center"><b>感測器數值</b></p>
            <p class="w3-center"><b>溫度範圍</b></p>
-           <input class="w3-input w3-border w3-center" type="text"  name="temperature1" value="0" disabled>
+            <div class="w3-center">
+             <input class="w3-border w3-center" type="text"  name="iot_temperature" value="0" style="width: 30%" disabled>　~　
+              <input class="w3-border w3-center" type="text"  name="iot_temperature1" value="0" style="width: 30%" disabled>
+              </div>
            <p class="w3-center"><b>濕度範圍</b></p>
-           <input class="w3-input w3-border w3-center" type="text"  name="humidity1" value="0" disabled>
+           <div class="w3-center">
+             <input class="w3-border w3-center" type="text"  name="iot_humidity" value="0" style="width: 30%" disabled>　~　
+             <input class="w3-border w3-center" type="text"  name="iot_humidity" value="0" style="width: 30%" disabled>
+             </div>
 
          </div>
        </td>

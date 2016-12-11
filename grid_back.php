@@ -33,6 +33,18 @@
           $i++;
         }
       } 
+        foreach($xml->children() as $books1) { 
+          if($books1->locationName !="" &&  $books1->weatherElement[4]->elementValue->value > 0)
+            { ?>
+          <locationName1 id="<?php echo "locationName1".$i;?>" style="display: none;"><?php echo $books->locationName;?></locationName1>
+          <lat1 id="<?php echo "lat1".$i;?>" style="display: none;"><?php echo $books1->lat;?></lat1>
+          <lon1 id="<?php echo "lon1".$i;?>" style="display: none;"><?php echo $books1->lon;?></lon1>
+          <time1 id="<?php echo "time1".$i;?>" style="display: none;"><?php echo $books1->time->obsTime;?></time1>
+          <temp1 id="<?php echo "temp1".$i;?>" style="display: none;"><?php echo $books1->weatherElement[4]->elementValue->value;?></temp1>
+          <?php
+        
+        }
+      } 
       ?>
       <div id="time">time</div>
       <script type="text/javascript">
@@ -49,6 +61,7 @@
    <div id="map" style="width:100%;height:450px"></div>
    <form name="myform3" action="" method="post">
 <input type="hidden" name="temperature" value="">
+<input type="hidden" name="temperature1" value="">
 </form>
 
 
@@ -70,6 +83,11 @@
         var nnlon = document.getElementsByTagName("lon");
         var nntemp = document.getElementsByTagName("temp");
 
+        var nnlocationName1 = document.getElementsByTagName("locationName1");
+        var nnlat1 = document.getElementsByTagName("lat1");
+        var nnlon1 = document.getElementsByTagName("lon1");
+         var nntemp1 = document.getElementsByTagName("temp1");
+
         var array_locationName =[];
         var array_temp =[];
         var array_lat =[];
@@ -77,6 +95,15 @@
         var array_newcenter =[];
         var array_newlat =[];
         var array_newlon =[];
+
+
+        var array_locationName1 =[];
+        var array_temp1 =[];
+        var array_lat1 =[];
+        var array_lon1 =[];
+        var array_newcenter1 =[];
+        var array_newlat1 =[];
+        var array_newlon1 =[];
 
 
 
@@ -89,6 +116,16 @@
        
        }
 
+              for (var i=0;i<nnlocationName1.length;i++)
+        {
+         array_locationName1.push(nnlocationName1[i].innerHTML);
+         array_lat1.push(parseFloat(nnlat1[i].innerHTML));
+         array_lon1.push(parseFloat(nnlon1[i].innerHTML));
+         array_temp1.push(parseFloat(nntemp1[i].innerHTML));
+       
+       }
+
+
 
       //---------------------------------------------
       var t = array_temp;
@@ -97,6 +134,11 @@
       var model = "exponential";
       var sigma2 = 0, alpha = 100;
       var variogram = kriging.train(t, x, y, model, sigma2, alpha);
+
+       var t1 = array_temp1;
+      var x1 = array_lat1;
+      var y1 = array_lon1;
+       var variogram1 = kriging.train(t1, x1, y1, model, sigma2, alpha);
 
 
      //---------------------------------------------
@@ -134,6 +176,9 @@
         array_newcenter.push(P_center);
         array_newlat.push(P_center.lat());
         array_newlon.push(P_center.lng());
+        array_newcenter1.push(P_center);
+        array_newlat1.push(P_center.lat());
+        array_newlon1.push(P_center.lng());
 
    
       var rectangle = new google.maps.Rectangle(rectangleOptions);
@@ -154,7 +199,7 @@
 
 
 document.myform3.temperature.value += kriging.predict(array_newlat[i],array_newlon[i], variogram)+",";
-
+document.myform3.temperature1.value += kriging.predict(array_newlat1[i],array_newlon1[i], variogram1)+",";
 
    }
 
@@ -182,14 +227,21 @@ document.myform3.temperature.value += kriging.predict(array_newlat[i],array_newl
 
 if(isset($_POST["temperature"])){
   $temperature = $_POST["temperature"];
-  echo $temperature;
+   $temperature1 = $_POST["temperature1"];
+ 
   include("connect.php");
 $NewString = split ('[,]', $temperature);
+$NewString1 = split ('[,]', $temperature1);
 date_default_timezone_set("Asia/Taipei");
 $datetime =  date("Y-m-d H:i:s") ; 
 for($y=0;$y<sizeof($NewString)-1;$y++){
+  $NewString1[$y]=$NewString1[$y]*100;
+  if($NewString1[$y]>100)
+      $NewString1[$y]=100;
+      if($NewString1[$y]<0)
+      $NewString1[$y]=0;
   $zz=$y+1;
-  $query="INSERT INTO `kriging`(`gps_id`, `time`, `temperature`) VALUES ('".$zz."','".$datetime."','".$NewString[$y]."')";
+  $query="INSERT INTO `kriging`(`gps_id`, `time`, `temperature`,`humidity`) VALUES ('".$zz."','".$datetime."','".$NewString[$y]."','".$NewString1[$y]."')";
   mysql_query($query);
 }
 
