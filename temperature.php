@@ -236,7 +236,7 @@
 
 
         var rectangle = new google.maps.Rectangle(rectangleOptions);
-        var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/30));
+        var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/25));
         rectangle.setOptions({ fillColor: "hsl(" + Color + ", 100%, 50%)" });
         rectangle.setMap(map);
         rectangle.setBounds(latLngBounds);
@@ -281,7 +281,7 @@
 var myArray = [];
 var wellCircle;
 for (var s=0; s <nnlocationName.length; s++) {
- var Color = 360 - Math.round((360 * array_temp[s]/30));
+ var Color = 360 - Math.round((360 * array_temp[s]/25));
  wellCircle = new google.maps.Circle({ 
   strokeColor: "hsl(" + Color + ", 100%, 50%)", 
   fillColor: "hsl(" + Color + ", 100%, 50%)",
