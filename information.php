@@ -107,9 +107,9 @@
 <div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;">
 
   <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
-   <div class="w3-col m4 s12 w3-section" id="map" style="height:450px"></div>
+   <div class="w3-col m4 s12 w3-section" id="map" style="height:500px"></div>
    <div class="w3-col m1 s12  w3-section w3-light-grey"></div>
-   <div class="w3-col m7 s12  w3-section w3-pale-yellow" style="height:450px">
+   <div class="w3-col m7 s12  w3-section w3-pale-yellow" style="height:500px">
 
 
 
@@ -124,11 +124,11 @@
     $result_user = mysql_query($sql_user);
     $row_user = mysql_fetch_array($result_user);
 
-    $sql_crop_waring1 = "SELECT * FROM `kriging` WHERE `gps_id` =223 ORDER BY `gps_id`,`time` DESC";
-  $result_crop_waring1 = mysql_query($sql_crop_waring1);
-  $row_crop_waring1 = mysql_fetch_array($result_crop_waring1);
+    $sql_crop_waring1 = "SELECT * FROM `kriging` WHERE `gps_id` ='".$row_user[grid]."' ORDER BY `gps_id`,`time` DESC";
+   $result_crop_waring1 = mysql_query($sql_crop_waring1);
+   $row_crop_waring1 = mysql_fetch_array($result_crop_waring1);
 
-  $temp = $row_crop_waring1[3];
+   $temp = $row_crop_waring1[3];
    $hum = $row_crop_waring1[4];
 
     ?>
@@ -148,6 +148,14 @@
         <td>緯度：</td>
         <td><input name="lat" id="lat" type="text" class="w3-input w3-border w3-round-large" value="<?php echo $row_user["GPS_Latitude"]; ?>" ></td> 
            <td> <input  class="w3-btn-block  w3-blue" id="Button1" type="button" value="查詢" onclick="Button1_onclick()" /></td> 
+      </tr>
+       <tr>
+        <td>網格設定：</td>
+        <form action="information_user_update.php" method="post">
+        <td><input name="grid" id="grid" type="text" class="w3-input w3-border w3-round-large" value="<?php echo $row_user[grid];?>" ></td> 
+         <input id="id_tt" name="id_tt" value="<?php echo $user_id;?>" style="display: none">
+         <td> <button class="w3-btn-block w3-green " type="submit">確定</button></td>
+         </form>
       </tr>
       <script language="javascript" type="text/javascript">
                  function Button1_onclick() {
@@ -442,7 +450,7 @@
 
 
        var infoWindow0 = new google.maps.InfoWindow({
-        content: "<div>"+"中心點:"+P_center+"</Br>溫度:"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
+        content: "<div>"+(i+1)+"</br>中心點:"+P_center+"</Br>溫度:"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
         maxWidth: 500
       });
        myArray0.push(infoWindow0);
