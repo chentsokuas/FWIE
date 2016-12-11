@@ -51,7 +51,7 @@ $mail->FromName = "農地氣象推估"; //設定寄件者姓名
 
 $mail->Subject = "農地異常"; //設定郵件標題        
 $mail->Body = $row_user[user_name]."　　你好!<br \>".
-"你設定的作物:".$row_crop[crop_name]."<br \>".
+"你設定的作物:".$row_crop[crop_name]."<br \>"
 ."你設定的溫度是".$temperature_t1."~".$temperature_t2."目前溫度為".$temp."<br \>"
 ."你設定的濕度是".$humidity_t1."~".$humidity_t2."目前濕度為".$hum."<br \>"
 ."請前往農地查看!"; //設定郵件內容       
