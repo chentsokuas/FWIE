@@ -12,6 +12,10 @@
    <meta name="viewport" content="initial-scale=1.0">
    <meta charset="utf-8">
    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+  
+      <link rel="stylesheet" href="t1/css/style.css">
    <style>
     .w3-theme {color:#fff !important;background-color:#4CAF50 !important}
     .w3-btn {background-color:#4CAF50;margin-bottom:4px}
@@ -99,21 +103,7 @@
 
 </div>
 </nav>
-
-<!-- Overlay effect when opening sidenav on small screens -->
-<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-<!-- Main content: shift it to the right by 270 pixels when the sidenav is visible -->
-<div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;">
-
-  <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
-   <div class="w3-col m4 s12 w3-section" id="map" style="height:500px"></div>
-   <div class="w3-col m1 s12  w3-section w3-light-grey"></div>
-   <div class="w3-col m7 s12  w3-section w3-pale-yellow" style="height:500px">
-
-
-
-    <?php 
+ <?php 
     include("connect.php");
     $log =$_SESSION['username'];
     $pws =$_SESSION['passowrd'];
@@ -132,7 +122,21 @@
    $hum = $row_crop_waring1[4];
 
     ?>
-<p><?php echo "目前溫度:".$temp."　目前濕度:".$hum; ?></p>
+<!-- Overlay effect when opening sidenav on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- Main content: shift it to the right by 270 pixels when the sidenav is visible -->
+<div class="w3-main w3-container" style="margin-left:270px;margin-top:117px;">
+
+  <div class="w3-container w3-section w3-padding-large w3-card-4 w3-light-grey">
+   <div class="w3-col m4 s12 w3-section" id="map" style="height:500px"></div>
+   <div class="w3-col m1 s12  w3-section w3-light-grey"></div>
+   <div class="w3-col m7 s12  w3-section w3-pale-yellow" style="height:500px">
+ 
+
+
+   
+
     <table class="w3-table">
       <tr>
         <td>姓名：</td>
@@ -478,10 +482,95 @@
 
 
 </div>
-<footer class="w3-container w3-section w3-padding-32 w3-card-4 w3-light-grey w3-center w3-opacity">
-  <p><nav>
-   An Intelligent Agriculture Platform for Estimating Agrometeorological and Mining Plant Diseases and Pests Features: Design and Implementation
- </nav></p>
+<footer class="w3-container w3-section w3-padding-32 w3-card-4 w3-light-grey w3-center ">
+    
+ 
+  <?php
+    $sql_iot = "SELECT * FROM `iot`";
+   $result_iot = mysql_query($sql_iot);
+   $row_iot = mysql_fetch_array($result_iot);
+   ?>
+         
+
+  <div class="w3-col m3 s3 w3-section  w3-red w3-center">
+        <p><h3>氣象溫度</h3></p>
+   </div>
+   <div class="w3-col m3 s3 w3-section w3-blue w3-center">
+        <p><h3>氣象濕度</h3></p>
+   </div>
+   <div class="w3-col m3 s3 w3-section w3-gray w3-center">
+        <p><h3>感測器溫度</h3></p>
+   </div>
+   <div class="w3-col m3 s3 w3-section w3-gray w3-center">
+        <p><h3>感測器濕度</h3></p>
+   </div>
+<?php
+   
+   $sql_iot = "SELECT * FROM `iot`";
+   $result_iot = mysql_query($sql_iot);
+   $row_iot = mysql_fetch_array($result_iot);
+
+   $sql_crop_waring1 = "SELECT * FROM `kriging` WHERE `gps_id` ='".$row_user[grid]."' ORDER BY `gps_id`,`time` DESC";
+   $result_crop_waring1 = mysql_query($sql_crop_waring1);
+   $row_crop_waring1 = mysql_fetch_array($result_crop_waring1);
+
+   $temp = $row_crop_waring1[3];
+   $hum = $row_crop_waring1[4];
+?>
+
+  <div class="w3-center ">
+  <div class="w3-col s12 m3 w3-center">
+  <div class="orange">
+    <div class="progress">
+      <div class="inner">
+        <div class="percent"><span><?php echo round($temp,2);?></span>°C</div>
+        <div class="water"></div>
+        <div class="glare">氣象溫度</div>
+      </div>
+    </div>
+  </div>
+  </div>
+   <div class="w3-col s12 m3  w3-center">
+  <div class="green">
+    <div class="progress">
+      <div class="inner">
+        <div class="percent"><span><?php echo round($hum,2);?></span>%</div>
+        <div class="water"></div>
+        <div class="glare">氣象濕度</div>
+      </div>
+    </div>
+  </div>
+  </div>
+   <div class="w3-col s12 m3  w3-center">
+  <div class="red">
+    <div class="progress">
+      <div class="inner">
+        <div class="percent"><span><?php echo "暫停使用";?></span></div>
+        <div class="water"></div>
+        <div class="glare">感測器溫度</div>
+      </div>
+    </div>
+  </div>
+  </div>
+   <div class="w3-col s12 m3  w3-center">
+  <div class="red">
+    <div class="progress">
+      <div class="inner">
+        <div class="percent"><span><?php echo "暫停使用";?></span</div>
+        <div class="water"></div>
+        <div class="glare">感測器濕度</div>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+  </div>
+  
+
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+    <script src="js/index.js"></script>
+
 </footer>
 
 <!-- END MAIN -->
