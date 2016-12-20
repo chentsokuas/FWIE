@@ -187,7 +187,7 @@
    
       var rectangle = new google.maps.Rectangle(rectangleOptions);
       var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i],array_newlon[i], variogram)/30));
-      rectangle.setOptions({ fillColor: "hsl(" + Color + ", 100%, 50%)" });
+      rectangle.setOptions({ fillColor: "hsl(120, 100%, 100%)" });
       rectangle.setMap(map);
       rectangle.setBounds(latLngBounds);
       if(count!=Math.ceil(SN)+1)
@@ -227,42 +227,7 @@ function fn0(a){
 
 //alert(new_cities[i][3]);
 }
-//以下圓圈
-var myArray = [];
-var wellCircle;
-for (var s=0; s <nnlocationName.length; s++) {
- var Color = 360 - Math.round((360 * array_temp[s]/30));
- wellCircle = new google.maps.Circle({ 
-  strokeColor: "hsl(" + Color + ", 100%, 50%)", 
-  fillColor: "hsl(" + Color + ", 100%, 50%)",
-  strokeOpacity: 0.8,
-  strokeWeight: 2,
-  fillOpacity: 0.35,
-  map: map,
-  center: new google.maps.LatLng(array_lat[s],array_lon[s]),
-  radius: 3000,
-  zIndex:99999
-});
 
- var infoWindow = new google.maps.InfoWindow({
-  content: "<div>"+nnlocationName[s].innerHTML+"</br>溫度:"+nntemp[s].innerHTML+"</div>",
-  maxWidth: 500
-});
- myArray.push(infoWindow);
- fn1(s);
-};
-function fn1(a){
- google.maps.event.addListener(wellCircle, 'click', function(ev) {
-  for(var h=0;h<myArray.length;h++)
-  {
-    myArray[h].close();
-  }
-
-  myArray[a].setPosition(ev.latLng);
-  myArray[a].open(map);
-});
-
-}
 
 
 </script>

@@ -85,8 +85,8 @@
       <p>網格大小:<input name="long" id="long" class="w3-input" value="3"></input></p>
       <input id="btnst" class="w3-blue w3-large w3-center" type ="button"  value="推估"></input>
 
- <input name="lng" id="lng"  type="text" class="w3-input w3-border w3-round-large" value="" >
- <input name="lat" id="lat" type="text" class="w3-input w3-border w3-round-large" value="" >
+ <input name="lng" id="lng"  type="text" class="w3-input w3-border w3-round-large" value="120.534616" >
+ <input name="lat" id="lat" type="text" class="w3-input w3-border w3-round-large" value="22.627818" >
  <input  class="w3-btn-block  w3-blue" id="Button1" type="button" value="查詢" onclick="Button1_onclick()" />
   <script language="javascript" type="text/javascript">
                  function Button1_onclick() {
@@ -231,7 +231,8 @@
 
 
      var infoWindow0 = new google.maps.InfoWindow({
-       content: "<div>"+(i+1)+"</br>中心點:"+P_center+"</Br>溫度:"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
+     	  content: "<div>"+(i+1)+"</br>中心點:"+P_center+"</Br>溫度:"+kriging.predict(array_newlat[i],array_newlon[i], variogram)+"</div>",
+     
       maxWidth: 500
     });
      myArray0.push(infoWindow0);
