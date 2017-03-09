@@ -11,8 +11,21 @@
     </div>
 </div>
 <div class="w3-animate-zoom" id="map" style="width:100%;height:450px"></div>
+ <script> 
+ //固定 每小時的15分 重新整理
+window.setTimeout("refresh()", 60000) 
+
+function refresh() 
+{ 
+var time = new Date(); 
+if (time.getMinutes() == 15) 
+location.reload(); 
+
+window.setTimeout("refresh()", 60000) 
+} 
+
+</script> 
 <script type="text/javascript">
-setTimeout("self.location.reload();", 3600000);
 //地圖初始化
 var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
 var myOptions = {
@@ -218,7 +231,7 @@ $.ajax({
 
 
             var infoWindow0 = new google.maps.InfoWindow({
-                content: "<div>" + (i + 1) + "</br>中心點:" + P_center + "</Br>" +array_krsvalue[i]+array_krsvalue1[i]+array_krsvalue2[i]+array_krsvalue3[i]  + "</div>",
+                content: "<div>" + (i + 1) + "</br>中心點:" + P_center + "</Br>溫度:" +array_krsvalue[i]+"</Br>雨量:"+ +array_krsvalue1[i]+"</Br>濕度:"+array_krsvalue2[i]+"</Br>氣壓:"+array_krsvalue3[i]  + "</div>",
                 maxWidth: 500
             });
             myArray0.push(infoWindow0);
