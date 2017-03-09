@@ -13,8 +13,8 @@ class Pages extends CI_Controller {
 
 
           $data['title'] = ucfirst($page); 
-          $en_title = array("home", "temperature", "rainfall", "humidity", "pressure", "complex", "air_psi", "air_co", "air_no2", "air_o3", "air_pm10", "air_pm25", "air_so2","sql_complex");
-          $chi_title = array("全台氣象測站", "溫度", "雨量", "濕度", "氣壓", "綜合氣象指數", "污染指標(PSI)", "一氧化碳(CO)", "二氧化氮(NO2)", "臭氧(O3)", "懸浮微粒(PM10)", "細懸浮微粒(PM2.5)", "二氧化硫(SO2)","資料庫處理");
+          $en_title = array("home", "temperature", "rainfall", "humidity", "pressure", "complex", "air_psi", "air_co", "air_no2", "air_o3", "air_pm10", "air_pm25", "air_so2","sql_complex","complex_pass");
+          $chi_title = array("全台氣象測站", "溫度", "雨量", "濕度", "氣壓", "即時氣象指數", "污染指標(PSI)", "一氧化碳(CO)", "二氧化氮(NO2)", "臭氧(O3)", "懸浮微粒(PM10)", "細懸浮微粒(PM2.5)", "二氧化硫(SO2)","資料庫處理","歷史氣象指數");
         for($i=0;$i<sizeof($en_title);$i++)
         {
             if($page == $en_title[$i])
@@ -395,6 +395,36 @@ $this->load->database();
             );
           $this->db->insert('krg', $datat);
      }
+  
+  }
+
+  function Complex_pass(){    
+
+    $date_s = $_REQUEST['date_s'];
+    $time_s = $_REQUEST['time_s'];
+   
+    if($time_s<10){
+      $time ='0'.$time_s.':00:00';
+    }
+      else{
+         $time =$time_s.':00:00';
+      }
+   $this->load->database();  
+     $query = $this->db->get_where('krg', array('date'=>$date_s,'timed' => $time));
+     foreach ($query->result_array() as $row)
+             {      
+                $arr['grid'] = urlencode($row['grid']);
+                $arr['temp'] = urlencode($row['temp']);
+                $arr['rain'] = urlencode($row['rain']);
+                $arr['humi'] = urlencode($row['humi']);
+                $arr['pres'] = urlencode($row['pres']);
+                echo urldecode(json_encode($arr))."@";
+   
+             }
+      
+                
+               
+                
   
   }
 
