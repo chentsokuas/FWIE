@@ -8,7 +8,8 @@
         <input class="w3-input" type="range" id="mytime" min="0" max="23" value="0">
     </div>
     <div class="w3-col m2 s2">
-        <input class="w3-input" type="text" id="mytext" value="0">
+        <input class="w3-input" type="text" id="mytext" value="0" style="display: none;">
+        <input class="w3-input" type="text" id="mytext1" value="0">
     </div>
 </div>
 <div class="w3-animate-zoom" id="map" style="width:100%;height:450px"></div>
@@ -25,6 +26,7 @@ map = new google.maps.Map(document.getElementById("map"), myOptions);
 
 $('#mytime').on('change', function() {
 
+ $('#mytext1').val("時間:　"+$('#mytime').val()+":00:00");
     $('#mytext').val($('#mytime').val());
     var date_ = $('#mydate').val();
     var time_ = $('#mytext').val();

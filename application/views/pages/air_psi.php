@@ -53,7 +53,7 @@ $.ajax({
                 var myArray = [];
                 var wellCircle;
                 for (var i = 0; i < num - 1; i++) {
-                    var Color = 360 - Math.round((360 * array_temp[s]/100));
+                        var Color = 360 - Math.round((360 * obj[i].value)/100);
                     wellCircle = new google.maps.Circle({
                         strokeColor: "hsl(" + Color + ", 100%, 50%)",
                         fillColor: "hsl(" + Color + ", 100%, 50%)",
@@ -137,7 +137,7 @@ $.ajax({
 
 
                 var rectangle = new google.maps.Rectangle(rectangleOptions);
-                var Color =  360-Math.round(360*(kriging.predict(array_newlat[i],array_newlon[i], variogram)/100));
+                 var Color =  360-Math.round(360*(kriging.predict(array_newlat[i],array_newlon[i], variogram)/100));
                 rectangle.setOptions({
                     fillColor: "hsl(" + Color + ", 100%, 50%)"
                 });
@@ -174,6 +174,7 @@ $.ajax({
             }
 
         }
+         $("#id01").show();
 
         //網格結束
         //高度開始
