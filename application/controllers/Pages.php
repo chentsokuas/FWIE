@@ -302,7 +302,7 @@ class Pages extends CI_Controller {
   }
 
 
-//綜合
+//綜合撈取氣象站資料
 function Complex(){                                      
            $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
                 //$xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
@@ -363,7 +363,7 @@ function Complex(){
         }
         
    }
-
+//存入資料庫
  function Complex1(){    
 $this->load->database();  
     $NewString0 = split (',',  $_POST['timed']);
@@ -381,23 +381,36 @@ $this->load->database();
      $NewString2[0] = str_replace("[", "", $NewString2[0]);
       $NewString3 = split (',',  $_POST['data3']);
      $NewString3[0] = str_replace("[", "", $NewString3[0]);
- 
-     for($i=0;$i<sizeof($NewString);$i++)
-     {
-            $datat = array(
-                'grid' => $i+1,
-                'temp' => round($NewString[$i],2),
-                'rain' => round($NewString1[$i],2),
-                'humi' => round($NewString2[$i],2),
-                'pres' => round($NewString3[$i],2),
-                'date' =>$NewString0[0],
-                'timed' =>$NewString0[1]
-            );
-          $this->db->insert('krg', $datat);
-     }
+
+     $query = $this->db->get_where('krg', array('date'=>$NewString0[0],'timed' => $NewString0[1]));
+      if ($query->num_rows() > 0) {
+            
+         } 
+            else {
+
+                for($i=0;$i<sizeof($NewString);$i++)
+              {
+                     $datat = array(
+                                   'grid' => $i+1,
+                                   'temp' => round($NewString[$i],2),
+                                   'rain' => round($NewString1[$i],2),
+                                   'humi' => round($NewString2[$i],2),
+                                   'pres' => round($NewString3[$i],2),
+                                   'date' =>$NewString0[0],
+                                   'timed' =>$NewString0[1]
+                                   );
+                     $this->db->insert('krg', $datat);
+                }
+   
+                 }
+      
+
+
+
+     
   
   }
-
+//歷史氣象資訊
   function Complex_pass(){    
 
     $date_s = $_REQUEST['date_s'];

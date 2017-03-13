@@ -18,7 +18,7 @@ window.setTimeout("refresh()", 60000)
 function refresh() 
 { 
 var time = new Date(); 
-if (time.getMinutes() == 15) 
+if (time.getMinutes() == 25 || time.getMinutes() == 45 || time.getMinutes() == 55) 
 location.reload(); 
 
 window.setTimeout("refresh()", 60000) 
