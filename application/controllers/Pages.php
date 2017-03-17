@@ -13,8 +13,8 @@ class Pages extends CI_Controller {
 
 
           $data['title'] = ucfirst($page); 
-          $en_title = array("home", "temperature", "rainfall", "humidity", "pressure", "complex", "air_psi", "air_co", "air_no2", "air_o3", "air_pm10", "air_pm25", "air_so2","sql_complex","complex_pass","som");
-          $chi_title = array("全台氣象測站", "溫度", "雨量", "濕度", "氣壓", "即時氣象指數", "污染指標(PSI)", "一氧化碳(CO)", "二氧化氮(NO2)", "臭氧(O3)", "懸浮微粒(PM10)", "細懸浮微粒(PM2.5)", "二氧化硫(SO2)","資料庫處理","歷史氣象指數","som分群");
+          $en_title = array("home", "temperature", "rainfall", "humidity", "pressure", "complex", "air_psi", "air_co", "air_no2", "air_o3", "air_pm10", "air_pm25", "air_so2","sql_complex","complex_pass");
+          $chi_title = array("全台氣象測站", "溫度", "雨量", "濕度", "氣壓", "即時氣象指數", "污染指標(PSI)", "一氧化碳(CO)", "二氧化氮(NO2)", "臭氧(O3)", "懸浮微粒(PM10)", "細懸浮微粒(PM2.5)", "二氧化硫(SO2)","資料庫處理","歷史氣象指數");
         for($i=0;$i<sizeof($en_title);$i++)
         {
             if($page == $en_title[$i])
