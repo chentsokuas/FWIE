@@ -79,25 +79,27 @@ $.ajax({
             array_newlon.push(P_center.lng());
 
 
-            var rectangle = new google.maps.Rectangle(rectangleOptions);
+           
             if (twgrid.includes(i + 1) == true) {
+                 var rectangle = new google.maps.Rectangle(rectangleOptions);
                 var Color = 360;
                 var Light = "40%";
-
-            } else {
-                var Color = 360;
-                var Light = "100%";
-            }
-
-
-
-
-            rectangle.setOptions({
+                  rectangle.setOptions({
                 fillColor: "hsl(" + Color + ", 100%, " + Light + ")"
             });
             array_rectangle.push(rectangle);
             rectangle.setMap(map);
             rectangle.setBounds(latLngBounds);
+
+            } else {
+              
+                
+            }
+
+
+
+
+          
             if (count != Math.ceil(SN) + 1) {
                 Map_Lat = Map_Lat - (dis * 2);
             } else {
