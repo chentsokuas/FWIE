@@ -55,23 +55,34 @@ $('#mytime').on('change', function() {
             var array_newcenter = [];
             var array_newlat = [];
             var array_newlon = [];
-            var index = data.indexOf("^"); // Gets the first index where a space occours
-            var datas0 = data.substr(0, index); // Gets the first part
-            var datas1 = data.substr(index + 1); // Gets the text part
-            var datas = datas0.split("@");
-            var datas_pass = datas1.split("@");
+            //var index = data.indexOf("^"); // Gets the first index where a space occours
+            var datas0 = data.split("^");
+
+
+            var datas = datas0[0].split("@");
+            var datas_pass = datas0[1].split("@");
+            var tw_grid = datas0[2].split("@");
+
+
             var num = datas.length;
-             var num_pass = datas_pass.length;
+            var num_pass = datas_pass.length;
+            var num_tw_grid = tw_grid.length;
+
             var obj = new Array();
             var obj_pass = new Array();
+            var obj_tw_grid = new Array();
+
             for (var i = 0; i < num - 1; i++) {
                 obj[i] = JSON.parse(datas[i]);
-              
+
             }
-             for (var i = 0; i < num_pass - 1; i++) {
-                  obj_pass[i]= JSON.parse(datas_pass[i]);
-              
+            for (var i = 0; i < num_pass - 1; i++) {
+                obj_pass[i] = JSON.parse(datas_pass[i]);
             }
+            for (var i = 0; i < num_tw_grid - 1; i++) {
+                obj_tw_grid[i] = JSON.parse(tw_grid[i]);
+            }
+
 
             var myArray0 = [];
             var SN = (25.34 - 21.871) * 55 / 3;
@@ -104,32 +115,36 @@ $('#mytime').on('change', function() {
 
             //權重陣列，隨機選擇的值在0.0和1.0之間
             var w = [];
-              for(var i=0;i<maxClusters;i++)
-            {
-                w.push([Math.random(),Math.random(),Math.random(),Math.random()]);
+            for (var i = 0; i < maxClusters; i++) {
+                w.push([Math.random(), Math.random(), Math.random(), Math.random()]);
             }
-          
 
-           var pattern=[];
-           var tests=[];
-           var som_clusters=[];
-             const inputPatterns = obj_pass.length;
-             const inputTests = obj.length;
-            
 
-            for(var i=0;i<inputPatterns;i++)
-            {
+            var pattern = [];
+            var tests = [];
+            var Taiwgrid = [];
+            var som_clusters = [];
+            const inputPatterns = obj_pass.length;
+            const inputTests = obj.length;
+            const gridnum = obj_tw_grid.length;
+
+
+            for (var i = 0; i < inputPatterns; i++) {
                 pattern.push([obj_pass[i].temp, obj_pass[i].rain, obj_pass[i].humi, obj_pass[i].pres]);
-              
+
             }
 
-           for(var i=0;i<inputTests;i++)
-            {
-              
+            for (var i = 0; i < inputTests; i++) {
+
                 tests.push([obj[i].temp, obj[i].rain, obj[i].humi, obj[i].pres]);
 
             }
+            for (var i = 0; i < gridnum; i++) {
 
+                Taiwgrid.push(parseInt(obj_tw_grid[i].grid));
+
+            }
+        
 
 
 
@@ -168,8 +183,8 @@ $('#mytime').on('change', function() {
 
                 } while (alpha > minAlpha);
 
- 
-                 $("#div").append('<p>training總數: ' + inputPatterns +'　　　test總數:'+inputTests +'</p>');
+
+                $("#div").append('<p>training總數: ' + inputPatterns + '　　　test總數:' + inputTests + '</p>');
                 $("#div").append('<p>迭代次數: ' + iterations + '次</p>');
 
                 $("#div").append('<p>在 ' +
@@ -269,7 +284,7 @@ $('#mytime').on('change', function() {
 
                 } // VecNum
 
-                 for (i = 0; i <= (maxClusters - 1); i++) {
+                for (i = 0; i <= (maxClusters - 1); i++) {
                     $("#div2").append('<p>節點 ' + i + ' 權重:</p>');
 
                     for (j = 0; j <= (vecLen - 1); j++) {
@@ -279,7 +294,7 @@ $('#mytime').on('change', function() {
                 } // i
 
 
-                  $("#div3").append('<p>Categorized test input:</p>');
+                $("#div3").append('<p>Categorized test input:</p>');
                 for (vecNum = 0; vecNum <= (inputTests - 1); vecNum++) {
                     //Compute input for all nodes.
                     computeInput(tests, vecNum);
@@ -296,7 +311,7 @@ $('#mytime').on('change', function() {
                 } // VecNum
 
 
-             
+
             }
 
 
@@ -319,21 +334,49 @@ $('#mytime').on('change', function() {
 
 
                 var rectangle = new google.maps.Rectangle(rectangleOptions);
-                if(som_clusters[i]==0)
-                    var Color =0;
-              if(som_clusters[i]==1)
-                    var Color =51;
-                   if(som_clusters[i]==2)
-                    var Color =102;
-                   if(som_clusters[i]==3)
-                    var Color =153;
-                   if(som_clusters[i]==4)
-                    var Color =204;
-                   if(som_clusters[i]==5)
-                    var Color =255;
+
+                switch (som_clusters[i]) {
+                    case 0:
+                        var Color = 0;
+                        var Light ="50%";
+                        break;
+                    case 1:
+                        var Color = 51;
+                        var Light ="50%";
+                        break;
+                    case 2:
+                         var Color = 102;
+                         var Light ="50%";
+                        break;
+                    case 3:
+                        var Color = 153;
+                        var Light ="50%";
+                        break;
+                    case 4:
+                        var Color = 204;
+                        var Light ="50%";
+                        break;
+                    case 5:
+                         var Color = 255;
+                         var Light ="50%";
+                }
+                if(Taiwgrid.includes(i+1)==true)
+                {
+                    
+                }
+                else
+                {
+                     var Color = 360;
+                     var Light ="100%";
+                }
+              
+
+
+
                 rectangle.setOptions({
-                    fillColor: "hsl(" + Color + ", 100%, 50%)"
+                    fillColor: "hsl(" + Color + ", 100%, " + Light + ")"
                 });
+
                 rectangle.setMap(map);
                 rectangle.setBounds(latLngBounds);
                 if (count != Math.ceil(SN) + 1) {
@@ -347,7 +390,7 @@ $('#mytime').on('change', function() {
 
 
                 var infoWindow0 = new google.maps.InfoWindow({
-                    content: "<div>" + (i + 1) + "</br>中心點:" + P_center +"</Br>第"+som_clusters[i]+"群"+"</Br>溫度:" + obj[i].temp + "</Br>雨量:" + +obj[i].rain + "</Br>濕度:" + obj[i].humi + "</Br>氣壓:" + obj[i].pres + "</div>",
+                    content: "<div>" + (i + 1) + "</br>中心點:" + P_center + "</Br>第" + som_clusters[i] + "群" + "</Br>溫度:" + obj[i].temp + "</Br>雨量:" + +obj[i].rain + "</Br>濕度:" + obj[i].humi + "</Br>氣壓:" + obj[i].pres + "</div>",
                     maxWidth: 500
                 });
                 myArray0.push(infoWindow0);

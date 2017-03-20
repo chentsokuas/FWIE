@@ -437,7 +437,7 @@ $this->load->database();
 
   }
 
-//歷史氣象資訊
+//SOM分群
   function Som(){    
 
     $date_s = $_REQUEST['date_s'];
@@ -474,12 +474,32 @@ $this->load->database();
                 echo urldecode(json_encode($arr))."@";
    
              } 
+             
+             $query2 = $this->db->get('taiwan_grid');
+               echo "^";
+                 foreach ($query2->result_array() as $row)
+                  {
+                    $arr['grid'] = urlencode($row['grid']);
+                    echo urldecode(json_encode($arr))."@";
+                   }
 
   }
+
+   function Taiwan_edge(){   
+    $this->load->database(); 
+    $query = $this->db->get('taiwan_grid');
+                 foreach ($query->result_array() as $row)
+                  {
+                    $arr['grid'] = urlencode($row['grid']);
+                    echo urldecode(json_encode($arr))."@";
+                   }
+   } 
+
+
+
+   
+
  
-
-
-
 
 
 
