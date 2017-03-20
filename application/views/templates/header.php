@@ -76,7 +76,7 @@
                     <a href="<?php echo base_url();?>complex_pass">歷史氣象資訊</a>
                 </div>
             </li>
-            <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>som">SOM</a></li>
+            <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>som">SOM分群</a></li>
             <li class="w3-hide-small w3-dropdown-hover">
                 <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="AirQ">空氣品質<i class="fa fa-caret-down"></i></a>
                 <div class="w3-dropdown-content w3-white w3-card-4">

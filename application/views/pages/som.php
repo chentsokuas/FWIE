@@ -61,12 +61,18 @@ $('#mytime').on('change', function() {
             var datas = datas0.split("@");
             var datas_pass = datas1.split("@");
             var num = datas.length;
+             var num_pass = datas_pass.length;
             var obj = new Array();
             var obj_pass = new Array();
             for (var i = 0; i < num - 1; i++) {
                 obj[i] = JSON.parse(datas[i]);
-                obj_pass[i]= JSON.parse(datas_pass[i]);
+              
             }
+             for (var i = 0; i < num_pass - 1; i++) {
+                  obj_pass[i]= JSON.parse(datas_pass[i]);
+              
+            }
+
             var myArray0 = [];
             var SN = (25.34 - 21.871) * 55 / 3;
             var ES = (122.03 - 120.03322005271912) * 55 / 3;
@@ -107,12 +113,19 @@ $('#mytime').on('change', function() {
            var pattern=[];
            var tests=[];
            var som_clusters=[];
-             const inputPatterns = 2432;
-             const inputTests = 2432;
+             const inputPatterns = obj_pass.length;
+             const inputTests = obj.length;
+            
 
-            for(var i=0;i<2432;i++)
+            for(var i=0;i<inputPatterns;i++)
             {
                 pattern.push([obj_pass[i].temp, obj_pass[i].rain, obj_pass[i].humi, obj_pass[i].pres]);
+              
+            }
+
+           for(var i=0;i<inputTests;i++)
+            {
+              
                 tests.push([obj[i].temp, obj[i].rain, obj[i].humi, obj[i].pres]);
 
             }
@@ -155,7 +168,8 @@ $('#mytime').on('change', function() {
 
                 } while (alpha > minAlpha);
 
-
+ 
+                 $("#div").append('<p>training總數: ' + inputPatterns +'　　　test總數:'+inputTests +'</p>');
                 $("#div").append('<p>迭代次數: ' + iterations + '次</p>');
 
                 $("#div").append('<p>在 ' +

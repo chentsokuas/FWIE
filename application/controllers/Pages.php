@@ -462,7 +462,7 @@ $this->load->database();
    
              } 
 
-           $query1 = $this->db->get_where('krg', array('date'=>'2017-3-19','timed' => $time));
+           $query1 = $this->db->get_where('krg', array('timed' => $time));
            echo "^";
      foreach ($query1->result_array() as $row)
              {      
