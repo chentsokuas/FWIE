@@ -93,6 +93,7 @@
                 <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="testF">　　測試功能　　<i class="fa fa-caret-down"></i></a>
                 <div class="w3-dropdown-content w3-white w3-card-4">
                     <a href="<?php echo base_url();?>sql_complex">資料庫處理</a>
+                      <a href="<?php echo base_url();?>taiwan_edge">台灣邊緣測試</a>
                 </div>
             </li>
         </ul>
