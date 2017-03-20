@@ -1,12 +1,36 @@
 
-<p id="test"></p>
-<p id="test1"></p>
-<p>Clusters for training input:</p>
+<h1><?php echo $ch_title?></h1>
+<input id="cht" type="input" name="cht" value="<?php echo $ch_title?>" style="display: none;">
+<div class="w3-col m12">
+    <div class="w3-col m12 s12">
+        <input class="w3-input" type="date" id="mydate" value="">
+    </div>
+    <div class="w3-col m10 s10">
+        <input class="w3-input" type="range" id="mytime" min="0" max="23" value="0">
+    </div>
+    <div class="w3-col m2 s2">
+        <input class="w3-input" type="text" id="mytext" value="0" style="display: none;">
+        <input class="w3-input" type="text" id="mytext1" value="0">
+    </div>
+</div>
+<div class="w3-animate-zoom" id="map" style="width:100%;height:450px"></div>
 <div class="w3-col m12 s12" id="div"></div>
 
 <script type="text/javascript">
-const maxClusters = 5;
-const vecLen = 7;
+//地圖初始化
+var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
+var myOptions = {
+    zoom: 7,
+    center: myLatlng,
+    mapTypeId: google.maps.MapTypeId.SATELLITE
+};
+map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+
+//SOM
+
+const maxClusters = 6;
+const vecLen = 4;
 const decayRate = 0.96;              //About 100 iterations. 
 const minAlpha = 0.01;
 const radiusReductionPoint = 0.023;  //Last 20% of iterations.
@@ -15,30 +39,33 @@ var alpha = 0.6;
 var d = new Array(maxClusters);      //Network nodes.
 
 //Weight matrix with randomly chosen values between 0.0 and 1.0
-var w = new Array([0.2, 0.6, 0.5, 0.9, 0.4, 0.2, 0.8],
-                  [0.9, 0.3, 0.6, 0.4, 0.5, 0.6, 0.3],
-                  [0.8, 0.5, 0.7, 0.2, 0.6, 0.9, 0.5],
-                  [0.6, 0.4, 0.2, 0.3, 0.7, 0.2, 0.4],
-                  [0.8, 0.9, 0.7, 0.9, 0.3, 0.2, 0.5]);
+var w = new Array([0.2, 0.6, 0.5, 0.9],
+                  [0.9, 0.3, 0.6, 0.4,],
+                  [0.8, 0.5, 0.7, 0.2],
+                  [0.6, 0.4, 0.2, 0.3],
+                  [0.8, 0.9, 0.7, 0.9],
+                  [0.4, 0.1, 0.5, 0.7]);
 
 //Training patterns.
-const inputPatterns = 7;
-var pattern = new Array([1, 1, 1, 0, 0, 0, 0],
-                        [0, 0, 0, 0, 1, 1, 1],
-                        [0, 0, 1, 1, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 1],
-                        [1, 0, 0, 0, 0, 0, 0],
-                        [0, 0, 0, 1, 0, 0, 0],
-                        [1, 0, 1, 0, 1, 0, 1]);
+const inputPatterns = 5;
+var pattern = new Array([16.18, 0.64, 0.94, 1015.99],
+                        [16.3, 0.64, 0.94, 1016.54],
+                        [10.04, 0.66, 0.67, 713.57],
+                        [26.53, 1.05, 0.66, 957.92],
+                        [20.29, 0.82, 0.92, 978.78]
+                        );
 
 //Testing patterns to try after training is complete.
 const inputTests = 6;
-var tests = new Array([1, 1, 1, 1, 0, 0, 0],
-                      [0, 1, 1, 0, 1, 1, 1],
-                      [0, 1, 0, 1, 0, 1, 0],
-                      [0, 1, 0, 0, 0, 0, 0],
-                      [0, 0, 0, 0, 1, 0, 0],
-                      [0, 0, 0, 1, 1, 1, 1]);
+var tests = new Array([16.18, 0.64, 0.94, 1015.99],
+                        [16.3, 0.64, 0.94, 1016.54],
+                        [10.04, 0.66, 0.67, 713.57],
+                        [26.53, 1.05, 0.66, 957.92],
+                        [20.29, 0.82, 0.92, 978.78]
+                        );
+
+
+
 
 window.onload = function()
 {
@@ -84,8 +111,13 @@ function training()
 
     } while(alpha > minAlpha);
 
-$("#test").text('Iterations:'+iterations);
-$("#test1").text('Neighborhood radius reduced after '+reductionPoint+' iterations.');
+
+     $( "#div" ).append('<p>Iterations: '+iterations+'</p>');
+    
+     $( "#div" ).append('<p>Neighborhood radius reduced after '+
+                             reductionPoint+' iterations.</p>');
+
+
 }
 
 function computeInput(vectorArray, vectorNumber)
@@ -170,7 +202,7 @@ function minimum(nodeArray)
 function printResults()
 {
     var dMin = 0;
-
+$( "#div" ).append('<p>Clusters for training input:</p>');
 //Print clusters created.
     for(vecNum = 0; vecNum <= (inputPatterns - 1); vecNum++)
     {
@@ -190,21 +222,21 @@ function printResults()
     } // VecNum
 
 //Print weight matrix.
-   // document.write('<p><hr></p>');
+   $( "#div" ).append('<p><hr></p>');
     for(i = 0; i <= (maxClusters - 1); i++)
     {
-        //document.write('<p>Weights for Node '+i+' connections:</p>');
-        //document.write('<p><pre>&nbsp;&nbsp;&nbsp;&nbsp; ');
+        $( "#div" ).append('<p>Weights for Node '+i+' connections:</p>');
+    
         for(j = 0; j <= (vecLen - 1); j++)
         {
-          //  document.write((Math.round(w[i][j] * 1000) / 1000)+', ');
+            $( "#div" ).append((Math.round(w[i][j] * 1000) / 1000)+', ');
         } // j
-      //  document.write('</pre></p>');
+        $( "#div" ).append('</pre></p>');
     } // i
 
 //Print post-training tests.
-  //  document.write('<p><hr></p>');
-  //  document.write('<p>Categorized test input:</p>');
+  $( "#div" ).append('<p><hr></p>');
+  $( "#div" ).append('<p>Categorized test input:</p>');
     for(vecNum = 0; vecNum <= (inputTests - 1); vecNum++)
     {
         //Compute input for all nodes.
@@ -213,12 +245,11 @@ function printResults()
         //See which is smaller.
         dMin = minimum(d);
 
-      //  document.write('<p>Vector (');
         for(i = 0; i <= (vecLen - 1); i++)
         {
-           // document.write(tests[vecNum][i]+', ');
+           $( "#div" ).append(tests[vecNum][i]+', ');
         } // i
-     //   document.write(') fits into category '+dMin+'</p>');
+     $( "#div" ).append(' fits into category '+dMin+'</p>');
 
     } // VecNum
 }
