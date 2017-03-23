@@ -440,6 +440,7 @@ $this->load->database();
 //SOM分群
   function Som(){    
 
+    $lot_s = $_REQUEST['lot_s'];
     $date_s = $_REQUEST['date_s'];
     $time_s = $_REQUEST['time_s'];
    
@@ -462,7 +463,7 @@ $this->load->database();
    
              } 
 
-           $query1 = $this->db->get_where('krg', array('timed' => $time),10000);
+           $query1 = $this->db->get_where('krg', array('timed' => $time),$lot_s);
            echo "^";
      foreach ($query1->result_array() as $row)
              {      

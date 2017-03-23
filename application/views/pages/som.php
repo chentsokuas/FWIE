@@ -2,6 +2,7 @@
 <input id="cht" type="input" name="cht" value="<?php echo $ch_title?>" style="display: none;">
 <div class="w3-col m12">
     <div class="w3-col m12 s12">
+        <input class="w3-input" type="text" id="mylot" value="5000">
         <input class="w3-input" type="date" id="mydate" value="">
     </div>
     <div class="w3-col m10 s10">
@@ -32,6 +33,7 @@ $('#mytime').on('change', function() {
 
     $('#mytext1').val("時間:　" + $('#mytime').val() + ":00:00");
     $('#mytext').val($('#mytime').val());
+    var lot_ = $('#mylot').val();
     var date_ = $('#mydate').val();
     var time_ = $('#mytext').val();
 
@@ -41,6 +43,7 @@ $('#mytime').on('change', function() {
         type: 'POST',
         dataType: 'text',
         data: {
+            lot_s:lot_,
             date_s: date_,
             time_s: time_
         },
