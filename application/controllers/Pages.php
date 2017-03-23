@@ -462,7 +462,7 @@ $this->load->database();
    
              } 
 
-           $query1 = $this->db->get_where('krg', array('timed' => $time));
+           $query1 = $this->db->get_where('krg', array('timed' => $time),10000);
            echo "^";
      foreach ($query1->result_array() as $row)
              {      
