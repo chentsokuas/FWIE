@@ -5,6 +5,7 @@
 <div class="w3-col m12">
     網格大小:
 </div>
+<div class="w3-col m12 s12">
 <div class="w3-center">
     <div class="w3-col m10 s6">
         <input name="long0" id="long0" class="w3-input" value="資料來源:中央氣象局 Opendata:O-A0001-001" disabled></input>
@@ -15,12 +16,19 @@
         <input id="btnst1" class="w3-btn w3-green w3-large w3-right" type="button" value="2.克利金推估圖"></input>
     </div>
 </div>
-<div class="w3-animate-zoom" id="map" style="width:100%;height:450px"></div>
+</div>
+
+<div class="w3-col m6 s12 w3-center">
+<div class="w3-animate-zoom" id="map" style="height:700px"></div>
+</div>
+<div class="w3-col m6 s12 w3-grey"  style="height:700px">
+</div>
+
 <script type="text/javascript">
 //地圖初始化
-var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
+var myLatlng = new google.maps.LatLng(23.6, 120.9082103);
 var myOptions = {
-    zoom: 7,
+    zoom: 8,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.SATELLITE
 };
