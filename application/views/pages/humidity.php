@@ -48,7 +48,7 @@
 //地圖初始化
 var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
 var myOptions = {
-    zoom: 7,
+    zoom: 8,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.SATELLITE
 };
