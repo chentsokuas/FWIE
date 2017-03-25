@@ -13,16 +13,48 @@
         <input class="w3-input" type="text" id="mytext1" value="0">
     </div>
 </div>
-<div class="w3-animate-zoom" id="map" style="width:100%;height:450px"></div>
-<div class="w3-col m12 s12" id="div"></div>
-<div class="w3-col m5 s5" id="div1"></div>
-<div class="w3-col m4 s4" id="div2"></div>
-<div class="w3-col m3 s3" id="div3"></div>
+<div class="w3-col m6 s12 w3-center">
+<div class="w3-animate-zoom" id="map" style="height:700px"></div>
+</div>
+<div class="w3-col m6 s12 w3-lightgray w3-border w3-border-green"  style="height:700px;padding-left: 5px">
+  <div class="w3-panel w3-blue w3-center">
+<p>網格</p>
+</div>
+<p id="value1"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格緯度</p>
+</div>
+<p id="value2"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格經度</p>
+</div>
+<p id="value3"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格氣象資訊</p>
+</div>
+<p id="value4"></p>
+<p id="value5"></p>
+<p id="value6"></p>
+<p id="value7"></p>
+
+  <div class="w3-panel w3-red w3-center">
+<p>SOM分群</p>
+  </div>
+  <p id="value8"></p>
+
+  </div>
+    <div class="w3-col m12 s12" id="div"></div>
+<div id="div1" style="display: none"></div>
+<div class="w3-col m12 s12" id="div2"></div>
+<div id="div3" style="display: none">></div>
+
+
+
 <script type="text/javascript">
 //地圖初始化
 var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
 var myOptions = {
-    zoom: 7,
+    zoom: 8,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.SATELLITE
 };
@@ -50,7 +82,7 @@ $('#mytime').on('change', function() {
         success: function(data) {
             var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
             var myOptions = {
-                zoom: 7,
+                zoom: 8,
                 center: myLatlng,
                 mapTypeId: google.maps.MapTypeId.SATELLITE
             };
@@ -407,6 +439,15 @@ $('#mytime').on('change', function() {
                     for (var hz = 0; hz < myArray0.length; hz++) {
                         myArray0[hz].close();
                     }
+                     $("#value1").text((a+1));
+                     $("#value2").text(array_newlat[a]);
+                     $("#value3").text(array_newlon[a]);
+                     $("#value4").text("溫度:"+obj[a].temp);
+                     $("#value5").text("雨量:"+obj[a].rain);
+                     $("#value6").text("濕度:"+obj[a].humi);
+                     $("#value7").text("氣壓:"+obj[a].pres);
+                     $("#value8").text("第"+ som_clusters[a]+"群");
+                    
 
                     myArray0[a].setPosition(ev.latLng);
                     myArray0[a].open(map);

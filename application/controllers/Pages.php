@@ -46,8 +46,8 @@ class Pages extends CI_Controller {
    }
 //溫度function
    function Temperature(){                                      
-              //  $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
-                $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
+                $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+                //$xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
          foreach($xml->children() as $books) { 
           if($books->locationName !="" && $books->weatherElement[3]->elementValue->value > -20)
               { 

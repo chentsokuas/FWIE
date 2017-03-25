@@ -10,12 +10,37 @@
         <input name="long" id="long" class="w3-input" value="3"></input>
     </div>
 </div>
-<div class="w3-animate-zoom" id="map" style="width:100%;height:450px"></div>
+<div class="w3-col m6 s12 w3-center">
+<div class="w3-animate-zoom" id="map" style="height:700px"></div>
+</div>
+<div class="w3-col m6 s12 w3-lightgray w3-border w3-border-green"  style="height:700px;padding-left: 5px">
+  <div class="w3-panel w3-blue w3-center">
+<p>網格</p>
+</div>
+<p id="value1"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格緯度</p>
+</div>
+<p id="value2"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格經度</p>
+</div>
+<p id="value3"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格氣象資訊</p>
+</div>
+<p id="value4"></p>
+<p id="value5"></p>
+<p id="value6"></p>
+<p id="value7"></p>
+ 
+</div>
+
 <script type="text/javascript">
 //地圖初始化
 var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
 var myOptions = {
-    zoom: 7,
+    zoom: 8,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.SATELLITE
 };
@@ -233,6 +258,13 @@ $.ajax({
                 for (var hz = 0; hz < myArray0.length; hz++) {
                     myArray0[hz].close();
                 }
+                     $("#value1").text((a+1));
+                     $("#value2").text(array_newlat[a]);
+                     $("#value3").text(array_newlon[a]);
+                     $("#value4").text("溫度:"+array_krsvalue[a]);
+                     $("#value5").text("雨量:"+array_krsvalue1[a]);
+                     $("#value6").text("濕度:"+array_krsvalue2[a]);
+                     $("#value7").text("氣壓:"+array_krsvalue3[a]);
 
                 myArray0[a].setPosition(ev.latLng);
                 myArray0[a].open(map);

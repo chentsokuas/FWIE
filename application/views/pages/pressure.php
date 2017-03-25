@@ -39,7 +39,7 @@
 </div>
 <p id="value4"></p>
   <div class="w3-panel w3-blue w3-center">
-<p>網格資訊</p>
+<p>網格氣象資訊</p>
 </div>
 <p id="value5"></p>
 </div>

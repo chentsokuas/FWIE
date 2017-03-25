@@ -7,12 +7,19 @@
     <div class="w3-col m2 s6">
     </div>
 </div>
-<div class="w3-animate-zoom" id="map" style="width:100%;height:450px"></div>
+<div class="w3-col m6 s12 w3-center">
+<div class="w3-animate-zoom" id="map" style="height:700px"></div>
+</div>
+<div class="w3-col m6 s12 w3-lightgray w3-border w3-border-green"  style="height:700px;padding-left: 5px">
+  <div class="w3-panel w3-red w3-center">
+  <p>台灣邊緣測試</p>
+  </div>
+</div>
 <script type="text/javascript">
 //地圖初始化
 var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
 var myOptions = {
-    zoom: 7,
+    zoom: 8,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.SATELLITE
 };
