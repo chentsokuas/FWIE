@@ -21,7 +21,27 @@
 <div class="w3-col m6 s12 w3-center">
 <div class="w3-animate-zoom" id="map" style="height:700px"></div>
 </div>
-<div class="w3-col m6 s12 w3-grey"  style="height:700px">
+<div class="w3-col m6 s12 w3-lightgray w3-border w3-border-green"  style="height:700px;padding-left: 5px">
+  <div class="w3-panel w3-red w3-center">
+  <p> 測站資訊</p>
+  </div>
+   <p id="value1"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格</p>
+</div>
+<p id="value2"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格緯度</p>
+</div>
+<p id="value3"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格經度</p>
+</div>
+<p id="value4"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格資訊</p>
+</div>
+<p id="value5"></p>
 </div>
 
 <script type="text/javascript">
@@ -50,9 +70,14 @@ $.ajax({
         var datas = Message.split("@");
         var num = datas.length;
         var obj = new Array();
+        var objsort = [];
         for (var i = 0; i < num - 1; i++) {
             obj[i] = JSON.parse(datas[i]);
+   
+          
         }
+
+       
         $("#time").html("最後更新:</br>" + obj[0].time.split("T")[0] + " " + (obj[0].time.split("T")[1]).split("+08:00")[0]);
         //資料初始化結束
 
@@ -87,6 +112,7 @@ $.ajax({
                         for (var h = 0; h < myArray.length; h++) {
                             myArray[h].close();
                         }
+                        $("#value1").text(obj[a].locationName+":"+obj[a].value);
 
                         myArray[a].setPosition(ev.latLng);
                         myArray[a].open(map);
@@ -175,6 +201,11 @@ $.ajax({
                     for (var hz = 0; hz < myArray0.length; hz++) {
                         myArray0[hz].close();
                     }
+                    $("#value2").text((a+1));
+                     $("#value3").text(array_newlat[a]);
+                      $("#value4").text(array_newlon[a]);
+                       $("#value5").text(kriging.predict(array_newlat[a], array_newlon[a], variogram));
+                    
 
                     myArray0[a].setPosition(ev.latLng);
                     myArray0[a].open(map);
@@ -182,6 +213,8 @@ $.ajax({
             }
 
         }
+        
+    
 
         //網格結束
         //高度開始

@@ -5,6 +5,7 @@
 <div class="w3-col m12">
     網格大小:
 </div>
+<div class="w3-col m12 s12">
 <div class="w3-center">
     <div class="w3-col m10 s6">
         <input name="long0" id="long0" class="w3-input" value="資料來源:中央氣象局 Opendata:O-A0001-001" disabled></input>
@@ -15,7 +16,34 @@
         <input id="btnst1" class="w3-btn w3-green w3-large w3-right" type="button" value="2.克利金推估圖"></input>
     </div>
 </div>
-<div class="w3-animate-zoom" id="map" style="width:100%;height:450px"></div>
+</div>
+
+<div class="w3-col m6 s12 w3-center">
+<div class="w3-animate-zoom" id="map" style="height:700px"></div>
+</div>
+<div class="w3-col m6 s12 w3-lightgray w3-border w3-border-green"  style="height:700px;padding-left: 5px">
+  <div class="w3-panel w3-red w3-center">
+  <p> 測站資訊</p>
+  </div>
+   <p id="value1"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格</p>
+</div>
+<p id="value2"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格緯度</p>
+</div>
+<p id="value3"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格經度</p>
+</div>
+<p id="value4"></p>
+  <div class="w3-panel w3-blue w3-center">
+<p>網格資訊</p>
+</div>
+<p id="value5"></p>
+</div>
+
 <script type="text/javascript">
 //地圖初始化
 var myLatlng = new google.maps.LatLng(23.7, 120.9082103);
@@ -79,6 +107,7 @@ $.ajax({
                         for (var h = 0; h < myArray.length; h++) {
                             myArray[h].close();
                         }
+                          $("#value1").text(obj[a].locationName+":"+obj[a].value);
 
                         myArray[a].setPosition(ev.latLng);
                         myArray[a].open(map);
@@ -167,6 +196,10 @@ $.ajax({
                     for (var hz = 0; hz < myArray0.length; hz++) {
                         myArray0[hz].close();
                     }
+                        $("#value2").text((a+1));
+                     $("#value3").text(array_newlat[a]);
+                      $("#value4").text(array_newlon[a]);
+                       $("#value5").text(kriging.predict(array_newlat[a], array_newlon[a], variogram));
 
                     myArray0[a].setPosition(ev.latLng);
                     myArray0[a].open(map);

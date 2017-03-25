@@ -77,18 +77,6 @@
                 </div>
             </li>
             <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>som">SOM分群</a></li>
-            <li class="w3-hide-small w3-dropdown-hover">
-                <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="AirQ">空氣品質<i class="fa fa-caret-down"></i></a>
-                <div class="w3-dropdown-content w3-white w3-card-4">
-                    <a href="<?php echo base_url();?>air_psi">污染指標(PSI)</a>
-                    <a href="<?php echo base_url();?>air_co">一氧化碳(CO)</a>
-                    <a href="<?php echo base_url();?>air_no2">二氧化氮(NO2)</a>
-                    <a href="<?php echo base_url();?>air_o3">臭氧(O3)</a>
-                    <a href="<?php echo base_url();?>air_pm10">懸浮微粒(PM10)</a>
-                    <a href="<?php echo base_url();?>air_pm25">細懸浮微粒(PM2.5)</a>
-                    <a href="<?php echo base_url();?>air_so2">二氧化硫(SO2)</a>
-                </div>
-            </li>
             <li class="w3-hide-small w3-dropdown-hover w3-right">
                 <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="testF">　　測試功能　　<i class="fa fa-caret-down"></i></a>
                 <div class="w3-dropdown-content w3-white w3-card-4">
@@ -111,13 +99,7 @@
                 <option value="<?php echo base_url();?>pressure">氣壓</option>
                 <option value="<?php echo base_url();?>complex">綜合</option>
                  <option value="<?php echo base_url();?>som">som</option>
-                <option value="<?php echo base_url();?>pages/air_psi">污染指標(PSI)</option>
-                <option value="<?php echo base_url();?>air_co">一氧化碳(CO)</option>
-                <option value="<?php echo base_url();?>air_no2">二氧化氮(NO2)</option>
-                <option value="<?php echo base_url();?>air_o3">臭氧(O3)</option>
-                <option value="<?php echo base_url();?>air_pm10">懸浮微粒(PM10)</option>
-                <option value="<?php echo base_url();?>air_pm25">細懸浮微粒(PM2.5)</option>
-                <option value="<?php echo base_url();?>air_so2">二氧化硫(SO2)</option>
+             
             </select>
         </div>
         <div class="w3-clear"></div>
