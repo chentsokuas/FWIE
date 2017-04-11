@@ -44,6 +44,10 @@
 <p id="value5"></p>
 </div>
 
+<input type="text" id="test">
+<input type="text" id="test1">
+<input type="text" id="test2">
+
 <script type="text/javascript">
 //地圖初始化
 var myLatlng = new google.maps.LatLng(23.6, 120.9082103);
@@ -86,6 +90,7 @@ $.ajax({
                 var myArray = [];
                 var wellCircle;
                 for (var i = 0; i < num - 1; i++) {
+
                     var Color = 360 - Math.round((360 * obj[i].value / 30));
                     wellCircle = new google.maps.Circle({
                         strokeColor: "hsl(" + Color + ", 100%, 50%)",
@@ -98,7 +103,9 @@ $.ajax({
                         radius: 3000,
                         zIndex: 99999
                     });
-
+                    document.getElementById('test').value+= obj[i].lat +',' ;
+                    document.getElementById('test1').value+= obj[i].lon +',' ;
+                    document.getElementById('test2').value+= obj[i].value +',' ;
                     var infoWindow = new google.maps.InfoWindow({
                         content: "<div>" + obj[i].locationName + "</Br>"+  document.getElementById('cht').value+":" + obj[i].value + "</div>",
                         maxWidth: 500
@@ -129,12 +136,14 @@ $.ajax({
         var array_newlat = [];
         var array_newlon = [];
 
-        for (var i = 0; i < num - 1; i++) {
+        for (var i = 0; i < num -1; i++) {
 
             array_lat.push(parseFloat(obj[i].lat));
             array_lon.push(parseFloat(obj[i].lon));
             array_value.push(parseFloat(obj[i].value));
+      
         }
+     
 
 
         //---------------------------------------------
@@ -185,6 +194,7 @@ $.ajax({
                     Map_lng = Map_lng + (dis * 2);
                 }
 
+//document.getElementById('test').value+= kriging.predict(array_newlat[i], array_newlon[i], variogram) +',' ;
 
                 var infoWindow0 = new google.maps.InfoWindow({
                     content: "<div>" + (i + 1) + "</br>中心點:" + P_center + "</Br>"+  document.getElementById('cht').value+":" + kriging.predict(array_newlat[i], array_newlon[i], variogram) + "</div>",
@@ -217,40 +227,7 @@ $.ajax({
     
 
         //網格結束
-        //高度開始
-        var elevator = new google.maps.ElevationService;
-        var infowindow = new google.maps.InfoWindow({
-            map: map
-        });
-
-        // Add a listener for the click event. Display the elevation for the LatLng of
-        // the click inside the infowindow.
-        map.addListener('click', function(event) {
-            displayLocationElevation(event.latLng, elevator, infowindow);
-        });
-
-        function displayLocationElevation(location, elevator, infowindow) {
-            // Initiate the location request
-            elevator.getElevationForLocations({
-                'locations': [location]
-            }, function(results, status) {
-                infowindow.setPosition(location);
-                if (status === google.maps.ElevationStatus.OK) {
-                    // Retrieve the first result
-                    if (results[0]) {
-                        // Open the infowindow indicating the elevation at the clicked position.
-                        infowindow.setContent('高度為 <br> ' +
-                            results[0].elevation + ' 米.');
-                    } else {
-                        infowindow.setContent('找不到資料');
-                    }
-                } else {
-                    infowindow.setContent('高度偵測失敗 原因: ' + status);
-                }
-            });
-        }
-
-        //高度結束
+     
 
 
 
