@@ -76,6 +76,13 @@
                     <a href="<?php echo base_url();?>complex_pass">歷史氣象資訊</a>
                 </div>
             </li>
+             <li class="w3-hide-small w3-dropdown-hover">
+                <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="wether">TCCIP<i class="fa fa-caret-down"></i></a>
+                <div class="w3-dropdown-content w3-white w3-card-4">
+                    <a href="<?php echo base_url();?>">月均溫度(1960~2012)</a>
+                    <a href="<?php echo base_url();?>">月均雨量(1960~2012)</a>
+                </div>
+            </li>
                 <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>comfirm_krg">克利金推估驗證</a></li>
             <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>som">SOM分群</a></li>
             <li class="w3-hide-small w3-dropdown-hover w3-right">
