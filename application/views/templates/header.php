@@ -76,12 +76,14 @@
                     <a href="<?php echo base_url();?>complex_pass">歷史氣象資訊</a>
                 </div>
             </li>
+                <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>comfirm_krg">克利金推估驗證</a></li>
             <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>som">SOM分群</a></li>
             <li class="w3-hide-small w3-dropdown-hover w3-right">
                 <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="testF">　　測試功能　　<i class="fa fa-caret-down"></i></a>
                 <div class="w3-dropdown-content w3-white w3-card-4">
                     <a href="<?php echo base_url();?>sql_complex">資料庫處理</a>
-                      <a href="<?php echo base_url();?>taiwan_edge">台灣邊緣測試</a>
+                    <a href="<?php echo base_url();?>taiwan_edge">台灣邊緣測試</a>
+                    <a href="<?php echo base_url();?>test_krg">克利金推估測試</a>
                 </div>
             </li>
         </ul>

@@ -13,8 +13,8 @@ class Pages extends CI_Controller {
 
 
           $data['title'] = ucfirst($page); 
-          $en_title = array("home", "temperature", "rainfall", "humidity", "pressure", "complex","sql_complex","complex_pass","som","taiwan_edge");
-          $chi_title = array("全台氣象測站", "溫度", "雨量", "濕度", "氣壓", "即時氣象指數","資料庫處理","歷史氣象指數","som分群","台灣邊緣測試");
+          $en_title = array("home", "temperature", "rainfall", "humidity", "pressure", "complex","sql_complex","complex_pass","som","taiwan_edge","test_krg","comfirm_krg");
+          $chi_title = array("全台氣象測站", "溫度", "雨量", "濕度", "氣壓", "即時氣象指數","資料庫處理","歷史氣象指數","som分群","台灣邊緣測試","克利金推估測試","克利金推估驗證");
         for($i=0;$i<sizeof($en_title);$i++)
         {
             if($page == $en_title[$i])
@@ -315,6 +315,30 @@ $this->load->database();
                     echo urldecode(json_encode($arr))."@";
                    }
    } 
+
+
+
+   //測試function
+   function Test_krg(){                                      
+                $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+                //$xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
+
+
+         foreach($xml->children() as $books) { 
+          if($books->locationName !="" && ($books->locationName =="萬山"||$books->locationName =="尾寮山"||$books->locationName =="三地門"||$books->locationName =="長治"||$books->locationName =="新圍"||$books->locationName =="九如"||$books->locationName =="里港"||$books->locationName =="旗山"||$books->locationName =="美濃"||$books->locationName =="月眉"||$books->locationName =="六龜"||$books->locationName =="高樹") && $books->weatherElement[3]->elementValue->value > -20 )
+              { 
+
+                $arr['locationName'] = urlencode($books->locationName);
+                $arr['lat'] = urlencode($books->lat);
+                $arr['lon'] = urlencode($books->lon);
+                $arr['time'] = urlencode($books->time->obsTime);
+                $arr['value'] = urlencode($books->weatherElement[3]->elementValue->value);
+                echo urldecode(json_encode($arr))."@";
+
+              }
+
+        }
+   }
 
 
 

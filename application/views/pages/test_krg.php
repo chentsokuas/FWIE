@@ -44,12 +44,16 @@
 <p id="value5"></p>
 </div>
 
+<input type="text" id="test">
+<input type="text" id="test1">
+<input type="text" id="test2">
+<input type="text" id="test3">
 
 <script type="text/javascript">
 //地圖初始化
-var myLatlng = new google.maps.LatLng(23.6, 120.9082103);
+var myLatlng = new google.maps.LatLng(22.830909090909085, 120.57867459817362);
 var myOptions = {
-    zoom: 8,
+    zoom: 10,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.SATELLITE
 };
@@ -100,6 +104,10 @@ $.ajax({
                         radius: 3000,
                         zIndex: 99999
                     });
+                    document.getElementById('test').value+= obj[i].lat +',' ;
+                    document.getElementById('test1').value+= obj[i].lon +',' ;
+                    document.getElementById('test2').value+= obj[i].value +',' ;
+                    document.getElementById('test3').value+= obj[i].locationName +',' ;
                     var infoWindow = new google.maps.InfoWindow({
                         content: "<div>" + obj[i].locationName + "</Br>"+  document.getElementById('cht').value+":" + obj[i].value + "</div>",
                         maxWidth: 500
@@ -113,7 +121,7 @@ $.ajax({
                         for (var h = 0; h < myArray.length; h++) {
                             myArray[h].close();
                         }
-                        $("#value1").text(obj[a].locationName+":"+obj[a].value);
+                        $("#value1").text(obj[a].locationName+":"+obj[a].value+","+obj[a].lat+","+obj[a].lon);
 
                         myArray[a].setPosition(ev.latLng);
                         myArray[a].open(map);

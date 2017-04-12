@@ -425,7 +425,7 @@ $('#mytime').on('change', function() {
 
 
                 var infoWindow0 = new google.maps.InfoWindow({
-                    content: "<div>" + (i + 1) + "</br>中心點:" + P_center + "</Br>第" + som_clusters[i] + "群" + "</Br>溫度:" + obj[i].temp + "</Br>雨量:" + +obj[i].rain + "</Br>濕度:" + obj[i].humi + "</Br>氣壓:" + obj[i].pres + "</div>",
+                    content: "<div>" + (i + 1) + "</br>中心點:" + P_center + "</Br>第" + (som_clusters[i]+1) + "群" + "</Br>溫度:" + obj[i].temp + "</Br>雨量:" + +obj[i].rain + "</Br>濕度:" + obj[i].humi + "</Br>氣壓:" + obj[i].pres + "</div>",
                     maxWidth: 500
                 });
                 myArray0.push(infoWindow0);
@@ -446,7 +446,7 @@ $('#mytime').on('change', function() {
                      $("#value5").text("雨量:"+obj[a].rain);
                      $("#value6").text("濕度:"+obj[a].humi);
                      $("#value7").text("氣壓:"+obj[a].pres);
-                     $("#value8").text("第"+ som_clusters[a]+"群");
+                     $("#value8").text("第"+ (som_clusters[a]+1)+"群");
                     
 
                     myArray0[a].setPosition(ev.latLng);
