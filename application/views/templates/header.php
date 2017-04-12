@@ -108,8 +108,8 @@
         <div class="myMenu">
             <div class="w3-container w3-padding-top" style="padding-left: 20px">
                 <h3>經緯度定位</h3>
-                <input name="lng" id="lng" type="text" class="w3-input w3-border w3-round-large" value="">
-                <input name="lat" id="lat" type="text" class="w3-input w3-border w3-round-large" value="">
+                <input name="lng" id="lng" type="text" class="w3-input w3-border w3-round-large" value="120.5348166078329">
+                <input name="lat" id="lat" type="text" class="w3-input w3-border w3-round-large" value="22.627750697986123">
                 <input class="w3-btn-block  w3-blue" id="Button1" type="button" value="查詢" onclick="Button1_onclick()" />
                 <script language="javascript" type="text/javascript">
                 function Button1_onclick() {

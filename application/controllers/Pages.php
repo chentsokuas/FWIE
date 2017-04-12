@@ -325,7 +325,7 @@ $this->load->database();
 
 
          foreach($xml->children() as $books) { 
-          if($books->locationName !="" && ($books->locationName =="萬山"||$books->locationName =="尾寮山"||$books->locationName =="三地門"||$books->locationName =="長治"||$books->locationName =="新圍"||$books->locationName =="九如"||$books->locationName =="里港"||$books->locationName =="旗山"||$books->locationName =="美濃"||$books->locationName =="月眉"||$books->locationName =="六龜"||$books->locationName =="高樹") && $books->weatherElement[3]->elementValue->value > -20 )
+          if($books->locationName !="" && ($books->locationName =="屏東"||$books->locationName =="長治"||$books->locationName =="三地門"||$books->locationName =="赤山"||$books->locationName =="竹田"||$books->locationName =="萬丹"||$books->locationName =="大寮"||$books->locationName =="九如"||$books->locationName =="新圍"||$books->locationName =="麟洛") && $books->weatherElement[3]->elementValue->value > -20 )
               { 
 
                 $arr['locationName'] = urlencode($books->locationName);

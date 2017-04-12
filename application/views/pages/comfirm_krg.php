@@ -19,9 +19,9 @@
 </div>
 <script type="text/javascript">
 //地圖初始化
-var myLatlng = new google.maps.LatLng(22.830909090909085, 120.57867459817362);
+var myLatlng = new google.maps.LatLng(22.6656, 120.5191);
 var myOptions = {
-    zoom: 10,
+    zoom: 11,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.roadmap
 };
@@ -29,14 +29,14 @@ map = new google.maps.Map(document.getElementById("map"), myOptions);
 map1 = new google.maps.Map(document.getElementById("map1"), myOptions);
 
 //map
-var lat=[22.7810,22.7413,22.9728,22.9006,22.8349,22.7117,22.8904,22.7423,22.6948,22.9077,22.9998,22.8282];
-var lng=[120.4865,120.5227,120.5318,120.5111,120.6758,120.6319,120.4755,120.4825,120.5346,120.6800,120.6255,120.5927];
-var value=[22.8,22.7,22.0,22.6,18.4,22.7,21.4,23.1,23.7,21.4,23.2,22.4];
-var location_name = ['里港', '新圍', '月眉', '美濃', '尾寮山', '三地門', '旗山', '九如', '長治', '萬山', '六龜', '高樹'];
+var lat=[22.6619,22.7413,22.5941,22.7117,22.6074,22.6526,22.7423,22.6948,22.5896,22.5866];
+var lng=[120.4836,120.5227,120.6063,120.6319,120.3877,120.5191,120.4825,120.5346,120.4824,120.5359];
+var value=[23.0,22.8,23.7,22.7,23.1,23.5,22.8,23.7,23.1,24.2];
+var location_name = ['屏東', '新圍', '赤山', '三地門', '大寮', '麟洛', '九如', '長治', '萬丹', '竹田'];
                 var myArray = [];
                 var wellCircle;
                 for (var i = 0; i < lat.length; i++) {
-                    if(i==11){var Color = 360;}
+                    if(i==5){var Color = 360;}
                     else{var Color = 240;}
                     wellCircle = new google.maps.Circle({
                         strokeColor: "hsl(" + Color + ", 100%, 50%)",
@@ -46,7 +46,7 @@ var location_name = ['里港', '新圍', '月眉', '美濃', '尾寮山', '三�
                         fillOpacity: 0.35,
                         map: map,
                         center: new google.maps.LatLng(lat[i], lng[i]),
-                        radius: 3000,
+                        radius: 2000,
                         zIndex: 99999
                     });
                     var infoWindow = new google.maps.InfoWindow({
@@ -69,10 +69,10 @@ var location_name = ['里港', '新圍', '月眉', '美濃', '尾寮山', '三�
                     });
                 }
 //map1
-var lat1=[22.7810,22.7413,22.9728,22.9006,22.8349,22.7117,22.8904,22.7423,22.6948,22.9077,22.9998];
-var lng1=[120.4865,120.5227,120.5318,120.5111,120.6758,120.6319,120.4755,120.4825,120.5346,120.6800,120.6255];
-var value1=[22.8,22.7,22.0,22.6,18.4,22.7,21.4,23.1,23.7,21.4,23.2];
-var location_name1 = ['里港', '新圍', '月眉', '美濃', '尾寮山', '三地門', '旗山', '九如', '長治', '萬山', '六龜'];
+var lat1=[22.6619,22.7413,22.5941,22.7117,22.6074,22.7423,22.6948,22.5896,22.5866];
+var lng1=[120.4836,120.5227,120.6063,120.6319,120.3877,120.4825,120.5346,120.4824,120.5359];
+var value1=[23.0,22.8,23.7,22.7,23.1,22.8,23.7,23.1,24.2];
+var location_name1 = ['屏東', '新圍', '赤山', '三地門', '大寮', '九如', '長治', '萬丹', '竹田'];
                 var myArray1 = [];
                 var wellCircle1;
                 for (var i = 0; i < lat1.length; i++) {
@@ -86,7 +86,7 @@ var location_name1 = ['里港', '新圍', '月眉', '美濃', '尾寮山', '三�
                         fillOpacity: 0.35,
                         map: map1,
                         center: new google.maps.LatLng(lat1[i], lng1[i]),
-                        radius: 3000,
+                        radius: 2000,
                         zIndex: 99999
                     });
                     var infoWindow1 = new google.maps.InfoWindow({
@@ -119,11 +119,11 @@ var location_name1 = ['里港', '新圍', '月眉', '美濃', '尾寮山', '三�
         var array_newlat = [];
         var array_newlon = [];
 
-        for (var i = 0; i < 8; i++) {
+        for (var i = 0; i < 9; i++) {
 
-            array_lat.push(parseFloat(lat[i]));
-            array_lon.push(parseFloat(lng[i]));
-            array_value.push(parseFloat(value[i]));
+            array_lat.push(parseFloat(lat1[i]));
+            array_lon.push(parseFloat(lng1[i]));
+            array_value.push(parseFloat(value1[i]));
       
         }
      
@@ -132,7 +132,7 @@ var location_name1 = ['里港', '新圍', '月眉', '美濃', '尾寮山', '三�
         var x = array_lat;
         var y = array_lon;
         var model = "exponential";
-        var sigma2 = 0.7,
+        var sigma2 = 0,
             alpha = 100;
         var variogram = kriging.train(t, x, y, model, sigma2, alpha);
         //---------------------------------------------
@@ -142,11 +142,11 @@ var location_name1 = ['里港', '新圍', '月眉', '美濃', '尾寮山', '三�
 
         btnst1.onclick = function() {
             var myArray0 = [];
-            var SN = (22.99454545454545 -22.66727272727272) * 55 / 3;
-            var ES = (120.68776550726443 -120.4695836890827) * 55 / 3;
+            var SN = (22.77636363636363 -22.55818181818181) * 55 / 3;
+            var ES = (120.63322005271903 -120.45) * 55 / 3;
             var dis = 3 / 110;
-            var Map_Lat = 22.99454545454545;
-            var Map_lng = 120.4695836890827;
+            var Map_Lat = 22.77636363636363;
+            var Map_lng = 120.41503823453718;
             var count = 1;
             var rectangleOptions = {
                 strokeOpacity: 0.1,
@@ -163,7 +163,14 @@ var location_name1 = ['里港', '新圍', '月眉', '美濃', '尾寮山', '三�
                 array_newlat.push(P_center.lat());
                 array_newlon.push(P_center.lng());
                 var rectangle = new google.maps.Rectangle(rectangleOptions);
+                if(i==12)
+                {
+                     var Color = 360;
+                }
+                else
+                {
                 var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i], array_newlon[i], variogram) / 30));
+                }
                 rectangle.setOptions({
                     fillColor: "hsl(" + Color + ", 100%, 50%)"
                 });
@@ -173,7 +180,7 @@ var location_name1 = ['里港', '新圍', '月眉', '美濃', '尾寮山', '三�
                     Map_Lat = Map_Lat - (dis * 2);
                 } else {
                     count = 1;
-                    Map_Lat = 22.99454545454545;
+                    Map_Lat = 22.77636363636363;
                     Map_lng = Map_lng + (dis * 2);
                 }
 
