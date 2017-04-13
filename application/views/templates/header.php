@@ -68,22 +68,20 @@
             <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>rainfall">雨量</a></li>
             <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>humidity">濕度</a></li>
             <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>pressure">氣壓</a></li>
-
-             <li class="w3-hide-small w3-dropdown-hover">
+            <li class="w3-hide-small w3-dropdown-hover">
                 <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="wether">綜合氣象資訊<i class="fa fa-caret-down"></i></a>
                 <div class="w3-dropdown-content w3-white w3-card-4">
-                    <a href="<?php echo base_url();?>complex">即時氣象資訊</a>
-                    <a href="<?php echo base_url();?>complex_pass">歷史氣象資訊</a>
+                    <a href="<?php echo base_url();?>complex">即時推估氣象資訊</a>
+                    <a href="<?php echo base_url();?>complex_pass">推估歷史氣象資訊</a>
+                    <a href="<?php echo base_url();?>tccip">TCCIP歷史氣象資訊(1960~2012)</a>
                 </div>
             </li>
-             <li class="w3-hide-small w3-dropdown-hover">
-                <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="wether">TCCIP<i class="fa fa-caret-down"></i></a>
+            <li class="w3-hide-small w3-dropdown-hover">
+                <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="wether">克利金推估驗證<i class="fa fa-caret-down"></i></a>
                 <div class="w3-dropdown-content w3-white w3-card-4">
-                    <a href="<?php echo base_url();?>">月均溫度(1960~2012)</a>
-                    <a href="<?php echo base_url();?>">月均雨量(1960~2012)</a>
+                    <a href="<?php echo base_url();?>comfirm_krg1">地點1:麟洛</a>
                 </div>
             </li>
-                <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>comfirm_krg">克利金推估驗證</a></li>
             <li class="w3-hide-medium w3-hide-small"><a class="w3-hover-white w3-padding-16 w3-center" href="<?php echo base_url();?>som">SOM分群</a></li>
             <li class="w3-hide-small w3-dropdown-hover w3-right">
                 <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="testF">　　測試功能　　<i class="fa fa-caret-down"></i></a>
@@ -107,8 +105,7 @@
                 <option value="<?php echo base_url();?>humidity">濕度</option>
                 <option value="<?php echo base_url();?>pressure">氣壓</option>
                 <option value="<?php echo base_url();?>complex">綜合</option>
-                 <option value="<?php echo base_url();?>som">som</option>
-             
+                <option value="<?php echo base_url();?>som">som</option>
             </select>
         </div>
         <div class="w3-clear"></div>

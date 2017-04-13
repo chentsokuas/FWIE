@@ -13,8 +13,8 @@ class Pages extends CI_Controller {
 
 
           $data['title'] = ucfirst($page); 
-          $en_title = array("home", "temperature", "rainfall", "humidity", "pressure", "complex","sql_complex","complex_pass","som","taiwan_edge","test_krg","comfirm_krg");
-          $chi_title = array("全台氣象測站", "溫度", "雨量", "濕度", "氣壓", "即時氣象指數","資料庫處理","歷史氣象指數","som分群","台灣邊緣測試","克利金推估測試","克利金推估驗證");
+          $en_title = array("home", "temperature", "rainfall", "humidity", "pressure", "complex","sql_complex","complex_pass","som","taiwan_edge","test_krg","comfirm_krg1","tccip","");
+          $chi_title = array("全台氣象測站", "溫度", "雨量", "濕度", "氣壓", "即時推估氣象指數","資料庫處理","歷史推估氣象指數","som分群","台灣邊緣測試","克利金推估測試","克利金推估驗證(麟洛)","TCCIP歷史氣象資訊(1960~2012)");
         for($i=0;$i<sizeof($en_title);$i++)
         {
             if($page == $en_title[$i])
@@ -315,6 +315,35 @@ $this->load->database();
                     echo urldecode(json_encode($arr))."@";
                    }
    } 
+
+
+
+   //歷史氣象資訊
+  function Tccip(){    
+
+    $date_s = $_REQUEST['date_s'];
+    $time_s = $_REQUEST['time_s'];
+   
+    if($time_s<10){
+      $time ='0'.$time_s.':00:00';
+    }
+      else{
+         $time =$time_s.':00:00';
+      }
+   $this->load->database();  
+     $query = $this->db->get_where('krg', array('date'=>$date_s,'timed' => $time));
+     foreach ($query->result_array() as $row)
+             {      
+                $arr['grid'] = urlencode($row['grid']);
+                $arr['temp'] = urlencode($row['temp']);
+                $arr['rain'] = urlencode($row['rain']);
+                $arr['humi'] = urlencode($row['humi']);
+                $arr['pres'] = urlencode($row['pres']);
+                echo urldecode(json_encode($arr))."@";
+   
+             }
+
+  }
 
 
 
