@@ -324,21 +324,15 @@ $this->load->database();
     $date_s = $_REQUEST['date_s'];
     $time_s = $_REQUEST['time_s'];
    
-    if($time_s<10){
-      $time ='0'.$time_s.':00:00';
-    }
-      else{
-         $time =$time_s.':00:00';
-      }
+
    $this->load->database();  
-     $query = $this->db->get_where('krg', array('date'=>$date_s,'timed' => $time));
+     $query = $this->db->get_where('tccip', array('year'=>$date_s,'month' => $time_s));
      foreach ($query->result_array() as $row)
              {      
-                $arr['grid'] = urlencode($row['grid']);
-                $arr['temp'] = urlencode($row['temp']);
-                $arr['rain'] = urlencode($row['rain']);
-                $arr['humi'] = urlencode($row['humi']);
-                $arr['pres'] = urlencode($row['pres']);
+                $arr['longitude'] = urlencode($row['longitude']);
+                $arr['latitude'] = urlencode($row['latitude']);
+                $arr['temperature'] = urlencode($row['temperature']);
+                $arr['rainfall'] = urlencode($row['rainfall']);
                 echo urldecode(json_encode($arr))."@";
    
              }
