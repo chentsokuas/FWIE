@@ -72,7 +72,7 @@
                 <a href="javascript:void(0)" class="w3-hover-white w3-padding-16 w3-center" title="wether">綜合氣象資訊<i class="fa fa-caret-down"></i></a>
                 <div class="w3-dropdown-content w3-white w3-card-4">
                     <a href="<?php echo base_url();?>complex">即時推估氣象資訊</a>
-                    <a href="<?php echo base_url();?>complex_pass">推估歷史氣象資訊</a>
+                    <a href="<?php echo base_url();?>complex_pass">歷史推估氣象資訊</a>
                     <a href="<?php echo base_url();?>tccip">TCCIP歷史氣象資訊(1960~2012)</a>
                 </div>
             </li>

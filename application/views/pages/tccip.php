@@ -43,8 +43,9 @@
     </div>
     <p id="value4"></p>
     <p id="value5"></p>
-    <p id="value6"></p>
-    <p id="value7"></p>
+</div>
+<div class="w3-col m12 s12 w3-center w3-panel w3-border">
+    <input id="btnst1" class="w3-btn w3-green w3-large w3-center" type="button" value="克利金推估圖"></input>
 </div>
 <script type="text/javascript">
 //地圖初始化
@@ -110,7 +111,7 @@ $('#month').on('change', function() {
                     zIndex: 99999
                 });
                 var infoWindow = new google.maps.InfoWindow({
-                    content: "<div>" + obj[i].temperature+ "</div>",
+                    content: "<div>" + obj[i].longitude + "</br>" + obj[i].latitude + "</br>溫度:" + obj[i].temperature + "</br>雨量:" + obj[i].rainfall + "</div>",
                     maxWidth: 500
                 });
                 myArray.push(infoWindow);
@@ -130,6 +131,121 @@ $('#month').on('change', function() {
             }
 
 
+
+
+
+
+
+
+            btnst1.onclick = function() {
+
+                var array_value = [];
+                var array_value1 = [];
+                var array_lat = [];
+                var array_lon = [];
+                var array_newcenter = [];
+                var array_newlat = [];
+                var array_newlon = [];
+
+                for (var i = 0; i < 9; i++) {
+
+                    array_lat.push(obj[i].latitude);
+                    array_lon.push(obj[i].longitude);
+                    array_value.push(obj[i].temperature);
+                    array_value1.push(obj[i].rainfall);
+
+
+
+                }
+
+
+                //---------------------------------------------
+                var t = array_value;
+                var x = array_lat;
+                var y = array_lon;
+                var model = "exponential";
+                var sigma2 = 0,
+                    alpha = 100;
+                var variogram = kriging.train(t, x, y, model, sigma2, alpha);
+                //---------------------------------------------
+
+                //---------------------------------------------
+                var t1 = array_value1;
+                var x1 = array_lat;
+                var y1 = array_lon;
+                var model1 = "exponential";
+                var sigma21 = 0,
+                    alpha1 = 100;
+                var variogram1 = kriging.train(t1, x1, y1, model1, sigma21, alpha1);
+                //---------------------------------------------
+                var myArray0 = [];
+                var SN = (22.65 - 22.55) * 55 / 0.3;
+                var ES = (120.546 - 120.45) * 55 / 0.3;
+                var dis = 0.3 / 110;
+                var Map_Lat = 22.65;
+                var Map_lng = 120.45;
+                var count = 1;
+                var rectangleOptions = {
+                    strokeOpacity: 0.1,
+                    fillColor: "hsl(126, 100%, 50%)"
+                };
+                for (var i = 0; i < Math.ceil(SN) * (Math.ceil(ES) + 1); i++) {
+                    count++;
+
+                    var P1 = new google.maps.LatLng(Map_Lat + dis, Map_lng - dis);
+                    var P2 = new google.maps.LatLng(Map_Lat - dis, Map_lng + dis);
+                    var P_center = new google.maps.LatLng(Map_Lat, Map_lng);
+                    var latLngBounds = new google.maps.LatLngBounds(P1, P2);
+                    array_newcenter.push(P_center);
+                    array_newlat.push(P_center.lat());
+                    array_newlon.push(P_center.lng());
+                    var rectangle = new google.maps.Rectangle(rectangleOptions);
+                    var Color = 360 - Math.round((360 * kriging.predict(array_newlat[i], array_newlon[i], variogram) / 30));
+
+                    rectangle.setOptions({
+                        fillColor: "hsl(" + Color + ", 100%, 50%)"
+                    });
+                    rectangle.setMap(map);
+                    rectangle.setBounds(latLngBounds);
+                    if (count != Math.ceil(SN) + 1) {
+                        Map_Lat = Map_Lat - (dis * 2);
+                    } else {
+                        count = 1;
+                        Map_Lat = 22.65;
+                        Map_lng = Map_lng + (dis * 2);
+                    }
+
+
+                    var infoWindow0 = new google.maps.InfoWindow({
+                        content: "<div>" + (i + 1) + "</br>中心點:" + P_center + "</Br>溫度:" + kriging.predict(array_newlat[i], array_newlon[i], variogram) + "</Br>雨量:" + kriging.predict(array_newlat[i], array_newlon[i], variogram1) + "</div>",
+                        maxWidth: 500
+                    });
+                    myArray0.push(infoWindow0);
+                    fn0(i);
+
+                }
+
+                function fn0(a) {
+
+                    google.maps.event.addListener(rectangle, 'click', function(ev) {
+                        for (var hz = 0; hz < myArray0.length; hz++) {
+                            myArray0[hz].close();
+                        }
+                        $("#value1").text((a + 1));
+                        $("#value2").text(array_newlat[a]);
+                        $("#value3").text(array_newlon[a]);
+                        $("#value4").text(kriging.predict(array_newlat[a], array_newlon[a], variogram));
+                        $("#value5").text(kriging.predict(array_newlat[a], array_newlon[a], variogram1));
+
+                        myArray0[a].setPosition(ev.latLng);
+                        myArray0[a].open(map);
+                    });
+                }
+            }
+
+
+
+
         },
         error: function() {
             alert("目前氣象站資料有誤!");
@@ -137,5 +253,4 @@ $('#month').on('change', function() {
 
     })
 });
-
 </script>
