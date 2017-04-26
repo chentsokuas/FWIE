@@ -107,7 +107,7 @@ $('#month').on('change', function() {
                     fillOpacity: 0.35,
                     map: map,
                     center: new google.maps.LatLng(obj[i].latitude, obj[i].longitude),
-                    radius: 1000,
+                    radius: 500,
                     zIndex: 99999
                 });
                 var infoWindow = new google.maps.InfoWindow({
@@ -164,7 +164,7 @@ $('#month').on('change', function() {
                 var x = array_lat;
                 var y = array_lon;
                 var model = "exponential";
-                var sigma2 = 0,
+                var sigma2 = 0.3,
                     alpha = 100;
                 var variogram = kriging.train(t, x, y, model, sigma2, alpha);
                 //---------------------------------------------
@@ -174,7 +174,7 @@ $('#month').on('change', function() {
                 var x1 = array_lat;
                 var y1 = array_lon;
                 var model1 = "exponential";
-                var sigma21 = 0,
+                var sigma21 = 0.3,
                     alpha1 = 100;
                 var variogram1 = kriging.train(t1, x1, y1, model1, sigma21, alpha1);
                 //---------------------------------------------
