@@ -164,7 +164,7 @@ $('#month').on('change', function() {
                 var x = array_lat;
                 var y = array_lon;
                 var model = "exponential";
-                var sigma2 = 0.3,
+                var sigma2 = 0,
                     alpha = 100;
                 var variogram = kriging.train(t, x, y, model, sigma2, alpha);
                 //---------------------------------------------
@@ -174,7 +174,7 @@ $('#month').on('change', function() {
                 var x1 = array_lat;
                 var y1 = array_lon;
                 var model1 = "exponential";
-                var sigma21 = 0.3,
+                var sigma21 = 0,
                     alpha1 = 100;
                 var variogram1 = kriging.train(t1, x1, y1, model1, sigma21, alpha1);
                 //---------------------------------------------
