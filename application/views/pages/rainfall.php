@@ -166,7 +166,7 @@ $.ajax({
 
 
                 var rectangle = new google.maps.Rectangle(rectangleOptions);
-                var Color =  180-Math.round(360 * (kriging.predict(array_newlat[i],array_newlon[i], variogram)/30));
+                var Color =  180-Math.round(360 * (kriging.predict(array_newlat[i],array_newlon[i], variogram)/100));
                 rectangle.setOptions({
                     fillColor: "hsl(" + Color + ", 100%, 50%)"
                 });
