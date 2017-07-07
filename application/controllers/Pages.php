@@ -46,8 +46,8 @@ class Pages extends CI_Controller {
    }
 //溫度function
    function Temperature(){                                      
-                //$xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
-                $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
+                $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+                //$xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
 
 
          foreach($xml->children() as $books) { 
@@ -66,8 +66,8 @@ class Pages extends CI_Controller {
    }
 //雨量function
   function Rainfall(){                                      
-                //$xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
-                $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
+                $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+                //$xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
        foreach($xml->children() as $books) { 
           if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵"  && $books->locationName !="東引" && $books->locationName !="龜山島" && $books->weatherElement[7]->elementValue->value >= 0 )
               { 
@@ -85,8 +85,8 @@ class Pages extends CI_Controller {
   }
 //濕度function
   function Humidity(){                                      
-           //$xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
-                $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
+           $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+                //$xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
            foreach($xml->children() as $books) { 
           if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵"  && $books->locationName !="東引" && $books->locationName !="龜山島" && $books->weatherElement[4]->elementValue->value >= 0 )
               { 
@@ -103,8 +103,8 @@ class Pages extends CI_Controller {
   }
 //氣壓function
   function Pressure(){                                      
-                //$xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
-                $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題"); 
+                $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+                //$xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題"); 
           foreach($xml->children() as $books) { 
           if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->locationName !="東引" && $books->locationName !="龜山島" && $books->weatherElement[5]->elementValue->value > -20 )
               { 
