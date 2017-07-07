@@ -13,8 +13,8 @@ class Pages extends CI_Controller {
 
 
           $data['title'] = ucfirst($page); 
-          $en_title = array("home", "temperature", "rainfall", "humidity", "pressure", "complex","sql_complex","complex_pass","som","taiwan_edge","test_krg","comfirm_krg1","tccip","");
-          $chi_title = array("全台氣象測站", "溫度", "雨量", "濕度", "氣壓", "即時推估氣象指數","資料庫處理","歷史推估氣象指數","som分群","台灣邊緣測試","克利金推估測試","克利金推估驗證(麟洛)","TCCIP歷史氣象資訊(1960~2012)");
+          $en_title = array("home", "temperature", "rainfall", "humidity", "pressure", "complex","sql_complex","complex_pass","som","taiwan_edge","test_krg","comfirm_krg1","tccip","unnormal");
+          $chi_title = array("全台氣象測站", "溫度", "雨量", "濕度", "氣壓", "即時推估氣象指數","資料庫處理","歷史推估氣象指數","som分群","台灣邊緣測試","克利金推估測試","克利金推估驗證(麟洛)","TCCIP歷史氣象資訊(1960~2012)","異常環境與影像");
         for($i=0;$i<sizeof($en_title);$i++)
         {
             if($page == $en_title[$i])
@@ -46,12 +46,12 @@ class Pages extends CI_Controller {
    }
 //溫度function
    function Temperature(){                                      
-                $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
-                //$xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
+                //$xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+                $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
 
 
          foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->weatherElement[3]->elementValue->value > -20 )
+          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵"  && $books->locationName !="東引" && $books->locationName !="龜山島"  && $books->weatherElement[3]->elementValue->value > -20 )
               { 
 
                 $arr['locationName'] = urlencode($books->locationName);
@@ -66,10 +66,10 @@ class Pages extends CI_Controller {
    }
 //雨量function
   function Rainfall(){                                      
-                $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
-               // $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
+                //$xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+                $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
        foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->weatherElement[7]->elementValue->value > 0 )
+          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵"  && $books->locationName !="東引" && $books->locationName !="龜山島" && $books->weatherElement[7]->elementValue->value >= 0 )
               { 
 
                 $arr['locationName'] = urlencode($books->locationName);
@@ -85,10 +85,10 @@ class Pages extends CI_Controller {
   }
 //濕度function
   function Humidity(){                                      
-           $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
-               // $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
+           //$xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+                $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
            foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->weatherElement[4]->elementValue->value > 0 )
+          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵"  && $books->locationName !="東引" && $books->locationName !="龜山島" && $books->weatherElement[4]->elementValue->value >= 0 )
               { 
 
                 $arr['locationName'] = urlencode($books->locationName);
@@ -103,10 +103,10 @@ class Pages extends CI_Controller {
   }
 //氣壓function
   function Pressure(){                                      
-                $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
-             //   $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題"); 
+                //$xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
+                $xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題"); 
           foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->weatherElement[5]->elementValue->value > -20 )
+          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->locationName !="東引" && $books->locationName !="龜山島" && $books->weatherElement[5]->elementValue->value > -20 )
               { 
 
                 $arr['locationName'] = urlencode($books->locationName);
@@ -127,7 +127,7 @@ function Complex(){
            $xml=simplexml_load_file("http://opendata.cwb.gov.tw/opendataapi?dataid=O-A0001-001&authorizationkey=CWB-D577C943-B81B-4378-A6F9-538D294948BA") or die("目前opendata資料出現問題");
                 //$xml=simplexml_load_file("./asset/opendata/O-A0001-001.xml") or die("目前opendata資料出現問題");
          foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->weatherElement[3]->elementValue->value > -20 )
+          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->locationName !="東引" && $books->locationName !="龜山島" && $books->weatherElement[3]->elementValue->value > -20 )
               { 
 
                 $arr['locationName'] = urlencode($books->locationName);
@@ -141,7 +141,7 @@ function Complex(){
         }
         echo "^";
           foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->weatherElement[7]->elementValue->value > 0 )
+          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->locationName !="東引" && $books->locationName !="龜山島" && $books->weatherElement[7]->elementValue->value >= 0 )
               { 
 
                 $arr['locationName'] = urlencode($books->locationName);
@@ -155,7 +155,7 @@ function Complex(){
         }
        echo "^";
           foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->weatherElement[4]->elementValue->value > 0 )
+          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->locationName !="東引" && $books->locationName !="龜山島" && $books->weatherElement[4]->elementValue->value >= 0 )
               { 
 
                 $arr['locationName'] = urlencode($books->locationName);
@@ -169,7 +169,7 @@ function Complex(){
         }
          echo "^";
          foreach($xml->children() as $books) { 
-          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->weatherElement[5]->elementValue->value > -20 )
+          if($books->locationName !="" && $books->locationName !="綠島" && $books->locationName !="琉球嶼" && $books->locationName !="花嶼" && $books->locationName !="西嶼" && $books->locationName !="東莒" && $books->locationName !="金沙"  && $books->locationName !="金寧" && $books->locationName !="烏坵" && $books->locationName !="東引" && $books->locationName !="龜山島" && $books->weatherElement[5]->elementValue->value > -20 )
               { 
 
                 $arr['locationName'] = urlencode($books->locationName);
@@ -256,6 +256,42 @@ $this->load->database();
              }
 
   }
+
+//異常狀況
+    function Unnormal(){    
+   $this->load->database();  
+     $query = $this->db->get_where('sensor', array('id'=>1));
+     foreach ($query->result_array() as $row)
+             {      
+                $arr['temp_s'] = urlencode($row['temp']);
+                $arr['humi_s'] = urlencode($row['humi']);
+                $arr['time_t'] = urlencode($row['time_t']);
+                echo urldecode(json_encode($arr))."@";
+   
+             }
+               echo "^";
+               //ORDER BY id DESC
+               $query1 = $this->db->query("SELECT * FROM krg where grid=627 order by  id DESC LIMIT 1;");
+
+
+
+
+
+
+     foreach ($query1->result_array() as $row)
+             {      
+                $arr['grid'] = urlencode($row['grid']);
+                $arr['temp'] = urlencode($row['temp']);
+                $arr['rain'] = urlencode($row['rain']);
+                $arr['humi'] = urlencode($row['humi']);
+                $arr['pres'] = urlencode($row['pres']);
+                echo urldecode(json_encode($arr))."@";
+   
+             } 
+
+
+  }
+
 
 //SOM分群
   function Som(){    
